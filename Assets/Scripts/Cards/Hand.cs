@@ -43,7 +43,8 @@ public class Hand : MonoBehaviour
             updateHand();
         }
     }
-    public void DrawCards() {
+    public void DrawCards() 
+    {
         for (int i = 3; i > hand.Count; i--)
             addCard(deckController.CardDraw());
     }

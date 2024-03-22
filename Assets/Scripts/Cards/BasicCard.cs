@@ -12,6 +12,8 @@ public abstract class BasicCard: ScriptableObject
     public int Damage { get { return damage; } }
     [SerializeField] int cardCount;
     public int GetCardCount { get { return cardCount; } }
+    [SerializeField][TextArea] string description;
+    public string Description { get { return description; } }
     public void changeHP(int value)
     {
         hp = value;
@@ -21,4 +23,10 @@ public abstract class BasicCard: ScriptableObject
 
     }
     public abstract void OnClick();
+
+    protected int steps = 0;
+    public virtual bool CheckSteps()
+    {
+        return steps != 0;
+    }
 }
