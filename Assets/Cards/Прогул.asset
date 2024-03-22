@@ -9,8 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 645e793b65d914941834e922ee1c8334, type: 3}
-  m_Name: New Favorite
+  m_Script: {fileID: 11500000, guid: fb376084bf31551479e9a2562269730c, type: 3}
+  m_Name: "\u041F\u0440\u043E\u0433\u0443\u043B"
   m_EditorClassIdentifier: 
   Avatar: {fileID: 0}
-  cardCount: 1
+  type: 0
+  hp: 1
+  damage: 1
+  cardCount: 2
+  description: "\u041F\u043E\u0447\u0435\u043C\u0443 "

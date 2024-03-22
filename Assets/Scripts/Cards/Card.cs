@@ -31,6 +31,7 @@ public class Card : MonoBehaviour
     private void OnMouseDown()
     {
         //CardUI.OnOpenCard(card);
+        card.OnClick();
     }
     private void OnMouseUp()
     {

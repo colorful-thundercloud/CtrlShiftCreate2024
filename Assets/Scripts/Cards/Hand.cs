@@ -11,7 +11,6 @@ public class Hand : MonoBehaviour
     private void Start()
     {
         Field.OnCast += ctx => updateHand();
-        Invoke("DrawCards", 1);
     }
     void updateHand()
     {
@@ -43,7 +42,8 @@ public class Hand : MonoBehaviour
             updateHand();
         }
     }
-    public void DrawCards() {
+    public void DrawCards() 
+    {
         for (int i = 3; i > hand.Count; i--)
             addCard(deckController.CardDraw());
     }

@@ -2,7 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BuffCard : BasicCard
+[CreateAssetMenu(menuName = "Карты/Бафы")]
+public class BuffCard : BasicCard
 {
-    
+    [SerializeField] bool onAllies;
+
+    public override void OnClick()
+    {
+        
+    }
 }
