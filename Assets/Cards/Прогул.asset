@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: "\u041F\u0440\u043E\u0433\u0443\u043B"
   m_EditorClassIdentifier: 
   Avatar: {fileID: 0}
-  hp: 0
-  damage: 0
-  cardCount: 0
+  type: 0
+  hp: 1
+  damage: 1
+  cardCount: 2
   description: "\u041F\u043E\u0447\u0435\u043C\u0443 "

@@ -11,9 +11,19 @@ public class TurnBasedGameplay : MonoBehaviour
         enemyHand.Invoke("DrawCards", 0.5f);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+
+    }
+
+    public void playerEndMove()
+    {
+        playerHand.enabled = false;
+
+    }
+
+    public void enemyEndMove()
+    {
+        playerHand.enabled = true;
     }
 }

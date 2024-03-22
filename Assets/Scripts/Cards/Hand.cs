@@ -11,7 +11,6 @@ public class Hand : MonoBehaviour
     private void Start()
     {
         Field.OnCast += ctx => updateHand();
-        Invoke("DrawCards", 1);
     }
     void updateHand()
     {

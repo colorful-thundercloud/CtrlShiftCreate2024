@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public abstract class BasicCard: ScriptableObject
+public abstract class BasicCard : ScriptableObject
 {
     [SerializeField] Sprite Avatar;
     public Sprite GetAvatar { get { return Avatar; } }
+    [SerializeField] cardType type;
+    public cardType Type { get { return type; } }
     [SerializeField] private int hp;
     public int HP { get { return hp; } }
     [SerializeField] private int damage;
@@ -29,4 +32,5 @@ public abstract class BasicCard: ScriptableObject
     {
         return steps != 0;
     }
+    public enum cardType { Unit, Buff }
 }
