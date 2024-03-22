@@ -30,6 +30,7 @@ public class Card : MonoBehaviour
     public void SetCard(BasicCard newCard) => card = newCard;
     bool isCasting = false;
     public bool canDrag = true;
+    Coroutine runningFunc;
     public void EnemyCast()
     {
         inField = true;
@@ -38,6 +39,7 @@ public class Card : MonoBehaviour
     {
         //CardUI.OnOpenCard(card);
         card.OnClick();
+        runningFunc = StartCoroutine(SmoothSizeChange(new Vector3(1, 1, 1)));
     }
     public void OnMouseUp()
     {
@@ -48,12 +50,11 @@ public class Card : MonoBehaviour
             Debug.Log("casted");
             isCasted = true;
             Field.OnCast?.Invoke(this);
-            transform.localScale = new Vector3(1, 1, 1);
             foreach (Transform t in transform) t.gameObject.SetActive(true);
         }
         else
         {
-            transform.localScale = startScale;
+            runningFunc = StartCoroutine(SmoothSizeChange(startScale, true));
             transform.position = startPosition;
         }
     }
@@ -67,7 +68,7 @@ public class Card : MonoBehaviour
         if (isCasting)
         {
             Vector3 pos = cam.ScreenToWorldPoint(Input.mousePosition);
-            pos.z = 0;
+            pos.z = transform.position.z;
             transform.position = pos;
         }
     }
@@ -78,5 +79,15 @@ public class Card : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("field")) inField = false;
+    }
+
+    IEnumerator SmoothSizeChange(Vector3 targetScale, bool grow = false)
+    {
+        if (grow && transform.localScale.x < targetScale.x) transform.localScale += new Vector3(0.05f, 0.05f, 0);
+        else if (!grow && transform.localScale.x > targetScale.x) transform.localScale -= new Vector3(0.05f, 0.05f, 0);
+        else yield break;
+        
+        yield return new WaitForSeconds(0.005f);
+        yield return StartCoroutine(SmoothSizeChange(targetScale, grow));
     }
 }

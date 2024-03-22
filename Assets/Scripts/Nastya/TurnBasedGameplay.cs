@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class TurnBasedGameplay : MonoBehaviour
 {
     public bool playerTurn = true;
+    public BigBrain bb;
     public Hand playerHand, enemyHand;
     public Button endMoveBtn;
     public Field field;
@@ -25,6 +26,8 @@ public class TurnBasedGameplay : MonoBehaviour
         endMoveBtn.interactable = false;
         foreach (Card card in playerHand.GetCards())
             card.canDrag = false;
+
+        enemyHand.DrawCards();
 
         // временная фигня начинается тут
         if (enemyHand.GetCards().Count > 0)
@@ -50,6 +53,8 @@ public class TurnBasedGameplay : MonoBehaviour
         // начало хода игрока
         endMoveBtn.interactable = true;  
         foreach (Card card in playerHand.GetCards())
-            card.canDrag = true; 
+            card.canDrag = true;
+
+        playerHand.DrawCards();
     }
 }

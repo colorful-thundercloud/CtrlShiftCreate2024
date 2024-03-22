@@ -25,6 +25,7 @@ public class Field : MonoBehaviour
             Vector3 pos = Vector3.zero;
             pos.y = (isEnemy) ? enemyField.position.y : myField.position.y;
             pos.x = distance * i;
+            pos.z = field[i].transform.position.z;
             field[i].transform.position = pos;
         }
         float center = field[field.Count - 1].transform.position.x / 2;

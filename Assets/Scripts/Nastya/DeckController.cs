@@ -8,24 +8,14 @@ public class DeckController : MonoBehaviour
 {
     public CardSet cardSet;
     public List<BasicCard> currentDeck;
-    public List<BasicCard> beaten;
+    public List<BasicCard> beaten = new();
     int counter;
     BasicCard card;
     void Start()
     {
-        CreateDeck(cardSet.cards);
-    }
-
-    void CreateDeck(List<BasicCard> cardSet)
-    {
-        foreach (BasicCard card in cardSet)
-        {
+        foreach (BasicCard card in cardSet.cards)
             for (counter = 0; counter < card.GetCardCount; counter++)
-            {
                 currentDeck.Add(card);
-            }
-        }
-        beaten = new();
         ShuffleDeck();
     }
 
@@ -45,8 +35,10 @@ public class DeckController : MonoBehaviour
         beaten.Add(card);
     }
 
-    public void MoveBeantenToDeck()
+    public void MoveBeatenToDeck()
     {
-        CreateDeck(cardSet.cards);
+        currentDeck = beaten;
+        beaten = new();
+        ShuffleDeck();
     }
 }

@@ -22,6 +22,7 @@ public class Hand : MonoBehaviour
         {
             Vector3 pos = HandPosition.position;
             pos.x = distance * i;
+            pos.z = hand[i].transform.position.z;
             hand[i].transform.position = pos;
         }
         if (hand.Count == 0) return;
@@ -39,9 +40,9 @@ public class Hand : MonoBehaviour
         if (card != null)
         {
             if (card.Type == BasicCard.cardType.Unit)
-                go = Instantiate(cardUnitPrefab, HandPosition.position - new Vector3(0, 0, 1), Quaternion.identity);
+                go = Instantiate(cardUnitPrefab, HandPosition.position - new Vector3(0, 0, 4), Quaternion.identity);
             else
-                go = Instantiate(cardBuffPrefab, HandPosition.position - new Vector3(0, 0, 1), Quaternion.identity);
+                go = Instantiate(cardBuffPrefab, HandPosition.position - new Vector3(0, 0, 5), Quaternion.identity);
 
             if (enemy) go.transform.localScale = new Vector3(0.4f, 0.4f, 1);
             else go.transform.localScale = new Vector3(2f, 2f, 1);
@@ -64,7 +65,10 @@ public class Hand : MonoBehaviour
     }
     public void DrawCards(bool enemy = false) 
     {
-        for (int i = 3; i > hand.Count; i--)
+        if (deckController.currentDeck.Count == 0)
+            deckController.MoveBeatenToDeck();
+
+        for (int i = hand.Count; i < 3 ; i++)
             addCard(deckController.CardDraw(), enemy);
     }
     public List<Card> GetCards()
