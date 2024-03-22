@@ -28,6 +28,7 @@ public class Card : MonoBehaviour
     }
     public void SetCard(BasicCard newCard) => card = newCard;
     bool isCasting = false;
+    public bool canDrag = true;
     private void OnMouseDown()
     {
         //CardUI.OnOpenCard(card);
@@ -50,8 +51,8 @@ public class Card : MonoBehaviour
     }
     private void OnMouseDrag()
     {
-        if (isCasted) return;
-        isCasting= true;
+        if (isCasted || !canDrag) return;
+        isCasting = true;
     }
     private void Update()
     {
@@ -64,6 +65,10 @@ public class Card : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("field")) inField= true;
+        if (collision.CompareTag("field")) inField = true;
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("field")) inField = false;
     }
 }
