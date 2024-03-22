@@ -6,8 +6,9 @@ public class BigBrain : MonoBehaviour
 {
     [SerializeField] GameObject Field;
     [SerializeField] GameObject Hand;
-    List<BasicCard> myCards = new List<BasicCard>();
-    List<BasicCard> playerCards = new List<BasicCard>();
+    List<Card> myCards = new List<Card>();
+    List<Card> myCardsOnBoard = new List<Card>();
+    List<Card> playerCards = new List<Card>();
 
     void Update()
     {
@@ -19,20 +20,21 @@ public class BigBrain : MonoBehaviour
 
     void EnemyTurn()
     {
-        myCards = Field.GetComponent<Field>().GetCards(true);
+        myCardsOnBoard = Field.GetComponent<Field>().GetCards(true);
         playerCards = Field.GetComponent<Field>().GetCards(false);
-        Debug.Log("Enemy's Cards:");
-        foreach (BasicCard card in myCards)
+        myCards = Hand.GetComponent<Hand>().GetCards();
+        //Hand.DrawCards(true); //получение карт в руку
+        Debug.Log(playerCards[0].GetBasicCard.GetType());
+        if (myCardsOnBoard.Count == 0)
         {
-            Debug.Log("HP: " + card.HP + ", Damage: " + card.Damage);
+            DoUnit(3);
         }
-        //получение карт в руку
         //если на поле все свободно, запустить растановку
         //если есть баффы применить их
         //если на поле есть свободное место и в руке есть юниты запустить скрипт постановки
     }
 
-    void DoIUnit()//скрипт постановки
+    void DoUnit(int howMuch)//скрипт постановки
     {
         //оценка юнитов игрока
         //оценка своих юнитов
