@@ -1,19 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Card : MonoBehaviour
 {
+    [SerializeField] SpriteRenderer spriter;
+    [SerializeField] TMP_Text damage, hp;
+
+
     private BasicCard card;
     bool isCasted = false;
     public bool IsCasted { get { return isCasted; } }
     Camera cam;
+    Animator anim;
     Vector3 startPosition;
     bool inField = false;
     private void Start()
     {
         startPosition = transform.position;
         cam = Camera.main;
+        anim = GetComponent<Animator>();
+        spriter.sprite = card.GetAvatar;
+        hp.text = card.HP.ToString();
     }
     public void SetCard(BasicCard newCard) => card = newCard;
     bool isCasting = false;

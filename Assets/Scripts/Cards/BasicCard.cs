@@ -4,8 +4,12 @@ using UnityEngine;
 
 public abstract class BasicCard: ScriptableObject
 {
-    public int hp;
-    Animator anim;
+    [SerializeField] Sprite Avatar;
+    public Sprite GetAvatar { get { return Avatar; } }
+    private int hp;
+    public int HP { get { return hp; } }
+    [SerializeField] int cardCount;
+    public int GetCardCount { get { return cardCount; } }
     public void changeHP(int value)
     {
         hp = value;
