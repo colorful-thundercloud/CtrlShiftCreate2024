@@ -32,11 +32,11 @@ public class Field : MonoBehaviour
         if (isEnemy) enemyCards = field;
         else myCards = field;
     }
-    public List<BasicCard> GetCards(bool isEnemy)
+    public List<Card> GetCards(bool isEnemy)
     {
-        List<BasicCard> cards;
-        if(isEnemy) cards = enemyCards.ConvertAll(n => n.GetComponent<BasicCard>());
-        else cards = myCards.ConvertAll(n => n.GetComponent<BasicCard>());
+        List<Card> cards;
+        if(isEnemy) cards = enemyCards.ConvertAll(n => n.GetComponent<Card>());
+        else cards = myCards.ConvertAll(n => n.GetComponent<Card>());
         return cards;
     }
 }

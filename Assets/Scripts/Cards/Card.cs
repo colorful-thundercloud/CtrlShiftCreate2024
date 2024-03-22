@@ -10,6 +10,7 @@ public class Card : MonoBehaviour
 
 
     private BasicCard card;
+    public BasicCard GetBasicCard { get { return card; } }
     bool isCasted = false;
     public bool IsCasted { get { return isCasted; } }
     Camera cam;

@@ -20,4 +20,5 @@ public abstract class BasicCard: ScriptableObject
     {
 
     }
+    public abstract void OnClick();
 }
