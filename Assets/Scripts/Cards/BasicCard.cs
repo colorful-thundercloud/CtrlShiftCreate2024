@@ -9,6 +9,7 @@ public abstract class BasicCard: ScriptableObject
     [SerializeField] private int hp;
     public int HP { get { return hp; } }
     [SerializeField] private int damage;
+    public int Damage { get { return damage; } }
     [SerializeField] int cardCount;
     public int GetCardCount { get { return cardCount; } }
     public void changeHP(int value)

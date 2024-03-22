@@ -153,6 +153,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e248c8a460c101428f855c9628a7504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deckController: {fileID: 1507735581}
+  hand: []
   HandPosition: {fileID: 480242443}
   distance: 1.5
   cardPrefab: {fileID: 4705676442405221099, guid: 579ca56edb1828b4682c1ce1f12dfacc, type: 3}
@@ -313,6 +315,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cad651c7f0038ba48b03c3b41a096ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriter: {fileID: 0}
+  damage: {fileID: 0}
+  hp: {fileID: 0}
 --- !u!61 &1378956860
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -436,6 +441,7 @@ GameObject:
   - component: {fileID: 1435152051}
   - component: {fileID: 1435152050}
   - component: {fileID: 1435152049}
+  - component: {fileID: 1435152052}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -517,6 +523,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1435152052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1435152048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
+  m_TaaSettings:
+    quality: 3
+    frameInfluence: 0.1
+    jitterScale: 1
+    mipBias: 0
+    varianceClampScale: 0.9
+    contrastAdaptiveSharpening: 0
 --- !u!1 &1507735576
 GameObject:
   m_ObjectHideFlags: 0
@@ -529,6 +579,7 @@ GameObject:
   - component: {fileID: 1507735578}
   - component: {fileID: 1507735577}
   - component: {fileID: 1507735580}
+  - component: {fileID: 1507735581}
   m_Layer: 0
   m_Name: Field
   m_TagString: field
@@ -665,6 +716,21 @@ MonoBehaviour:
   myField: {fileID: 1035729214}
   enemyField: {fileID: 2018480381}
   distance: 1.2
+--- !u!114 &1507735581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1507735576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32bb03b739635594ba81aea6b4f81f02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardSet: {fileID: 11400000, guid: 605f0ee1db57d6d4b8f003cab7d51da5, type: 2}
+  currentDeck: []
+  beaten: []
 --- !u!1 &1997411937
 GameObject:
   m_ObjectHideFlags: 0
@@ -724,6 +790,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cad651c7f0038ba48b03c3b41a096ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriter: {fileID: 0}
+  damage: {fileID: 0}
+  hp: {fileID: 0}
 --- !u!61 &1997411940
 BoxCollider2D:
   m_ObjectHideFlags: 0
