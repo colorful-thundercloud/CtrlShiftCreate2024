@@ -1,24 +1,21 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 public class Hand : MonoBehaviour
 {
     [SerializeField] DeckController deckController;
-    public List<GameObject> hand = new List<GameObject>();
+    List<GameObject> hand = new List<GameObject>();
     [SerializeField] Transform HandPosition;
     [SerializeField] float distance;
     [SerializeField] GameObject cardPrefab;
     private void Start()
     {
         Field.OnCast += ctx => updateHand();
-        Invoke("InitiateHand", 1);
+        Invoke("DrawCards", 1);
     }
     void updateHand()
     {
-        List<GameObject> t =new List<GameObject>();
+        List<GameObject> t = new List<GameObject>();
         foreach( GameObject item in hand ) if(item.GetComponent<Card>().IsCasted) t.Add(item);
         foreach (GameObject item in t) hand.Remove(item);
         for (int i = 0; i < hand.Count; i++)
@@ -38,16 +35,22 @@ public class Hand : MonoBehaviour
     }
     public void addCard(BasicCard card)
     {
-        GameObject go = Instantiate(cardPrefab, HandPosition.position, Quaternion.identity);
-        go.GetComponent<Card>().SetCard(card);
-        hand.Add(go);
-        updateHand();
-    }
-
-    void InitiateHand() {
-        for (int i = 0; i < 3; i++)
+        if (card != null)
         {
-            addCard(deckController.CardDraw());
+            GameObject go = Instantiate(cardPrefab, HandPosition.position, Quaternion.identity);
+            go.GetComponent<Card>().SetCard(card);
+            hand.Add(go);
+            updateHand();
         }
+    }
+    public void DrawCards() {
+        for (int i = 3; i > hand.Count; i--)
+            addCard(deckController.CardDraw());
+    }
+    public List<Card> GetCards()
+    {
+        List<Card> cards;
+        cards = hand.ConvertAll(n => n.GetComponent<Card>());
+        return cards;
     }
 }

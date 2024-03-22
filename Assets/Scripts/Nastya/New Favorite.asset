@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: New Favorite
   m_EditorClassIdentifier: 
   Avatar: {fileID: 0}
-  cardCount: 2
+  cardCount: 1

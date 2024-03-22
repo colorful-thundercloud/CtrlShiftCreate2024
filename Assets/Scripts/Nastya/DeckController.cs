@@ -36,12 +36,21 @@ public class DeckController : MonoBehaviour
     }
 
     public BasicCard CardDraw() {
-        card = currentDeck.LastOrDefault<BasicCard>();
-        currentDeck.RemoveAt(currentDeck.Count - 1);
-        return card;
+        if (currentDeck.Count > 0)
+        {
+            card = currentDeck.LastOrDefault<BasicCard>();
+            currentDeck.RemoveAt(currentDeck.Count - 1);
+            return card;
+        }
+        else return null;
     }
 
     public void CardBeat(BasicCard card) {
         beaten.Add(card);
+    }
+
+    public void MoveBeantenToDeck()
+    {
+        CreateDeck(cardSet.cards);
     }
 }
