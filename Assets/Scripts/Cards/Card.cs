@@ -21,8 +21,8 @@ public class Card : MonoBehaviour
         startPosition = transform.position;
         cam = Camera.main;
         anim = GetComponent<Animator>();
-        spriter.sprite = card.GetAvatar;
-        hp.text = card.HP.ToString();
+        // spriter.sprite = card.GetAvatar;
+        // hp.text = card.HP.ToString();
     }
     public void SetCard(BasicCard newCard) => card = newCard;
     bool isCasting = false;

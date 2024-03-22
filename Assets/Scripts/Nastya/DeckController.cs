@@ -16,13 +16,13 @@ public class DeckController : MonoBehaviour
         CreateDeck(cardSet.cards);
     }
 
-    void CreateDeck(List<CardSet.Card> cardSet)
+    void CreateDeck(List<BasicCard> cardSet)
     {
-        foreach (CardSet.Card card in cardSet)
+        foreach (BasicCard card in cardSet)
         {
-            for (counter = 0; counter < card.amountInDeck; counter++)
+            for (counter = 0; counter < card.GetCardCount; counter++)
             {
-                currentDeck.Add(card.card);
+                currentDeck.Add(card);
             }
         }
         beaten = new();
@@ -35,7 +35,7 @@ public class DeckController : MonoBehaviour
         currentDeck = currentDeck.OrderBy(x => random.Next()).ToList<BasicCard>();
     }
 
-    BasicCard CardDraw() {
+    public BasicCard CardDraw() {
         card = currentDeck.LastOrDefault<BasicCard>();
         currentDeck.RemoveAt(currentDeck.Count - 1);
         return card;

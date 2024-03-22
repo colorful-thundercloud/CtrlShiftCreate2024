@@ -13,38 +13,9 @@ MonoBehaviour:
   m_Name: CardSet First
   m_EditorClassIdentifier: 
   cards:
-  - temp: Unit 1
-    card: {fileID: 0}
-    cardType: 0
-    cardPrefab: {fileID: 7036164430176959558, guid: ad172c6ba714b514b8471801aa5078ed, type: 3}
-    amountInDeck: 4
-  - temp: Unit 2
-    card: {fileID: 0}
-    cardType: 0
-    cardPrefab: {fileID: 7036164430176959558, guid: ad172c6ba714b514b8471801aa5078ed, type: 3}
-    amountInDeck: 3
-  - temp: Unit 3
-    card: {fileID: 0}
-    cardType: 0
-    cardPrefab: {fileID: 7036164430176959558, guid: ad172c6ba714b514b8471801aa5078ed, type: 3}
-    amountInDeck: 2
-  - temp: Unit 4
-    card: {fileID: 0}
-    cardType: 0
-    cardPrefab: {fileID: 7036164430176959558, guid: ad172c6ba714b514b8471801aa5078ed, type: 3}
-    amountInDeck: 2
-  - temp: Buff 1
-    card: {fileID: 0}
-    cardType: 1
-    cardPrefab: {fileID: 1481652529358014991, guid: 67c56df295adc904791c64741c15b3b9, type: 3}
-    amountInDeck: 2
-  - temp: Buff 2
-    card: {fileID: 0}
-    cardType: 1
-    cardPrefab: {fileID: 1481652529358014991, guid: 67c56df295adc904791c64741c15b3b9, type: 3}
-    amountInDeck: 1
-  - temp: Buff 3
-    card: {fileID: 0}
-    cardType: 1
-    cardPrefab: {fileID: 1481652529358014991, guid: 67c56df295adc904791c64741c15b3b9, type: 3}
-    amountInDeck: 1
+  - {fileID: 11400000, guid: 8200dadda51aeae4a9a952bd33f91ed6, type: 2}
+  - {fileID: 11400000, guid: 8200dadda51aeae4a9a952bd33f91ed6, type: 2}
+  - {fileID: 11400000, guid: 8200dadda51aeae4a9a952bd33f91ed6, type: 2}
+  - {fileID: 11400000, guid: 8200dadda51aeae4a9a952bd33f91ed6, type: 2}
+  - {fileID: 11400000, guid: 8200dadda51aeae4a9a952bd33f91ed6, type: 2}
+  - {fileID: 11400000, guid: 8200dadda51aeae4a9a952bd33f91ed6, type: 2}

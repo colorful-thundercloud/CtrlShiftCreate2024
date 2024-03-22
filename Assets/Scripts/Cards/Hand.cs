@@ -6,13 +6,15 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class Hand : MonoBehaviour
 {
-    List<GameObject> hand = new List<GameObject>();
+    [SerializeField] DeckController deckController;
+    public List<GameObject> hand = new List<GameObject>();
     [SerializeField] Transform HandPosition;
     [SerializeField] float distance;
     [SerializeField] GameObject cardPrefab;
     private void Start()
     {
         Field.OnCast += ctx => updateHand();
+        Invoke("InitiateHand", 1);
     }
     void updateHand()
     {
@@ -33,5 +35,12 @@ public class Hand : MonoBehaviour
         go.GetComponent<Card>().SetCard(card);
         hand.Add(go);
         updateHand();
+    }
+
+    void InitiateHand() {
+        for (int i = 0; i < 3; i++)
+        {
+            addCard(deckController.CardDraw());
+        }
     }
 }
