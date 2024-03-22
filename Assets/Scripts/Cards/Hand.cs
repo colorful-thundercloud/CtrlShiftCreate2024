@@ -18,20 +18,23 @@ public class Hand : MonoBehaviour
     }
     void updateHand()
     {
-        foreach( GameObject item in hand ) if(item.GetComponent<Card>().IsCasted) hand.Remove(item);
+        List<GameObject> t =new List<GameObject>();
+        foreach( GameObject item in hand ) if(item.GetComponent<Card>().IsCasted) t.Add(item);
+        foreach (GameObject item in t) hand.Remove(item);
         for (int i = 0; i < hand.Count; i++)
         {
             Vector3 pos = HandPosition.position;
             pos.x = distance * i;
             hand[i].transform.position = pos;
         }
+        if (hand.Count == 0) return;
         float center = hand[hand.Count - 1].transform.position.x / 2;
         foreach (GameObject item in hand)
         {
             item.transform.Translate(-center, 0, 0);
             item.GetComponent<Card>().SavePosition();
         }
-        Debug.Log(hand);
+        Debug.Log(hand.ToArray());
     }
     public void addCard(BasicCard card)
     {

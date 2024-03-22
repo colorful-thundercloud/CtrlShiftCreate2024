@@ -34,8 +34,10 @@ public class Card : MonoBehaviour
     private void OnMouseUp()
     {
         isCasting = false;
+        if (IsCasted) return;
         if (inField)
         {
+            Debug.Log("casted");
             isCasted = true;
             Field.OnCast?.Invoke(this);
         }
