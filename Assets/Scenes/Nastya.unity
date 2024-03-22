@@ -845,8 +845,8 @@ Transform:
   m_GameObject: {fileID: 266695047}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.11, z: 0}
-  m_LocalScale: {x: 6.1579, y: 6.1579, z: 6.1579}
+  m_LocalPosition: {x: 0, y: 1.04, z: 0}
+  m_LocalScale: {x: 6.1579, y: 4.676925, z: 6.1579}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 995700782}
@@ -1609,8 +1609,8 @@ Transform:
   m_GameObject: {fileID: 501761548}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -3.7736, z: 1}
-  m_LocalScale: {x: 6.7468, y: 2.3472, z: 1}
+  m_LocalPosition: {x: 0, y: -3.1511, z: 1}
+  m_LocalScale: {x: 6.7468, y: 3.5922344, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1629,8 +1629,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deckController: {fileID: 501761552}
   HandPosition: {fileID: 501761550}
-  distance: 1.5
-  cardPrefab: {fileID: 3103345983841923055, guid: 9e56d8d7109600f49bf331a6fd93e91c, type: 3}
+  distance: 3.5
+  cardUnitPrefab: {fileID: 4890571309650381577, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
+  cardBuffPrefab: {fileID: 2044227114700308559, guid: 1cf0b9780eb2ac44dac08860c1b6b430, type: 3}
 --- !u!114 &501761552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2721,6 +2722,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f874a92a744119a498745cae66a94e24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hidenSran: []
 --- !u!224 &803390944
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3703,8 +3705,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deckController: {fileID: 1041961976}
   HandPosition: {fileID: 1041961978}
-  distance: 1.5
-  cardPrefab: {fileID: 3103345983841923055, guid: 9e56d8d7109600f49bf331a6fd93e91c, type: 3}
+  distance: 1
+  cardUnitPrefab: {fileID: 4890571309650381577, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
+  cardBuffPrefab: {fileID: 2044227114700308559, guid: 1cf0b9780eb2ac44dac08860c1b6b430, type: 3}
 --- !u!114 &1041961976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3781,8 +3784,8 @@ Transform:
   m_GameObject: {fileID: 1041961974}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.96, y: 3.1, z: 1}
-  m_LocalScale: {x: 4.3840704, y: 1.8019454, z: 1}
+  m_LocalPosition: {x: 6.18, y: 4.2913, z: 1}
+  m_LocalScale: {x: 4.3840704, y: 1.4046165, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

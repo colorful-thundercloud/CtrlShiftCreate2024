@@ -15,7 +15,7 @@ public class Card : MonoBehaviour
     public bool IsCasted { get { return isCasted; } }
     Camera cam;
     Animator anim;
-    Vector3 startPosition;
+    Vector3 startPosition, startScale;
     public void SavePosition()=> startPosition = transform.position;
     bool inField = false;
     private void Start()
@@ -23,18 +23,23 @@ public class Card : MonoBehaviour
         startPosition = transform.position;
         cam = Camera.main;
         anim = GetComponent<Animator>();
+        startScale = transform.localScale;
         // spriter.sprite = card.GetAvatar;
         // hp.text = card.HP.ToString();
     }
     public void SetCard(BasicCard newCard) => card = newCard;
     bool isCasting = false;
     public bool canDrag = true;
+    public void EnemyCast()
+    {
+        inField = true;
+    }
     private void OnMouseDown()
     {
         //CardUI.OnOpenCard(card);
         card.OnClick();
     }
-    private void OnMouseUp()
+    public void OnMouseUp()
     {
         isCasting = false;
         if (IsCasted) return;
@@ -43,9 +48,12 @@ public class Card : MonoBehaviour
             Debug.Log("casted");
             isCasted = true;
             Field.OnCast?.Invoke(this);
+            transform.localScale = new Vector3(1, 1, 1);
+            foreach (Transform t in transform) t.gameObject.SetActive(true);
         }
         else
         {
+            transform.localScale = startScale;
             transform.position = startPosition;
         }
     }

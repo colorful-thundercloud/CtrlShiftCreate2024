@@ -36,13 +36,9 @@ public class DeckController : MonoBehaviour
     }
 
     public BasicCard CardDraw() {
-        if (currentDeck.Count > 0)
-        {
-            card = currentDeck.LastOrDefault<BasicCard>();
-            currentDeck.RemoveAt(currentDeck.Count - 1);
-            return card;
-        }
-        else return null;
+        card = currentDeck.LastOrDefault<BasicCard>();
+        if (currentDeck.Count > 0) currentDeck.RemoveAt(currentDeck.Count - 1);
+        return card;
     }
 
     public void CardBeat(BasicCard card) {

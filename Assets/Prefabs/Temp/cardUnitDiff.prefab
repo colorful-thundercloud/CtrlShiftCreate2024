@@ -776,6 +776,7 @@ MonoBehaviour:
   spriter: {fileID: 0}
   damage: {fileID: 0}
   hp: {fileID: 0}
+  canDrag: 1
 --- !u!1 &5477064916560248571
 GameObject:
   m_ObjectHideFlags: 0
@@ -1057,7 +1058,7 @@ Transform:
   m_GameObject: {fileID: 8237208982449971003}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.18, z: -2}
+  m_LocalPosition: {x: 0, y: -0.117, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

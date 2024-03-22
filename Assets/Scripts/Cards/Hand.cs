@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Hand : MonoBehaviour
@@ -7,7 +8,7 @@ public class Hand : MonoBehaviour
     List<GameObject> hand = new List<GameObject>();
     [SerializeField] Transform HandPosition;
     [SerializeField] float distance;
-    [SerializeField] GameObject cardPrefab;
+    [SerializeField] GameObject cardUnitPrefab, cardBuffPrefab;
     private void Start()
     {
         Field.OnCast += ctx => updateHand();
@@ -30,22 +31,41 @@ public class Hand : MonoBehaviour
             item.transform.Translate(-center, 0, 0);
             item.GetComponent<Card>().SavePosition();
         }
-        Debug.Log(hand.ToArray());
     }
-    public void addCard(BasicCard card)
+    public void addCard(BasicCard card, bool enemy = false)
     {
+        GameObject go;
+        TextMeshPro[] tmp;
         if (card != null)
         {
-            GameObject go = Instantiate(cardPrefab, HandPosition.position, Quaternion.identity);
+            if (card.Type == BasicCard.cardType.Unit)
+                go = Instantiate(cardUnitPrefab, HandPosition.position - new Vector3(0, 0, 1), Quaternion.identity);
+            else
+                go = Instantiate(cardBuffPrefab, HandPosition.position - new Vector3(0, 0, 1), Quaternion.identity);
+
+            if (enemy) go.transform.localScale = new Vector3(0.4f, 0.4f, 1);
+            else go.transform.localScale = new Vector3(2f, 2f, 1);
+
+            tmp = go.GetComponentsInChildren<TextMeshPro>();
+            tmp[0].text = card.Damage.ToString();
+            tmp[1].text = card.HP.ToString();
+            tmp[2].text = card.Title.ToString();
+
+            go.GetComponentsInChildren<SpriteRenderer>()[^1].sprite = card.GetAvatar;
+
             go.GetComponent<Card>().SetCard(card);
             hand.Add(go);
+
+            if (enemy)
+                foreach (Transform t in go.transform) t.gameObject.SetActive(false);
+
             updateHand();
         }
     }
-    public void DrawCards() 
+    public void DrawCards(bool enemy = false) 
     {
         for (int i = 3; i > hand.Count; i--)
-            addCard(deckController.CardDraw());
+            addCard(deckController.CardDraw(), enemy);
     }
     public List<Card> GetCards()
     {

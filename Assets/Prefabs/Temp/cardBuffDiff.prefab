@@ -604,6 +604,7 @@ MonoBehaviour:
   spriter: {fileID: 3467776107165606816}
   damage: {fileID: 4546002237088523987}
   hp: {fileID: 5027995595741037652}
+  canDrag: 1
 --- !u!1 &2757901168193473734
 GameObject:
   m_ObjectHideFlags: 0

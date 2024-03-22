@@ -10,9 +10,14 @@ public class TurnBasedGameplay : MonoBehaviour
     bool temp;
     void Start()
     {
-        playerHand.Invoke("DrawCards", 0.5f);
-        enemyHand.Invoke("DrawCards", 0.5f);
+        Invoke("DrawCards", 0.5f);
     }
+
+    void DrawCards()
+    {
+        playerHand.DrawCards();
+        enemyHand.DrawCards(true);
+    }    
 
     public void playerEndMove()
     {
@@ -36,7 +41,7 @@ public class TurnBasedGameplay : MonoBehaviour
             }
         }
         // временная фигня кончается здесь
-        
+
         Invoke("enemyEndMove", 2f);
     }
 

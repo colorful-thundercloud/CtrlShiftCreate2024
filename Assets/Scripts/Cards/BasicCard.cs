@@ -5,6 +5,8 @@ using UnityEngine;
 
 public abstract class BasicCard : ScriptableObject
 {
+    [SerializeField] string title;
+    public string Title { get { return title; } }
     [SerializeField] Sprite Avatar;
     public Sprite GetAvatar { get { return Avatar; } }
     [SerializeField] cardType type;
