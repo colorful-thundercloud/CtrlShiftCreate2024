@@ -6,6 +6,9 @@ public abstract class BasicCard: ScriptableObject
 {
     [SerializeField] Sprite Avatar;
     public Sprite GetAvatar { get { return Avatar; } }
+    [SerializeField]
+    cardType type;
+    public cardType Type { get { return type; } }
     [SerializeField] private int hp;
     public int HP { get { return hp; } }
     [SerializeField] private int damage;
@@ -21,4 +24,5 @@ public abstract class BasicCard: ScriptableObject
 
     }
     public abstract void OnClick();
+    public enum cardType {Unit, Buff};
 }
