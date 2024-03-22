@@ -28,7 +28,6 @@ public class Field : MonoBehaviour
             field[i].transform.position = pos;
         }
         float center = field[field.Count - 1].transform.position.x / 2;
-        Debug.Log(center);
         foreach (GameObject item in field) item.transform.Translate(-center, 0, 0);
         if (isEnemy) enemyCards = field;
         else myCards = field;

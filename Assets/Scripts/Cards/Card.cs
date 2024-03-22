@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Card : MonoBehaviour
 {
-    public BasicCard card;
+    private BasicCard card;
     bool isCasted = false;
+    public bool IsCasted { get { return isCasted; } }
     Camera cam;
     Vector3 startPosition;
     bool inField = false;
@@ -14,7 +15,7 @@ public class Card : MonoBehaviour
         startPosition = transform.position;
         cam = Camera.main;
     }
-
+    public void SetCard(BasicCard newCard) => card = newCard;
     bool isCasting = false;
     private void OnMouseDown()
     {
