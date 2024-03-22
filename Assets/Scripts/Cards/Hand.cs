@@ -26,7 +26,11 @@ public class Hand : MonoBehaviour
             hand[i].transform.position = pos;
         }
         float center = hand[hand.Count - 1].transform.position.x / 2;
-        foreach (GameObject item in hand) item.transform.Translate(-center, 0, 0);
+        foreach (GameObject item in hand)
+        {
+            item.transform.Translate(-center, 0, 0);
+            item.GetComponent<Card>().SavePosition();
+        }
         Debug.Log(hand);
     }
     public void addCard(BasicCard card)

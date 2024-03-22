@@ -6,8 +6,9 @@ public abstract class BasicCard: ScriptableObject
 {
     [SerializeField] Sprite Avatar;
     public Sprite GetAvatar { get { return Avatar; } }
-    private int hp;
+    [SerializeField] private int hp;
     public int HP { get { return hp; } }
+    [SerializeField] private int damage;
     [SerializeField] int cardCount;
     public int GetCardCount { get { return cardCount; } }
     public void changeHP(int value)
@@ -18,4 +19,5 @@ public abstract class BasicCard: ScriptableObject
     {
 
     }
+    public 
 }

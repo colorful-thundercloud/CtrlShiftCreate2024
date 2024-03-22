@@ -15,6 +15,7 @@ public class Card : MonoBehaviour
     Camera cam;
     Animator anim;
     Vector3 startPosition;
+    public void SavePosition()=> startPosition = transform.position;
     bool inField = false;
     private void Start()
     {

@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class UnitCard : BasicCard
 {
-    public int damage;
+
 }
