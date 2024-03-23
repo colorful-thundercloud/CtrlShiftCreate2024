@@ -51,10 +51,12 @@ public class Card : MonoBehaviour
             {
                 Field.SelectedCard = this;
                 GetComponent<SpriteRenderer>().color = Color.yellow;
-            } 
-            else if(gameObject.tag == "enemyCard")
+            }
+            else if (gameObject.tag == "enemyCard")
             {
-                Field.SelectedCard.StatsChange(0, -Field.SelectedCard.GetBasicCard.Damage);
+                Field.SelectedCard?.attack(this);
+                Field.SelectedCard.GetComponent<SpriteRenderer>().color = Color.white;
+                Field.SelectedCard = null;
             }
         }
         if (runningFunc != null) StopCoroutine(runningFunc);
@@ -168,5 +170,9 @@ public class Card : MonoBehaviour
     {
         hp.text = currentHP.ToString();
         damage.text = currentAtk.ToString();
+    }
+    public void attack(Card toAttack)
+    {
+        toAttack.StatsChange(0, -currentAtk);
     }
 }
