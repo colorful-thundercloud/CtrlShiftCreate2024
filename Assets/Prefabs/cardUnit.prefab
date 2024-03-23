@@ -778,11 +778,13 @@ MonoBehaviour:
   lighting: {fileID: 1564628615307975834}
   damage: {fileID: 7651285416438748501}
   hp: {fileID: 8292840901566565420}
-  name: {fileID: 983335562413830961}
+  title: {fileID: 983335562413830961}
   card: {fileID: 0}
   inField: 0
   canBuff: 0
+  used: 0
   canDrag: 1
+  canScale: 1
 --- !u!1 &5477064916560248571
 GameObject:
   m_ObjectHideFlags: 0
