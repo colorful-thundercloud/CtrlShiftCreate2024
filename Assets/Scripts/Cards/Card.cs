@@ -41,6 +41,8 @@ public class Card : MonoBehaviour
     public void SetCard(BasicCard newCard) => card = newCard;
     bool isCasting = false;
     public bool canDrag = true;
+    // поле проверки на возможность уменьшения
+    public bool canScale = false;
     Coroutine runningFunc;
     public void EnemyCast()
     {
@@ -62,7 +64,7 @@ public class Card : MonoBehaviour
         //CardUI.OnOpenCard(card);
         if (IsCasted)
         {
-            if (gameObject.tag == "myCard")
+            if (gameObject.tag == "myCard" )
             {
                 Field.SelectedCard = this;
                 lighting.color = Color.green;
@@ -75,8 +77,12 @@ public class Card : MonoBehaviour
                 Field.SelectedCard = null;
             }
         }
-        if (runningFunc != null) StopCoroutine(runningFunc);
-        runningFunc = StartCoroutine(SmoothSizeChange(new Vector3(1, 1, 1)));
+        if (runningFunc != null ) StopCoroutine(runningFunc);
+        //добавилпроверку на поле проверки на возможность уменьшения
+        if (canScale)
+        {
+            runningFunc = StartCoroutine(SmoothSizeChange(new Vector3(1, 1, 1)));
+        }
     }
     public void OnMouseUp()
     {
