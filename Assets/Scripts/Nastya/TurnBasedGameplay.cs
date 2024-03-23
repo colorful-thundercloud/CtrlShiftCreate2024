@@ -27,7 +27,7 @@ public class TurnBasedGameplay : MonoBehaviour
         foreach (Card card in playerHand.GetCards())
             card.canDrag = false;
 
-        enemyHand.DrawCards();
+        enemyHand.DrawCards(true);
 
         // временная фигня начинается тут
         bb.EnemyTurn();
