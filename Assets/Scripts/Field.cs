@@ -21,6 +21,10 @@ public class Field : MonoBehaviour
         OnEnemyCast += ctx => addCard(ctx, true);
         OnBuff += ctx => BeatCard(ctx);
     }
+    public Transform GetEnemyField()
+    {
+        return enemyField;
+    }
     public void addCard(Card card, bool isEnemy)
     {
         List<GameObject> field = isEnemy ? enemyCards : myCards;
