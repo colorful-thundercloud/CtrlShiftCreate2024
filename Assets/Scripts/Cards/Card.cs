@@ -73,6 +73,7 @@ public class Card : MonoBehaviour
                 isCasted = true;
                 Field.OnCast?.Invoke(this);
                 foreach (Transform t in transform) t.gameObject.SetActive(true);
+                transform.localScale = Vector3.one;
             }
             else if (canBuff)
             {

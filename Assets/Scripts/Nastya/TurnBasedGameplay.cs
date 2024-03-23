@@ -30,22 +30,9 @@ public class TurnBasedGameplay : MonoBehaviour
         enemyHand.DrawCards();
 
         // временная фигня начинается тут
-        if (enemyHand.GetCards().Count > 0)
-        {
-            if (!temp)
-            {
-                enemyHand.GetCards()[0].transform.position += new Vector3(-2, 1, 0);
-                temp = true;
-            }
-            else
-            {
-                enemyHand.GetCards()[0].transform.position -= new Vector3(-2, 1, 0);
-                temp = false;
-            }
-        }
+        bb.EnemyTurn();
         // временная фигня кончается здесь
 
-        Invoke("enemyEndMove", 2f);
     }
 
     public void enemyEndMove()

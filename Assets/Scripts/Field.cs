@@ -21,7 +21,7 @@ public class Field : MonoBehaviour
         OnEnemyCast += ctx => addCard(ctx, true);
         OnBuff += ctx => BeatCard(ctx);
     }
-    void addCard(Card card, bool isEnemy)
+    public void addCard(Card card, bool isEnemy)
     {
         List<GameObject> field = isEnemy ? enemyCards : myCards;
         field.Add(card.gameObject);
