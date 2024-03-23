@@ -16,6 +16,7 @@ public class mainMenuController : MonoBehaviour
     }
     public void OnMouseEnter()
     {
+        
         for (int i = 0; i < hidenSran.Length; i++) 
             hidenSran[i].SetActive(true);
     }
