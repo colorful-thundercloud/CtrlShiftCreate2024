@@ -29,14 +29,12 @@ public class TurnBasedGameplay : MonoBehaviour
 
         playerHand.DrawCards();
 
-        // временная фигня начинается тут
-        bb.EnemyTurn();
-        // временная фигня кончается здесь
-
+        StartCoroutine(bb.EnemyTurn());
     }
 
     public void enemyEndMove()
     {
+        StopCoroutine(bb.EnemyTurn());
         // начало хода игрока
         endMoveBtn.interactable = true;  
         foreach (Card card in playerHand.GetCards())

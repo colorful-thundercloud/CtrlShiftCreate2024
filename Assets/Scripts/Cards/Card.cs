@@ -102,7 +102,7 @@ public class Card : MonoBehaviour
                 canBuff = false;
                 canDrag = false;
                 otherCard.StatsChange(currentAtk, currentHP);
-                Field.OnBuff?.Invoke(this);
+                Field.OnCardBeat?.Invoke(this);
             }
             else
             {
@@ -186,8 +186,17 @@ public class Card : MonoBehaviour
     public void StatsChange(int atk = 0, int health = 0)
     {
         currentAtk += atk;
+        if (currentAtk < 0) currentAtk = 0;
         currentHP += health;
+        if (currentHP <= 0) StartCoroutine( death());
         updText();
+    }
+    IEnumerator death() 
+    {
+        //play animation
+        this.enabled= false;
+        yield return new WaitForSeconds(2f);
+        Field.OnCardBeat(this);
     }
     void updText()
     {

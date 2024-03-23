@@ -9,17 +9,48 @@ public class BigBrain : MonoBehaviour
 {
     [SerializeField] Field field;
     [SerializeField] Hand hand;
-    [SerializeField] GameObject Player;
+    [SerializeField] Users Player;
     List<Card> myCards = new();
     List<Card> myCardsOnBoard = new();
     List<Card> playerCards = new();
-    public void EnemyTurn()
+    public IEnumerator EnemyTurn()
     {
-        List<Card> StartBoard = field.GetComponent<Field>().GetCards(true);//карты босса на столе
-        playerCards = field.GetComponent<Field>().GetCards(false);//карты игрока на столе
-        myCards = hand.GetComponent<Hand>().GetCards();//карты в руке
-        SpawnUnit(WhichCardsSpawnUnit(), 3 - myCardsOnBoard.Count);//спавним юнитов в свободное место
-        //досюда все ок
+        List<Card> StartBoard = field.GetComponent<Field>().GetCards(true);
+        playerCards = field.GetComponent<Field>().GetCards(false);
+        myCards = hand.GetComponent<Hand>().GetCards();
+
+        SpawnUnit(WhichCardsSpawnUnit(), 3 - myCardsOnBoard.Count);
+        List<Card> cardsToSpawn = WhichCardsSpawnUnit();
+        int HowMuch = 3 - myCardsOnBoard.Count;
+        if (HowMuch != 0)
+        {
+            if (cardsToSpawn.Count != 0)
+            {
+                for (int i = myCards.Count - 1; i >= 0; i--)
+                {
+                    if (HowMuch == 0) break;
+                    for (int j = 0; j < cardsToSpawn.Count; j++)
+                    {
+                        if (myCards[i] == cardsToSpawn[j])
+                        {
+                            while (myCards[i].gameObject.transform.position.y - field.GetComponent<Field>().GetEnemyField().position.y > 0.1f)
+                            {
+                                Vector3 direction = (field.GetComponent<Field>().GetEnemyField().position - myCards[i].gameObject.transform.position).normalized;
+                                myCards[i].gameObject.GetComponent<Rigidbody2D>().MovePosition(myCards[i].gameObject.transform.position + direction * Time.deltaTime);
+                                yield return null;
+                            }
+                            myCards[i].EnemyCast();
+                            myCards[i].OnMouseUp();
+                            field.GetComponent<Field>().addCard(myCards[i], true);
+                            cardsToSpawn.Remove(cardsToSpawn[j]);
+                            HowMuch--;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
         myCardsOnBoard = field.GetComponent<Field>().GetCards(true);
         DoBaff(WhichCardsSpawnBaff());
         Attack(StartBoard);
@@ -108,7 +139,7 @@ public class BigBrain : MonoBehaviour
                         if (card != null)
                         {
                             card.StatsChange(cardsToSpawn[j].Damage, cardsToSpawn[j].HP);
-                            Field.OnBuff?.Invoke(cardsToSpawn[j]);
+                            Field.OnCardBeat?.Invoke(cardsToSpawn[j]);
                             cardsToSpawn.Remove(cardsToSpawn[j]);
                             break;
                         }
@@ -250,7 +281,7 @@ public class BigBrain : MonoBehaviour
         {
             foreach (Card card in StartBoard)
             {
-                //атакуем игрока напрямую
+                Player.attackUser(card.Damage);
             }
         }
     }
