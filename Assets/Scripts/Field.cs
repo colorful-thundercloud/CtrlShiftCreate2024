@@ -5,25 +5,29 @@ using UnityEngine;
 
 public class Field : MonoBehaviour
 {
+    [SerializeField] DeckController myDeck, enemyDeck;
+    [SerializeField] Hand myHand, enemyHand;
     [SerializeField] Transform myField, enemyField;
     [SerializeField] float distance;
     List<GameObject> myCards = new List<GameObject>();
     List<GameObject> enemyCards = new List<GameObject>();
     public static Action<Card> OnCast;
     public static Action<Card> OnEnemyCast;
+    public static Action<Card> OnBuff;
     private void Start()
     {
         OnCast += ctx => addCard(ctx, false);
         OnEnemyCast += ctx => addCard(ctx, true);
+        OnBuff += ctx => BeatCard(ctx);
     }
     void addCard(Card card, bool isEnemy)
     {
-        List<GameObject> field = (isEnemy) ? enemyCards : myCards;
+        List<GameObject> field = isEnemy ? enemyCards : myCards;
         field.Add(card.gameObject);
         for(int i = 0; i < field.Count; i++)
         {
             Vector3 pos = Vector3.zero;
-            pos.y = (isEnemy) ? enemyField.position.y : myField.position.y;
+            pos.y = isEnemy ? enemyField.position.y : myField.position.y;
             pos.x = distance * i;
             pos.z = field[i].transform.position.z;
             field[i].transform.position = pos;
@@ -32,6 +36,22 @@ public class Field : MonoBehaviour
         foreach (GameObject item in field) item.transform.Translate(-center, 0, 0);
         if (isEnemy) enemyCards = field;
         else myCards = field;
+    }
+    public void BeatCard(Card card)
+    {
+        if (card.gameObject.CompareTag("myCard"))
+        {
+            myCards.Remove(card.gameObject);
+            myDeck.BeatCard(card.GetBasicCard);
+            myHand.RemoveCard(card.gameObject);
+        }
+        else
+        {
+            enemyCards.Remove(card.gameObject);
+            enemyDeck.BeatCard(card.GetBasicCard);
+            enemyHand.RemoveCard(card.gameObject);
+        }
+        Destroy(card.gameObject);
     }
     public List<Card> GetCards(bool isEnemy)
     {

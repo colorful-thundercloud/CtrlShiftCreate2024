@@ -36,7 +36,6 @@ public class Hand : MonoBehaviour
     public void addCard(BasicCard card, bool enemy = false)
     {
         GameObject go;
-        TextMeshPro[] tmp;
         if (card != null)
         {
             if (card.Type == BasicCard.cardType.Unit)
@@ -44,16 +43,16 @@ public class Hand : MonoBehaviour
             else
                 go = Instantiate(cardBuffPrefab, HandPosition.position - new Vector3(0, 0, 5), Quaternion.identity);
 
-            if (enemy) go.transform.localScale = new Vector3(0.4f, 0.4f, 1);
-            else go.transform.localScale = new Vector3(2f, 2f, 1);
-
-            tmp = go.GetComponentsInChildren<TextMeshPro>();
-            tmp[0].text = card.Damage.ToString();
-            tmp[1].text = card.HP.ToString();
-            tmp[2].text = card.Title.ToString();
-
-            go.GetComponentsInChildren<SpriteRenderer>()[^1].sprite = card.GetAvatar;
-
+            if (enemy)
+            {
+                go.transform.localScale = new Vector3(0.4f, 0.4f, 1);
+                go.tag = "enemyCard";
+            }
+            else
+            {
+                go.transform.localScale = new Vector3(2f, 2f, 1);
+                go.tag = "myCard";
+            }
             go.GetComponent<Card>().SetCard(card);
             hand.Add(go);
 
@@ -69,7 +68,11 @@ public class Hand : MonoBehaviour
             deckController.MoveBeatenToDeck();
 
         for (int i = hand.Count; i < 3 ; i++)
-            addCard(deckController.CardDraw(), enemy);
+            addCard(deckController.DrawCard(), enemy);
+    }
+    public void RemoveCard(GameObject card)
+    {
+        hand.Remove(card);
     }
     public List<Card> GetCards()
     {

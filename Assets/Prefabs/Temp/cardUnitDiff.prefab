@@ -773,9 +773,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cad651c7f0038ba48b03c3b41a096ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriter: {fileID: 0}
-  damage: {fileID: 0}
-  hp: {fileID: 0}
+  spriter: {fileID: 868811696282032799}
+  damage: {fileID: 7651285416438748501}
+  hp: {fileID: 8292840901566565420}
   canDrag: 1
 --- !u!1 &5477064916560248571
 GameObject:

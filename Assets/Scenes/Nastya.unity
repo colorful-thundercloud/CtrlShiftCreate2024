@@ -736,6 +736,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dff76c24452f57a40b4953dd074d508f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myDeck: {fileID: 501761552}
+  enemyDeck: {fileID: 1041961976}
+  myHand: {fileID: 501761551}
+  enemyHand: {fileID: 1041961975}
   myField: {fileID: 995700782}
   enemyField: {fileID: 238394642}
   distance: 1.5
@@ -1630,7 +1634,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deckController: {fileID: 501761552}
   HandPosition: {fileID: 501761550}
-  distance: 3.5
+  distance: 3.1
   cardUnitPrefab: {fileID: 4890571309650381577, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
   cardBuffPrefab: {fileID: 2044227114700308559, guid: 1cf0b9780eb2ac44dac08860c1b6b430, type: 3}
 --- !u!114 &501761552

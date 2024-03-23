@@ -25,13 +25,14 @@ public class DeckController : MonoBehaviour
         currentDeck = currentDeck.OrderBy(x => random.Next()).ToList<BasicCard>();
     }
 
-    public BasicCard CardDraw() {
+    public BasicCard DrawCard() {
         card = currentDeck.LastOrDefault<BasicCard>();
         if (currentDeck.Count > 0) currentDeck.RemoveAt(currentDeck.Count - 1);
+        else MoveBeatenToDeck();
         return card;
     }
 
-    public void CardBeat(BasicCard card) {
+    public void BeatCard(BasicCard card) {
         beaten.Add(card);
     }
 
