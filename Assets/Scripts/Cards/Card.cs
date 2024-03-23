@@ -45,7 +45,18 @@ public class Card : MonoBehaviour
     private void OnMouseDown()
     {
         //CardUI.OnOpenCard(card);
-        card.OnClick();
+        if (IsCasted)
+        {
+            if (gameObject.tag == "myCard")
+            {
+                Field.SelectedCard = this;
+                GetComponent<SpriteRenderer>().color = Color.yellow;
+            } 
+            else if(gameObject.tag == "enemyCard")
+            {
+                Field.SelectedCard.StatsChange(0, -Field.SelectedCard.GetBasicCard.Damage);
+            }
+        }
         if (runningFunc != null) StopCoroutine(runningFunc);
         runningFunc = StartCoroutine(SmoothSizeChange(new Vector3(1, 1, 1)));
     }

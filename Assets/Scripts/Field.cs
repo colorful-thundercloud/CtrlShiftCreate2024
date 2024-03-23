@@ -14,6 +14,7 @@ public class Field : MonoBehaviour
     public static Action<Card> OnCast;
     public static Action<Card> OnEnemyCast;
     public static Action<Card> OnBuff;
+    public static Card SelectedCard;
     private void Start()
     {
         OnCast += ctx => addCard(ctx, false);
