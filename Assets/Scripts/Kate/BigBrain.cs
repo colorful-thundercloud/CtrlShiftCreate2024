@@ -15,11 +15,10 @@ public class BigBrain : MonoBehaviour
     List<Card> playerCards = new();
     public void EnemyTurn()
     {
-        List<Card> StartBoard = field.GetComponent<Field>().GetCards(true);//карты босса на столе
-        playerCards = field.GetComponent<Field>().GetCards(false);//карты игрока на столе
-        myCards = hand.GetComponent<Hand>().GetCards();//карты в руке
-        SpawnUnit(WhichCardsSpawnUnit(), 3 - myCardsOnBoard.Count);//спавним юнитов в свободное место
-        //досюда все ок
+        List<Card> StartBoard = field.GetComponent<Field>().GetCards(true);
+        playerCards = field.GetComponent<Field>().GetCards(false);
+        myCards = hand.GetComponent<Hand>().GetCards();
+        SpawnUnit(WhichCardsSpawnUnit(), 3 - myCardsOnBoard.Count);
         myCardsOnBoard = field.GetComponent<Field>().GetCards(true);
         DoBaff(WhichCardsSpawnBaff());
         Attack(StartBoard);
@@ -108,7 +107,7 @@ public class BigBrain : MonoBehaviour
                         if (card != null)
                         {
                             card.StatsChange(cardsToSpawn[j].Damage, cardsToSpawn[j].HP);
-                            Field.OnBuff?.Invoke(cardsToSpawn[j]);
+                            Field.OnCardBeat?.Invoke(cardsToSpawn[j]);
                             cardsToSpawn.Remove(cardsToSpawn[j]);
                             break;
                         }
