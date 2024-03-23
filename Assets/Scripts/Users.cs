@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class Users : MonoBehaviour
 {
     [SerializeField] Field field;
+    [SerializeField] Light2D lighting;
     [SerializeField] int HP;
     [SerializeField] TMP_Text hpText;
     private void Start()
@@ -20,12 +22,25 @@ public class Users : MonoBehaviour
     private void OnMouseEnter()
     {
         if (Field.SelectedCard == null) return;
-        //проверяем можно ли
+        if (gameObject.tag == "myCard") return;
+        lighting.color = Color.red;
+        StartCoroutine(SmoothLight.smoothLight(lighting, 0.5f));
+    }
+    private void OnMouseExit()
+    {
+        if (Field.SelectedCard == null) return;
+        if (gameObject.tag == "myCard") return;
+        StartCoroutine(SmoothLight.smoothLight(lighting, 0.5f, false));
     }
     private void OnMouseDown()
     {
         if (Field.SelectedCard == null) return;
         attackUser(Field.SelectedCard.Damage);
+        if(checkAttack())
+        {
+            Field.SelectedCard.turnOfLight();
+            Field.SelectedCard = null;
+        }
     }
     public void attackUser(int Damage)
     {
@@ -33,6 +48,7 @@ public class Users : MonoBehaviour
         {
             HP -= Damage;
             hpText.text = HP.ToString();
+            StartCoroutine(SmoothLight.smoothLight(lighting, 0.5f, false));
         }
     }
 }
