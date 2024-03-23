@@ -15,15 +15,14 @@ public class BigBrain : MonoBehaviour
     List<Card> playerCards = new();
     public void EnemyTurn()
     {
-        myCardsOnBoard = Field.GetComponent<Field>().GetCards(true);//карты босса на столе
-        List<Card> StartBoard = myCardsOnBoard;
+        List<Card> StartBoard = Field.GetComponent<Field>().GetCards(true);//карты босса на столе
         playerCards = Field.GetComponent<Field>().GetCards(false);//карты игрока на столе
         myCards = Hand.GetComponent<Hand>().GetCards();//карты в руке
         SpawnUnit(WhichCardsSpawnUnit(), 3 - myCardsOnBoard.Count);//спавним юнитов в свободное место
         myCardsOnBoard = Field.GetComponent<Field>().GetCards(true);
-        DoBaff(WhichCardsSpawnBaff());
-        Attack(StartBoard);
-        if (myCardsOnBoard.Count != 0 && myCardsOnBoard.Count < myCards.Count || myCardsOnBoard.Count == 3 && myCards.Count > 1) StashCard();
+        //DoBaff(WhichCardsSpawnBaff());
+        //Attack(StartBoard);
+        //if (myCardsOnBoard.Count != 0 && myCardsOnBoard.Count < myCards.Count || myCardsOnBoard.Count == 3 && myCards.Count > 1) StashCard();
         Field.GetComponent<TurnBasedGameplay>().enemyEndMove();
     }
     List<Card> WhichCardsSpawnUnit()
@@ -34,8 +33,8 @@ public class BigBrain : MonoBehaviour
             if (card.GetBasicCard.Type == BasicCard.cardType.Unit) Spawn.Add(card);
         }
         //добавить сортировку по урону или по хп
-        if (StrengthInHealth()) myCards.Sort((x, y) => x.GetBasicCard.HP.CompareTo(y.GetBasicCard.HP));
-        else myCards.Sort((x, y) => x.GetBasicCard.Damage.CompareTo(y.GetBasicCard.Damage));
+        if (StrengthInHealth()) myCards.Sort((x, y) => x.HP.CompareTo(y.HP));
+        else myCards.Sort((x, y) => x.Damage.CompareTo(y.Damage));
         return Spawn;
     }
     bool StrengthInHealth()
@@ -45,13 +44,13 @@ public class BigBrain : MonoBehaviour
         int HP = 0, DM = 0;
         foreach (Card card in playerCards)
         {
-            PlHP += card.GetBasicCard.HP;
-            PlDM += card.GetBasicCard.Damage;
+            PlHP += card.HP;
+            PlDM += card.Damage;
         }
         foreach (Card card in myCardsOnBoard)
         {
-            HP += card.GetBasicCard.HP;
-            DM += card.GetBasicCard.Damage;
+            HP += card.HP;
+            DM += card.Damage;
         }
         if (PlDM >= HP || PlHP < DM) healthMatter = true;
         else healthMatter = false;
@@ -69,9 +68,9 @@ public class BigBrain : MonoBehaviour
                 {
                     if (myCards[i] == cardsToSpawn[j])
                     {
-                        Field.GetComponent<Field>().addCard(myCards[i], true);
                         myCards[i].EnemyCast();
                         myCards[i].OnMouseUp();
+                        Field.GetComponent<Field>().addCard(myCards[i], true);
                         cardsToSpawn.Remove(cardsToSpawn[j]);
                         HowMuch--;
                         break;
@@ -100,10 +99,10 @@ public class BigBrain : MonoBehaviour
                     if (myCards[i] == cardsToSpawn[j])
                     {
                         Card card = null;
-                        if (cardsToSpawn[j].GetBasicCard.HP > 0) card = GetMyHealthlessCard();
-                        else if (cardsToSpawn[j].GetBasicCard.HP < 0) card = GetPlayerHealthlessCard(cardsToSpawn[j].GetBasicCard.HP);
-                        else if (cardsToSpawn[j].GetBasicCard.Damage > 0) card = GetMyWeakestCard();
-                        else if (cardsToSpawn[j].GetBasicCard.Damage < 0) card = GetPlayerWeakestCard(cardsToSpawn[j].GetBasicCard.Damage);
+                        if (cardsToSpawn[j].HP > 0) card = GetMyHealthlessCard();
+                        else if (cardsToSpawn[j].HP < 0) card = GetPlayerHealthlessCard(cardsToSpawn[j].HP);
+                        else if (cardsToSpawn[j].Damage > 0) card = GetMyWeakestCard();
+                        else if (cardsToSpawn[j].Damage < 0) card = GetPlayerWeakestCard(cardsToSpawn[j].Damage);
                         Debug.Log("Help");
                         //каст на карту card бафф
                         cardsToSpawn.Remove(cardsToSpawn[j]);
@@ -119,18 +118,18 @@ public class BigBrain : MonoBehaviour
         Card card = myCardsOnBoard[0];
         for (int i = 0; i < myCardsOnBoard.Count; i++)
         {
-            if (myCardsOnBoard[i].GetBasicCard.Damage > 3 && !Strong)
+            if (myCardsOnBoard[i].Damage > 3 && !Strong)
             {
                 card = myCardsOnBoard[i];
                 Strong = true;
             }
             else if (!Strong)
             {
-                if (card.GetBasicCard.HP < myCardsOnBoard[i].GetBasicCard.HP) card = myCardsOnBoard[i];
+                if (card.HP < myCardsOnBoard[i].HP) card = myCardsOnBoard[i];
             }
-            else if (myCardsOnBoard[i].GetBasicCard.Damage > 3 && Strong)
+            else if (myCardsOnBoard[i].Damage > 3 && Strong)
             {
-                if (card.GetBasicCard.Damage < myCardsOnBoard[i].GetBasicCard.Damage) card = myCardsOnBoard[i];
+                if (card.Damage < myCardsOnBoard[i].Damage) card = myCardsOnBoard[i];
             }
         }
         return card;
@@ -142,18 +141,18 @@ public class BigBrain : MonoBehaviour
         Card card = playerCards[0];
         for (int i = 0; i < playerCards.Count; i++)
         {
-            if (playerCards[i].GetBasicCard.HP <= Debuf && !kill)
+            if (playerCards[i].HP <= Debuf && !kill)
             {
                 card = playerCards[i];
                 kill = true;
             }
-            else if (playerCards[i].GetBasicCard.HP <= Debuf && kill)
+            else if (playerCards[i].HP <= Debuf && kill)
             {
-                if (card.GetBasicCard.HP < playerCards[i].GetBasicCard.HP) card = playerCards[i];
+                if (card.HP < playerCards[i].HP) card = playerCards[i];
             }
             else if (!kill)
             {
-                if (card.GetBasicCard.HP > playerCards[i].GetBasicCard.HP) card = playerCards[i];
+                if (card.HP > playerCards[i].HP) card = playerCards[i];
             }
         }
         return card;
@@ -164,18 +163,18 @@ public class BigBrain : MonoBehaviour
         Card card = myCardsOnBoard[0];
         for (int i = 0; i < myCardsOnBoard.Count; i++)
         {
-            if (myCardsOnBoard[i].GetBasicCard.Damage > 3 && !Strong)
+            if (myCardsOnBoard[i].Damage > 3 && !Strong)
             {
                 card = myCardsOnBoard[i];
                 Strong = true;
             }
             else if (!Strong)
             {
-                if (card.GetBasicCard.HP < myCardsOnBoard[i].GetBasicCard.HP) card = myCardsOnBoard[i];
+                if (card.HP < myCardsOnBoard[i].HP) card = myCardsOnBoard[i];
             }
-            else if (myCardsOnBoard[i].GetBasicCard.Damage > 3 && Strong)
+            else if (myCardsOnBoard[i].Damage > 3 && Strong)
             {
-                if (card.GetBasicCard.Damage < myCardsOnBoard[i].GetBasicCard.Damage) card = myCardsOnBoard[i];
+                if (card.Damage < myCardsOnBoard[i].Damage) card = myCardsOnBoard[i];
             }
         }
         return card;
@@ -187,18 +186,18 @@ public class BigBrain : MonoBehaviour
         Card card = playerCards[0];
         for (int i = 0; i < playerCards.Count; i++)
         {
-            if (playerCards[i].GetBasicCard.Damage <= Debuf && !kill)
+            if (playerCards[i].Damage <= Debuf && !kill)
             {
                 card = playerCards[i];
                 kill = true;
             }
-            else if (playerCards[i].GetBasicCard.Damage <= Debuf && kill)
+            else if (playerCards[i].Damage <= Debuf && kill)
             {
-                if (card.GetBasicCard.Damage < playerCards[i].GetBasicCard.Damage) card = playerCards[i];
+                if (card.Damage < playerCards[i].Damage) card = playerCards[i];
             }
             else if (!kill)
             {
-                if (card.GetBasicCard.Damage > playerCards[i].GetBasicCard.Damage) card = playerCards[i];
+                if (card.Damage > playerCards[i].Damage) card = playerCards[i];
             }
         }
         return card;
@@ -210,17 +209,17 @@ public class BigBrain : MonoBehaviour
     void Attack(List<Card> StartBoard)
     {
         if (StartBoard.Count == 0) return;
-        StartBoard.Sort((a, b) => a.GetBasicCard.Damage.CompareTo(b.GetBasicCard.Damage));//в возрастании
-        playerCards.Sort((a, b) => b.GetBasicCard.HP.CompareTo(a.GetBasicCard.HP));//в убывании
+        StartBoard.Sort((a, b) => a.Damage.CompareTo(b.Damage));//в возрастании
+        playerCards.Sort((a, b) => b.HP.CompareTo(a.HP));//в убывании
         while (StartBoard.Count != 0)
         {
             if (playerCards.Count == 0) break;
             Card strongestCard = StrongestPlayerCard();
             int CanBeat = -1;
-            for (int i = 0; i < StartBoard.Count; i++) if (StartBoard[i].GetBasicCard.Damage > strongestCard.GetBasicCard.HP) {CanBeat = i; break;}
+            for (int i = 0; i < StartBoard.Count; i++) if (StartBoard[i].Damage > strongestCard.HP) {CanBeat = i; break;}
             if (CanBeat != -1) CanBeat = -1;//убиваем карту, удаляем атакующую карту из массива StartBoard и массива strenght и continue
             Card healthlessCard = HealthlessPlayerCard();
-            for (int i = 0; i < StartBoard.Count; i++) if (StartBoard[i].GetBasicCard.Damage > strongestCard.GetBasicCard.HP) {CanBeat = i; break;}
+            for (int i = 0; i < StartBoard.Count; i++) if (StartBoard[i].Damage > strongestCard.HP) {CanBeat = i; break;}
             if (CanBeat != -1) CanBeat = -1;//убиваем карту, удаляем атакующую карту из массива StartBoard и массива strenght и continue
             //если дошли досюда просто атакуем слабейшей картой сильнейшую
         }
@@ -238,7 +237,7 @@ public class BigBrain : MonoBehaviour
         Card card = playerCards[0];
         for (int i = 0; i < playerCards.Count; i++)
         {
-            if (card.GetBasicCard.Damage < playerCards[i].GetBasicCard.Damage) card = playerCards[i];
+            if (card.Damage < playerCards[i].Damage) card = playerCards[i];
         }
         return card;
     }
@@ -248,7 +247,7 @@ public class BigBrain : MonoBehaviour
         Card card = playerCards[0];
         for (int i = 0; i < playerCards.Count; i++)
         {
-            if (card.GetBasicCard.HP > playerCards[i].GetBasicCard.HP) card = playerCards[i];
+            if (card.HP > playerCards[i].HP) card = playerCards[i];
         }
         return card;
     }

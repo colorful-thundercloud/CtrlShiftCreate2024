@@ -9,7 +9,7 @@ public class Card : MonoBehaviour
     [SerializeField] SpriteRenderer spriter;
     [SerializeField] TMP_Text damage, hp, name;
 
-    private BasicCard card;
+    [SerializeField] private BasicCard card;
     public BasicCard GetBasicCard { get { return card; } }
     bool isCasted = false;
     public bool IsCasted { get { return isCasted; } }
@@ -19,6 +19,8 @@ public class Card : MonoBehaviour
     public void SavePosition()=> startPosition = transform.position;
     public bool inField = false, canBuff = false;
     int currentHP, currentAtk;
+    public int HP { get { return currentHP; } }
+    public int Damage { get { return currentAtk; } }
     Card otherCard;
     private void Start()
     {
@@ -71,7 +73,7 @@ public class Card : MonoBehaviour
             if (card.Type == BasicCard.cardType.Unit)
             {
                 isCasted = true;
-                Field.OnCast?.Invoke(this);
+                if(gameObject.tag !="enemyCard") Field.OnCast?.Invoke(this);
                 foreach (Transform t in transform) t.gameObject.SetActive(true);
                 transform.localScale = Vector3.one;
             }
