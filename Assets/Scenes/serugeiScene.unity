@@ -3729,9 +3729,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe24935d205324e48830ea34c40e70bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  field: {fileID: 0}
-  hand: {fileID: 0}
-  Player: {fileID: 0}
+  field: {fileID: 1396074421}
+  hand: {fileID: 332079855}
+  Player: {fileID: 322969135}
 --- !u!4 &814209317
 Transform:
   m_ObjectHideFlags: 0

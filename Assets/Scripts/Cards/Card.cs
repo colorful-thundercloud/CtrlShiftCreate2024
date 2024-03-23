@@ -182,7 +182,7 @@ public class Card : MonoBehaviour
         currentAtk += atk;
         if (currentAtk < 0) currentAtk = 0;
         currentHP += health;
-        if (currentHP <= 0) death();
+        if (currentHP <= 0) StartCoroutine( death());
         updText();
     }
     IEnumerator death() 
