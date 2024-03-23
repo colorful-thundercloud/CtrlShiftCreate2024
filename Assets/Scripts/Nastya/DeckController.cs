@@ -14,8 +14,7 @@ public class DeckController : MonoBehaviour
     void Start()
     {
         foreach (BasicCard card in cardSet.cards)
-            for (counter = 0; counter < card.GetCardCount; counter++)
-                currentDeck.Add(card);
+            currentDeck.Add(card);
         ShuffleDeck();
     }
 
