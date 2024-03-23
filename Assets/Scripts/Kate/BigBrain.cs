@@ -7,23 +7,24 @@ using UnityEngine;
 
 public class BigBrain : MonoBehaviour
 {
-    [SerializeField] GameObject Field;
-    [SerializeField] GameObject Hand;
+    [SerializeField] Field field;
+    [SerializeField] Hand hand;
     [SerializeField] GameObject Player;
     List<Card> myCards = new();
     List<Card> myCardsOnBoard = new();
     List<Card> playerCards = new();
     public void EnemyTurn()
     {
-        List<Card> StartBoard = Field.GetComponent<Field>().GetCards(true);//карты босса на столе
-        playerCards = Field.GetComponent<Field>().GetCards(false);//карты игрока на столе
-        myCards = Hand.GetComponent<Hand>().GetCards();//карты в руке
+        List<Card> StartBoard = field.GetComponent<Field>().GetCards(true);//карты босса на столе
+        playerCards = field.GetComponent<Field>().GetCards(false);//карты игрока на столе
+        myCards = hand.GetComponent<Hand>().GetCards();//карты в руке
         SpawnUnit(WhichCardsSpawnUnit(), 3 - myCardsOnBoard.Count);//спавним юнитов в свободное место
-        myCardsOnBoard = Field.GetComponent<Field>().GetCards(true);
-        //DoBaff(WhichCardsSpawnBaff());
-        //Attack(StartBoard);
-        //if (myCardsOnBoard.Count != 0 && myCardsOnBoard.Count < myCards.Count || myCardsOnBoard.Count == 3 && myCards.Count > 1) StashCard();
-        Field.GetComponent<TurnBasedGameplay>().enemyEndMove();
+        //досюда все ок
+        myCardsOnBoard = field.GetComponent<Field>().GetCards(true);
+        DoBaff(WhichCardsSpawnBaff());
+        Attack(StartBoard);
+        if (myCardsOnBoard.Count != 0 && myCardsOnBoard.Count < myCards.Count || myCardsOnBoard.Count == 3 && myCards.Count > 2) StashCard();
+        field.GetComponent<TurnBasedGameplay>().enemyEndMove();
     }
     List<Card> WhichCardsSpawnUnit()
     {
@@ -70,7 +71,7 @@ public class BigBrain : MonoBehaviour
                     {
                         myCards[i].EnemyCast();
                         myCards[i].OnMouseUp();
-                        Field.GetComponent<Field>().addCard(myCards[i], true);
+                        field.GetComponent<Field>().addCard(myCards[i], true);
                         cardsToSpawn.Remove(cardsToSpawn[j]);
                         HowMuch--;
                         break;
@@ -92,6 +93,7 @@ public class BigBrain : MonoBehaviour
     {
         if (cardsToSpawn.Count != 0)
         {
+            Debug.Log(cardsToSpawn[0].HP);
             for (int i = myCards.Count - 1; i >= 0; i--)
             {
                 for (int j = 0; j < cardsToSpawn.Count; j++)
@@ -99,14 +101,17 @@ public class BigBrain : MonoBehaviour
                     if (myCards[i] == cardsToSpawn[j])
                     {
                         Card card = null;
-                        if (cardsToSpawn[j].HP > 0) card = GetMyHealthlessCard();
-                        else if (cardsToSpawn[j].HP < 0) card = GetPlayerHealthlessCard(cardsToSpawn[j].HP);
-                        else if (cardsToSpawn[j].Damage > 0) card = GetMyWeakestCard();
-                        else if (cardsToSpawn[j].Damage < 0) card = GetPlayerWeakestCard(cardsToSpawn[j].Damage);
-                        Debug.Log("Help");
-                        //каст на карту card бафф
-                        cardsToSpawn.Remove(cardsToSpawn[j]);
-                        break;
+                        if (cardsToSpawn[j].HP > cardsToSpawn[j].Damage) card = GetMyHealthlessCard();
+                        //else if (cardsToSpawn[j].HP < 0) card = GetPlayerHealthlessCard(cardsToSpawn[j].HP);
+                        else card = GetMyWeakestCard();
+                        //else if (cardsToSpawn[j].Damage < 0) card = GetPlayerWeakestCard(cardsToSpawn[j].Damage);
+                        if (card != null)
+                        {
+                            card.StatsChange(cardsToSpawn[j].Damage, cardsToSpawn[j].HP);
+                            Field.OnBuff?.Invoke(cardsToSpawn[j]);
+                            cardsToSpawn.Remove(cardsToSpawn[j]);
+                            break;
+                        }
                     }
                 }
             }
@@ -115,6 +120,7 @@ public class BigBrain : MonoBehaviour
     Card GetMyHealthlessCard()
     {
         bool Strong = false;
+        if (myCardsOnBoard.Count == 0) return null;
         Card card = myCardsOnBoard[0];
         for (int i = 0; i < myCardsOnBoard.Count; i++)
         {
@@ -136,6 +142,7 @@ public class BigBrain : MonoBehaviour
     }
     Card GetPlayerHealthlessCard(int Debuf)
     {
+        if (playerCards.Count == 0) return null;
         Debuf *= -1;
         bool kill = false;
         Card card = playerCards[0];
@@ -159,6 +166,7 @@ public class BigBrain : MonoBehaviour
     }
     Card GetMyWeakestCard()
     {
+        if (myCardsOnBoard.Count == 0) return null;
         bool Strong = false;
         Card card = myCardsOnBoard[0];
         for (int i = 0; i < myCardsOnBoard.Count; i++)
@@ -182,6 +190,7 @@ public class BigBrain : MonoBehaviour
     Card GetPlayerWeakestCard(int Debuf)
     {
         Debuf *= -1;
+        if (playerCards.Count == 0) return null;
         bool kill = false;
         Card card = playerCards[0];
         for (int i = 0; i < playerCards.Count; i++)
@@ -217,11 +226,25 @@ public class BigBrain : MonoBehaviour
             Card strongestCard = StrongestPlayerCard();
             int CanBeat = -1;
             for (int i = 0; i < StartBoard.Count; i++) if (StartBoard[i].Damage > strongestCard.HP) {CanBeat = i; break;}
-            if (CanBeat != -1) CanBeat = -1;//убиваем карту, удаляем атакующую карту из массива StartBoard и массива strenght и continue
+            if (CanBeat != -1)
+            {
+                StartBoard[CanBeat].attack(strongestCard);
+                StartBoard.Remove(StartBoard[CanBeat]);
+                continue;
+            }
             Card healthlessCard = HealthlessPlayerCard();
             for (int i = 0; i < StartBoard.Count; i++) if (StartBoard[i].Damage > strongestCard.HP) {CanBeat = i; break;}
-            if (CanBeat != -1) CanBeat = -1;//убиваем карту, удаляем атакующую карту из массива StartBoard и массива strenght и continue
-            //если дошли досюда просто атакуем слабейшей картой сильнейшую
+            if (CanBeat != -1)
+            {
+                StartBoard[CanBeat].attack(strongestCard);
+                StartBoard.Remove(StartBoard[CanBeat]);
+                continue;
+            }
+            else
+            {
+                StartBoard[0].attack(strongestCard);
+                StartBoard.Remove(StartBoard[0]);
+            }
         }
         if (StartBoard.Count != 0)
         {

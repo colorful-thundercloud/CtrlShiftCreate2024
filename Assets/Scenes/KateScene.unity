@@ -1523,7 +1523,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32bb03b739635594ba81aea6b4f81f02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardSet: {fileID: 11400000, guid: 605f0ee1db57d6d4b8f003cab7d51da5, type: 2}
+  cardSet: {fileID: 11400000, guid: 430cb56929e67554b8fd1f4fe367b18e, type: 2}
   currentDeck: []
   beaten: []
 --- !u!212 &332079858
@@ -3327,8 +3327,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe24935d205324e48830ea34c40e70bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Field: {fileID: 1396074419}
-  Hand: {fileID: 332079854}
+  field: {fileID: 1396074421}
+  hand: {fileID: 332079855}
   Player: {fileID: 0}
 --- !u!4 &814209317
 Transform:
