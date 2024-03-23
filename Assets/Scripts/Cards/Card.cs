@@ -9,7 +9,7 @@ public class Card : MonoBehaviour
     [SerializeField] SpriteRenderer spriter;
     [SerializeField] TMP_Text damage, hp, name;
 
-    private BasicCard card;
+    [SerializeField] private BasicCard card;
     public BasicCard GetBasicCard { get { return card; } }
     bool isCasted = false;
     public bool IsCasted { get { return isCasted; } }
