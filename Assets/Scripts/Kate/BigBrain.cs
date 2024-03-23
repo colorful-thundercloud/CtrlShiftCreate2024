@@ -21,7 +21,7 @@ public class BigBrain : MonoBehaviour
         myCards = Hand.GetComponent<Hand>().GetCards();//карты в руке
         SpawnUnit(WhichCardsSpawnUnit(), 3 - myCardsOnBoard.Count);//спавним юнитов в свободное место
         myCardsOnBoard = Field.GetComponent<Field>().GetCards(true);
-        DoBaff(WhichCardsSpawnBaff());
+        //DoBaff(WhichCardsSpawnBaff());
         Attack(StartBoard);
         if (myCardsOnBoard.Count != 0 && myCardsOnBoard.Count < myCards.Count || myCardsOnBoard.Count == 3 && myCards.Count > 1) StashCard();
         Field.GetComponent<TurnBasedGameplay>().enemyEndMove();
@@ -69,9 +69,9 @@ public class BigBrain : MonoBehaviour
                 {
                     if (myCards[i] == cardsToSpawn[j])
                     {
-                        Field.GetComponent<Field>().addCard(myCards[i], true);
                         myCards[i].EnemyCast();
                         myCards[i].OnMouseUp();
+                        Field.GetComponent<Field>().addCard(myCards[i], true);
                         cardsToSpawn.Remove(cardsToSpawn[j]);
                         HowMuch--;
                         break;

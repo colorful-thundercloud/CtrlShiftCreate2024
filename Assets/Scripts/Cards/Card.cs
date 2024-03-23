@@ -71,7 +71,7 @@ public class Card : MonoBehaviour
             if (card.Type == BasicCard.cardType.Unit)
             {
                 isCasted = true;
-                Field.OnCast?.Invoke(this);
+                if(gameObject.tag !="enemyCard") Field.OnCast?.Invoke(this);
                 foreach (Transform t in transform) t.gameObject.SetActive(true);
                 transform.localScale = Vector3.one;
             }
