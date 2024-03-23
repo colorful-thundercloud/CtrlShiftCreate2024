@@ -9,7 +9,7 @@ public class BigBrain : MonoBehaviour
 {
     [SerializeField] Field field;
     [SerializeField] Hand hand;
-    [SerializeField] GameObject Player;
+    [SerializeField] Users Player;
     List<Card> myCards = new();
     List<Card> myCardsOnBoard = new();
     List<Card> playerCards = new();
@@ -250,7 +250,7 @@ public class BigBrain : MonoBehaviour
         {
             foreach (Card card in StartBoard)
             {
-                //атакуем игрока напрямую
+                Player.attackUser(card.Damage);
             }
         }
     }
