@@ -13,13 +13,13 @@ public class Field : MonoBehaviour
     List<GameObject> enemyCards = new List<GameObject>();
     public static Action<Card> OnCast;
     public static Action<Card> OnEnemyCast;
-    public static Action<Card> OnBuff;
+    public static Action<Card> OnCardBeat;
     public static Card SelectedCard;
     private void Start()
     {
         OnCast += ctx => addCard(ctx, false);
         OnEnemyCast += ctx => addCard(ctx, true);
-        OnBuff += ctx => BeatCard(ctx);
+        OnCardBeat += ctx => BeatCard(ctx);
     }
     public Transform GetEnemyField()
     {

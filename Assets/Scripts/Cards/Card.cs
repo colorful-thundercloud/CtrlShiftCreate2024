@@ -96,7 +96,7 @@ public class Card : MonoBehaviour
                 canBuff = false;
                 canDrag = false;
                 otherCard.StatsChange(currentAtk, currentHP);
-                Field.OnBuff?.Invoke(this);
+                Field.OnCardBeat?.Invoke(this);
             }
             else
             {
@@ -190,7 +190,7 @@ public class Card : MonoBehaviour
         //play animation
         this.enabled= false;
         yield return new WaitForSeconds(2f);
-        Destroy(gameObject);
+        Field.OnCardBeat(this);
     }
     void updText()
     {
