@@ -19,6 +19,8 @@ public class Card : MonoBehaviour
     public void SavePosition()=> startPosition = transform.position;
     public bool inField = false, canBuff = false;
     int currentHP, currentAtk;
+    public int HP { get { return currentHP; } }
+    public int Damage { get { return currentAtk; } }
     Card otherCard;
     private void Start()
     {
