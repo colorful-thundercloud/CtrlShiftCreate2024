@@ -604,6 +604,7 @@ MonoBehaviour:
   spriter: {fileID: 3467776107165606816}
   damage: {fileID: 4546002237088523987}
   hp: {fileID: 5027995595741037652}
+  name: {fileID: 6647206139642400751}
   inField: 0
   canBuff: 0
   canDrag: 1

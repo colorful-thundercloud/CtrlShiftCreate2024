@@ -33,7 +33,7 @@ public class Hand : MonoBehaviour
             item.GetComponent<Card>().SavePosition();
         }
     }
-    public void addCard(BasicCard card, bool enemy = false)
+    void addCard(BasicCard card, bool enemy = false)
     {
         GameObject go;
         if (card != null)

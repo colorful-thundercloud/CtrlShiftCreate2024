@@ -7,8 +7,7 @@ using UnityEngine;
 public class Card : MonoBehaviour
 {
     [SerializeField] SpriteRenderer spriter;
-    [SerializeField] TMP_Text damage, hp;
-
+    [SerializeField] TMP_Text damage, hp, name;
 
     private BasicCard card;
     public BasicCard GetBasicCard { get { return card; } }
@@ -30,6 +29,7 @@ public class Card : MonoBehaviour
 
         currentHP = card.HP;
         currentAtk = card.Damage;
+        name.text = card.Title.ToString();
 
         spriter.sprite = card.GetAvatar;
         updText();
@@ -73,6 +73,7 @@ public class Card : MonoBehaviour
                 isCasted = true;
                 Field.OnCast?.Invoke(this);
                 foreach (Transform t in transform) t.gameObject.SetActive(true);
+                transform.localScale = Vector3.one;
             }
             else if (canBuff)
             {

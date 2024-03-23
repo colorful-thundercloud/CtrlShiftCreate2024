@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class BasicCard : ScriptableObject
@@ -15,8 +12,6 @@ public abstract class BasicCard : ScriptableObject
     public int HP { get { return hp; } }
     [SerializeField] private int damage;
     public int Damage { get { return damage; } }
-    [SerializeField] int cardCount;
-    public int GetCardCount { get { return cardCount; } }
     [SerializeField][TextArea] string description;
     public string Description { get { return description; } }
     public void changeHP(int value)
