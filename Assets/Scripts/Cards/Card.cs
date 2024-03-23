@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.Burst.Intrinsics;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class Card : MonoBehaviour
 {
     [SerializeField] SpriteRenderer spriter;
+    [SerializeField] Light2D lighting;
     [SerializeField] TMP_Text damage, hp, name;
 
     [SerializeField] private BasicCard card;
@@ -43,6 +45,14 @@ public class Card : MonoBehaviour
     public void EnemyCast()
     {
         inField = true;
+    }
+    private void OnMouseEnter()
+    {
+        StartCoroutine(SmoothLight.smoothLight(lighting, 0.5f));
+    }
+    private void OnMouseExit()
+    {
+        StartCoroutine(SmoothLight.smoothLight(lighting, 0.5f,false));
     }
     private void OnMouseDown()
     {
