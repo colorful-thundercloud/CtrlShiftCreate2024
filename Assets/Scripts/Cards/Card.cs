@@ -48,12 +48,15 @@ public class Card : MonoBehaviour
     }
     private void OnMouseEnter()
     {
+        if (Field.SelectedCard == this) return;
+            lighting.color = (gameObject.tag == "enemyCard") ? Color.red : Color.blue;
         StartCoroutine(SmoothLight.smoothLight(lighting, 0.5f));
     }
     private void OnMouseExit()
     {
-        StartCoroutine(SmoothLight.smoothLight(lighting, 0.5f,false));
+        if(Field.SelectedCard!=this) StartCoroutine(SmoothLight.smoothLight(lighting, 0.5f,false));
     }
+    public void turnOfLight() { StartCoroutine(SmoothLight.smoothLight(lighting, 0.5f,false)); }
     private void OnMouseDown()
     {
         //CardUI.OnOpenCard(card);
@@ -62,12 +65,13 @@ public class Card : MonoBehaviour
             if (gameObject.tag == "myCard")
             {
                 Field.SelectedCard = this;
-                GetComponent<SpriteRenderer>().color = Color.yellow;
+                lighting.color = Color.green;
+                StartCoroutine(SmoothLight.smoothLight(lighting, 0.5f));
             }
             else if (gameObject.tag == "enemyCard")
             {
                 Field.SelectedCard?.attack(this);
-                Field.SelectedCard.GetComponent<SpriteRenderer>().color = Color.white;
+                Field.SelectedCard?.turnOfLight();
                 Field.SelectedCard = null;
             }
         }
