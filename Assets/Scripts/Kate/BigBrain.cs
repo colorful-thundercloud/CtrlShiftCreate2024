@@ -10,52 +10,18 @@ public class BigBrain : MonoBehaviour
     [SerializeField] Field field;
     [SerializeField] Hand hand;
     [SerializeField] Users Player;
+    List<Card> StartBoard;
     List<Card> myCards = new();
     List<Card> myCardsOnBoard = new();
     List<Card> playerCards = new();
-    public IEnumerator EnemyTurn()
+    public void EnemyTurn()
     {
-        List<Card> StartBoard = field.GetComponent<Field>().GetCards(true);
+        StartBoard = field.GetComponent<Field>().GetCards(true);
         playerCards = field.GetComponent<Field>().GetCards(false);
         myCards = hand.GetComponent<Hand>().GetCards();
+        StartCoroutine(SpawnUnit(WhichCardsSpawnUnit()));
+        //стопе здесь
 
-        SpawnUnit(WhichCardsSpawnUnit(), 3 - myCardsOnBoard.Count);
-        List<Card> cardsToSpawn = WhichCardsSpawnUnit();
-        int HowMuch = 3 - myCardsOnBoard.Count;
-        if (HowMuch != 0)
-        {
-            if (cardsToSpawn.Count != 0)
-            {
-                for (int i = myCards.Count - 1; i >= 0; i--)
-                {
-                    if (HowMuch == 0) break;
-                    for (int j = 0; j < cardsToSpawn.Count; j++)
-                    {
-                        if (myCards[i] == cardsToSpawn[j])
-                        {
-                            while (myCards[i].gameObject.transform.position.y - field.GetComponent<Field>().GetEnemyField().position.y > 0.1f)
-                            {
-                                Vector3 direction = (field.GetComponent<Field>().GetEnemyField().position - myCards[i].gameObject.transform.position).normalized;
-                                myCards[i].gameObject.GetComponent<Rigidbody2D>().MovePosition(myCards[i].gameObject.transform.position + direction * Time.deltaTime);
-                                yield return null;
-                            }
-                            myCards[i].EnemyCast();
-                            myCards[i].OnMouseUp();
-                            field.GetComponent<Field>().addCard(myCards[i], true);
-                            cardsToSpawn.Remove(cardsToSpawn[j]);
-                            HowMuch--;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-        myCardsOnBoard = field.GetComponent<Field>().GetCards(true);
-        DoBaff(WhichCardsSpawnBaff());
-        Attack(StartBoard);
-        if (myCardsOnBoard.Count != 0 && myCardsOnBoard.Count < myCards.Count || myCardsOnBoard.Count == 3 && myCards.Count > 2) StashCard();
-        field.GetComponent<TurnBasedGameplay>().enemyEndMove();
     }
     List<Card> WhichCardsSpawnUnit()
     {
@@ -88,21 +54,19 @@ public class BigBrain : MonoBehaviour
         else healthMatter = false;
         return healthMatter;
     }
-    void SpawnUnit(List<Card> cardsToSpawn, int HowMuch)
+    IEnumerator SpawnUnit(List<Card> cardsToSpawn)
     {
-        if (HowMuch == 0) return;
-        if (cardsToSpawn.Count != 0)
+        int HowMuch = 3 - myCardsOnBoard.Count;
+        if (cardsToSpawn.Count != 0 && HowMuch != 0)
         {
             for (int i = myCards.Count - 1; i >= 0; i--)
             {
-                if (HowMuch == 0) return;
+                if (HowMuch == 0) break;
                 for (int j = 0; j < cardsToSpawn.Count; j++)
                 {
                     if (myCards[i] == cardsToSpawn[j])
                     {
-                        myCards[i].EnemyCast();
-                        myCards[i].OnMouseUp();
-                        field.GetComponent<Field>().addCard(myCards[i], true);
+                        yield return StartCoroutine(MoveCard(myCards[i]));
                         cardsToSpawn.Remove(cardsToSpawn[j]);
                         HowMuch--;
                         break;
@@ -110,6 +74,28 @@ public class BigBrain : MonoBehaviour
                 }
             }
         }
+        yield return new WaitForSeconds(1);
+        myCardsOnBoard = field.GetComponent<Field>().GetCards(true);
+        StartCoroutine(DoBaff(WhichCardsSpawnBaff()));
+    }
+    IEnumerator MoveCard (Card card)
+    {
+        float moveSpeed = 7f;
+        Vector3 targetPosition = field.gameObject.transform.position;
+
+        if (Vector3.Distance(card.gameObject.transform.position, targetPosition) > 0.1f)
+        {
+            Vector3 direction = (targetPosition - card.gameObject.transform.position).normalized;
+            card.gameObject.transform.position += moveSpeed * Time.deltaTime * direction;
+            yield return null;
+            yield return StartCoroutine(MoveCard(card));
+        }
+        else UpplyCard(card);
+    }
+    void UpplyCard(Card card)
+    {
+        card.OnMouseUp();
+        field.GetComponent<Field>().addCard(card, true);
     }
     List<Card> WhichCardsSpawnBaff()
     {
@@ -120,11 +106,10 @@ public class BigBrain : MonoBehaviour
         }
         return Spawn;
     }
-    void DoBaff(List<Card> cardsToSpawn)
+    IEnumerator DoBaff(List<Card> cardsToSpawn)
     {
         if (cardsToSpawn.Count != 0)
         {
-            Debug.Log(cardsToSpawn[0].HP);
             for (int i = myCards.Count - 1; i >= 0; i--)
             {
                 for (int j = 0; j < cardsToSpawn.Count; j++)
@@ -138,8 +123,7 @@ public class BigBrain : MonoBehaviour
                         //else if (cardsToSpawn[j].Damage < 0) card = GetPlayerWeakestCard(cardsToSpawn[j].Damage);
                         if (card != null)
                         {
-                            card.StatsChange(cardsToSpawn[j].Damage, cardsToSpawn[j].HP);
-                            Field.OnCardBeat?.Invoke(cardsToSpawn[j]);
+                            yield return StartCoroutine(Buffer(card, cardsToSpawn[j]));
                             cardsToSpawn.Remove(cardsToSpawn[j]);
                             break;
                         }
@@ -147,6 +131,29 @@ public class BigBrain : MonoBehaviour
                 }
             }
         }
+        yield return new WaitForSeconds(1);
+        Attack(StartBoard);
+        if (myCardsOnBoard.Count != 0 && myCardsOnBoard.Count < myCards.Count || myCardsOnBoard.Count == 3 && myCards.Count > 2) StashCard();
+        field.GetComponent<TurnBasedGameplay>().enemyEndMove();
+    }
+    IEnumerator Buffer(Card card, Card buff)
+    {
+        float moveSpeed = 7f;
+        Vector3 targetPosition = card.gameObject.transform.position;
+
+        if (Vector3.Distance(buff.gameObject.transform.position, targetPosition) > 0.1f)
+        {
+            Vector3 direction = (targetPosition - buff.gameObject.transform.position).normalized;
+            buff.gameObject.transform.position += moveSpeed * Time.deltaTime * direction;
+            yield return null;
+            yield return StartCoroutine(Buffer(card, buff));
+        }
+        else UpplyBuff(card, buff);
+    }
+    void UpplyBuff(Card card, Card buff)
+    {
+        card.StatsChange(buff.Damage, buff.HP);
+        Field.OnCardBeat?.Invoke(buff);
     }
     Card GetMyHealthlessCard()
     {
