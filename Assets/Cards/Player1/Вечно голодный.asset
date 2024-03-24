@@ -16,6 +16,6 @@ MonoBehaviour:
   Avatar: {fileID: 21300000, guid: a6dae850ce3b0424bb8418a3c4a58503, type: 3}
   type: 0
   hp: 1
-  damage: 1
+  damage: 2
   description: "\u041F\u043E\u0441\u0442\u043E\u044F\u043D\u043D\u043E \u0447\u0442\u043E-\u0442\u043E
     \u0436\u0443\u0451\u0442 \u043D\u0430 \u043F\u0430\u0440\u0430\u0445"
