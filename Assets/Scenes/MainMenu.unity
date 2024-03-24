@@ -5861,7 +5861,6 @@ RectTransform:
   - {fileID: 1295014650}
   - {fileID: 1143834090}
   - {fileID: 66948894}
-  - {fileID: 1094644375}
   m_Father: {fileID: 1957747030}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -5911,17 +5910,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1094644374}
-  m_LocalRotation: {x: -0, y: -0, z: 0.2589191, w: 0.96589905}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1068781430}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 30.012}
+  m_Father: {fileID: 1957747030}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 34, y: -13}
-  m_SizeDelta: {x: 533.2, y: 533.2}
+  m_AnchoredPosition: {x: 16, y: -7}
+  m_SizeDelta: {x: 608.22, y: 500.12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1094644376
 MonoBehaviour:
@@ -5945,7 +5944,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 307ed838747a9764f9b6f0696c902174, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -9676,6 +9675,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 333026287}
+  - {fileID: 1094644375}
   - {fileID: 1068781430}
   - {fileID: 230619841}
   - {fileID: 2013154886}
