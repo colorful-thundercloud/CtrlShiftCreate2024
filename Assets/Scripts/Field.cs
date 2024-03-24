@@ -33,6 +33,7 @@ public class Field : MonoBehaviour
     }
     public void updateField(bool isEnemy)
     {
+        if(enemyField==null) return;
         List<GameObject> field = isEnemy ? enemyCards : myCards;
         for (int i = 0; i < field.Count; i++)
         {

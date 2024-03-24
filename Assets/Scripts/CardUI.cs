@@ -14,8 +14,13 @@ public class CardUI : MonoBehaviour
     {
         OnOpenCard += ctx => openCard(ctx);
     }
+    private void OnDestroy()
+    {
+        OnOpenCard -= openCard;
+    }
     void openCard(BasicCard card)
     {
+        if (image == null) return;
         image.sprite = card.GetAvatar;
         title.text = card.Title;
         damage.text = card.Damage.ToString();
