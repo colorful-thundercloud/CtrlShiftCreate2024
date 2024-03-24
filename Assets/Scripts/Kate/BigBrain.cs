@@ -177,7 +177,7 @@ public class BigBrain : MonoBehaviour
         Card card = myCardsOnBoard[myCardsOnBoard.Count - 1];
         for (int i = 0; i < myCardsOnBoard.Count; i++)
         {
-            if (myCardsOnBoard[i].HP < 5 && myCardsOnBoard[i].HP > card.HP)
+            if (myCardsOnBoard[i].HP < 6 && myCardsOnBoard[i].HP > card.HP)
             {
                 card = myCardsOnBoard[i];
             }
@@ -198,7 +198,7 @@ public class BigBrain : MonoBehaviour
             card = StartBoard[StartBoard.Count - 1];
             for (int i = 0; i < StartBoard.Count; i++)
             {
-                if (StartBoard[i].Damage < 5 && StartBoard[i].Damage > card.Damage)
+                if (StartBoard[i].Damage < 6 && StartBoard[i].Damage > card.Damage)
                 {
                     card = StartBoard[i];
                 }
@@ -213,7 +213,7 @@ public class BigBrain : MonoBehaviour
             card = myCardsOnBoard[myCardsOnBoard.Count - 1];
             for (int i = 0; i < myCardsOnBoard.Count; i++)
             {
-                if (myCardsOnBoard[i].Damage < 5 && myCardsOnBoard[i].Damage > card.Damage)
+                if (myCardsOnBoard[i].Damage < 6 && myCardsOnBoard[i].Damage > card.Damage)
                 {
                     card = myCardsOnBoard[i];
                 }
