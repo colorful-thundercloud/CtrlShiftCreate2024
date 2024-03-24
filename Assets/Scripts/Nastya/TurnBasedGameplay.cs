@@ -39,6 +39,9 @@ public class TurnBasedGameplay : MonoBehaviour
         foreach (Card card in playerHand.GetCards())
             card.canDrag = true;
 
+        foreach (Card card in field.GetCards(false))
+            card.used = false;
+
         enemyHand.DrawCards(true);
     }
 }

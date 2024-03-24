@@ -9,7 +9,7 @@ public class Card : MonoBehaviour
 {
     [SerializeField] SpriteRenderer spriter;
     [SerializeField] Light2D lighting;
-    [SerializeField] TMP_Text damage, hp, name;
+    [SerializeField] TMP_Text damage, hp, title;
 
     [SerializeField] private BasicCard card;
     public BasicCard GetBasicCard { get { return card; } }
@@ -19,7 +19,7 @@ public class Card : MonoBehaviour
     Animator anim;
     Vector3 startPosition, startScale;
     public void SavePosition()=> startPosition = transform.position;
-    public bool inField = false, canBuff = false;
+    public bool inField = false, canBuff = false, used = false;
     int currentHP, currentAtk;
     public int HP { get { return currentHP; } }
     public int Damage { get { return currentAtk; } }
@@ -33,7 +33,7 @@ public class Card : MonoBehaviour
 
         currentHP = card.HP;
         currentAtk = card.Damage;
-        name.text = card.Title.ToString();
+        title.text = card.Title.ToString();
 
         spriter.sprite = card.GetAvatar;
         updText();
@@ -41,7 +41,7 @@ public class Card : MonoBehaviour
     public void SetCard(BasicCard newCard) => card = newCard;
     bool isCasting = false;
     public bool canDrag = true;
-    // поле проверки на возможность уменьшения
+    // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     public bool canScale = false;
     Coroutine runningFunc;
     public void EnemyCast()
@@ -78,7 +78,7 @@ public class Card : MonoBehaviour
             }
         }
         if (runningFunc != null ) StopCoroutine(runningFunc);
-        //добавилпроверку на поле проверки на возможность уменьшения
+        //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         if (canScale)
         {
             runningFunc = StartCoroutine(SmoothSizeChange(new Vector3(1, 1, 1)));
@@ -120,7 +120,7 @@ public class Card : MonoBehaviour
     }
     private void OnMouseDrag()
     {
-        if (isCasted || !canDrag) return;
+        if (isCasted || !canDrag || gameObject.CompareTag("enemyCard")) return;
         isCasting = true;
     }
     private void Update()
@@ -139,12 +139,7 @@ public class Card : MonoBehaviour
         {
             otherCard = collision.gameObject.GetComponent<Card>();
             if (otherCard.GetBasicCard.Type != BasicCard.cardType.Buff && otherCard.inField)
-            {
-                otherCard.gameObject.GetComponent<SpriteRenderer>().color = Color.black;
                 canBuff = true;
-            }
-                
-            else otherCard = null;
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -154,10 +149,7 @@ public class Card : MonoBehaviour
         {
             otherCard = collision.gameObject.GetComponent<Card>();
             if (otherCard.GetBasicCard.Type != BasicCard.cardType.Buff && otherCard.inField)
-                {
-                    otherCard.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
-                    canBuff = false;
-                }
+                canBuff = false;
             otherCard = null;
         }
     }
@@ -166,11 +158,7 @@ public class Card : MonoBehaviour
         {
             otherCard = collision.gameObject.GetComponent<Card>();
             if (otherCard.GetBasicCard.Type != BasicCard.cardType.Buff && otherCard.inField)
-            {
-                otherCard.gameObject.GetComponent<SpriteRenderer>().color = Color.black;
                 canBuff = true;
-            }
-            else otherCard = null;
         }
     }
 
@@ -205,6 +193,10 @@ public class Card : MonoBehaviour
     }
     public void attack(Card toAttack)
     {
-        toAttack.StatsChange(0, -currentAtk);
+        if (!used) 
+        {
+            used = true;
+            toAttack.StatsChange(0, -currentAtk);
+        }
     }
 }
