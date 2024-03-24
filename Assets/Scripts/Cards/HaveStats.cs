@@ -20,6 +20,6 @@ public class HaveStats : MonoBehaviour
     protected void updText()
     {
         hp.text = currentHP.ToString();
-        damage.text = currentAtk.ToString();
+        if(damage!= null) damage.text = currentAtk.ToString();
     }
 }

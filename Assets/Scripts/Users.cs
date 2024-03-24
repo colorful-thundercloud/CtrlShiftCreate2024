@@ -56,7 +56,7 @@ public class Users : HaveStats
     public override void StatsChange(int atk = 0, int health = 0)
     {
         base.StatsChange(atk, health);
-        if (HP <= 0) Death();
+        if (currentHP <= 0) Death();
     }
     void Death()
     {
