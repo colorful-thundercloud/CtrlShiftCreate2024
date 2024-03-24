@@ -60,6 +60,7 @@ public class Card : MonoBehaviour
         {
             if (gameObject.tag == "myCard" )
             {
+                if (used) return;
                 if (Field.SelectedCard != this) Field.SelectedCard?.turnOfLight();
                 Field.SelectedCard = this;
                 lighting.color = Color.green;
@@ -180,11 +181,8 @@ public class Card : MonoBehaviour
     }
     public void attack(Card toAttack)
     {
-        if (!used)
-        {
-            used = true;
-            StartCoroutine(attackAnimation(0.5f, toAttack));
-        }
+        used = true;
+        StartCoroutine(attackAnimation(0.5f, toAttack));
     }
     IEnumerator attackAnimation(float smoothTime, Card toAttack)
     {
