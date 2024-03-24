@@ -135,7 +135,7 @@ public class BigBrain : MonoBehaviour
     }
     IEnumerator Buffer(Card card, Card buff)
     {
-        float moveSpeed = 8f;
+        float moveSpeed = 9f;
         buff.isCasted= true;
         buff.gameObject.transform.position = new Vector3(buff.gameObject.transform.position.x, buff.gameObject.transform.position.y, -2f);
         foreach (Transform child in buff.gameObject.transform) child.gameObject.SetActive(true);
