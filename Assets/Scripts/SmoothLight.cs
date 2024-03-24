@@ -16,4 +16,21 @@ public class SmoothLight
             yield return new WaitForFixedUpdate();
         }
     }
+    public static IEnumerator twinckle(Light2D light, float speed)
+    {
+        float t;
+        bool toLight = true;
+        while (true)
+        {
+            t = 0;
+            while (t < speed)
+            {
+                if (light == null) yield break;
+                light.falloffIntensity = (toLight) ? Mathf.Lerp(1f, 0f, t / speed) : Mathf.Lerp(0f, 1f, t / speed);
+                t += Time.fixedDeltaTime;
+                yield return new WaitForFixedUpdate();
+            }
+            toLight = !toLight;
+        }
+    }
 }

@@ -39,6 +39,7 @@ public class Users : MonoBehaviour
         attackUser(Field.SelectedCard.Damage);
         if(checkAttack())
         {
+            Field.SelectedCard.used = true;
             Field.SelectedCard.turnOfLight();
             Field.SelectedCard = null;
         }

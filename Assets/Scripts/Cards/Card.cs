@@ -9,6 +9,7 @@ public class Card : MonoBehaviour
 {
     [SerializeField] SpriteRenderer spriter;
     [SerializeField] Light2D lighting;
+    [SerializeField] Light2D signalLight;
     [SerializeField] TMP_Text damage, hp, title;
 
     [SerializeField] private BasicCard card;
@@ -18,7 +19,8 @@ public class Card : MonoBehaviour
     Animator anim;
     Vector3 startPosition, startScale;
     public void SavePosition()=> startPosition = transform.position;
-    public bool canBuff = false, used = false;
+    public bool canBuff = false;
+    private bool Used = true;
     public Field field = null;
     int currentHP, currentAtk;
     public int HP { get { return currentHP; } }
@@ -45,14 +47,19 @@ public class Card : MonoBehaviour
     private void OnMouseEnter()
     {
         if (Field.SelectedCard == this) return;
-            lighting.color = (gameObject.tag == "enemyCard") ? Color.red : Color.blue;
+        twinckle(false);
+        lighting.color = (gameObject.tag == "enemyCard") ? Color.red : Color.blue;
         StartCoroutine(SmoothLight.smoothLight(lighting, 0.25f));
     }
     private void OnMouseExit()
     {
-        if(Field.SelectedCard!=this) StartCoroutine(SmoothLight.smoothLight(lighting, 0.25f,false));
+        if(Field.SelectedCard!=this) turnOfLight();
     }
-    public void turnOfLight() { StartCoroutine(SmoothLight.smoothLight(lighting, 0.25f,false)); }
+    public void turnOfLight() 
+    { 
+        StartCoroutine(SmoothLight.smoothLight(lighting, 0.25f,false));
+        twinckle(!used);
+    }
     private void OnMouseDown()
     {
         //CardUI.OnOpenCard(card);
@@ -62,6 +69,7 @@ public class Card : MonoBehaviour
             {
                 if (used) return;
                 if (Field.SelectedCard != this) Field.SelectedCard?.turnOfLight();
+                twinckle(false);
                 Field.SelectedCard = this;
                 lighting.color = Color.green;
                 StartCoroutine(SmoothLight.smoothLight(lighting, 0.25f));
@@ -199,6 +207,26 @@ public class Card : MonoBehaviour
         {
             transform.position = Vector3.MoveTowards(transform.position, startPosition, smoothTime);
             yield return new WaitForFixedUpdate();
+        }
+    }
+    public bool used
+    {
+        get { return Used; }
+        set
+        {
+            Used = value;
+            twinckle(!used);
+        }
+    }
+    Coroutine twink;
+    private void twinckle(bool isEnabled)
+    {
+        if (gameObject.tag == "enemyCard") return;
+        if (isEnabled) twink = StartCoroutine(SmoothLight.twinckle(signalLight, 0.75f));
+        else if(twink!=null)
+        {
+            StopCoroutine(twink);
+            signalLight.falloffIntensity = 1f;
         }
     }
 }
