@@ -40,9 +40,7 @@ public class Card : MonoBehaviour
     }
     public void SetCard(BasicCard newCard) => card = newCard;
     bool isCasting = false;
-    public bool canDrag = true;
-    // ���� �������� �� ����������� ����������
-    public bool canScale = false;
+    public bool canDrag = false;
     Coroutine runningFunc;
     public void EnemyCast()
     {
@@ -79,11 +77,7 @@ public class Card : MonoBehaviour
             }
         }
         if (runningFunc != null ) StopCoroutine(runningFunc);
-        //��������������� �� ���� �������� �� ����������� ����������
-        if (canScale)
-        {
-            runningFunc = StartCoroutine(SmoothSizeChange(new Vector3(1, 1, 1)));
-        }
+        if (canDrag) runningFunc = StartCoroutine(SmoothSizeChange(new Vector3(1, 1, 1)));
     }
     public void OnMouseUp()
     {
@@ -121,7 +115,7 @@ public class Card : MonoBehaviour
     }
     private void OnMouseDrag()
     {
-        if (isCasted && !canDrag && gameObject.CompareTag("enemyCard")) return;
+        if (isCasted && !canDrag && gameObject.CompareTag("enemyCard")) isCasting = false;
         else if (!isCasted && canDrag) isCasting = true;
     }
     private void Update()
@@ -133,6 +127,7 @@ public class Card : MonoBehaviour
             transform.position = pos;
         }
     }
+    
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("field")) inField = true;
@@ -165,12 +160,15 @@ public class Card : MonoBehaviour
 
     IEnumerator SmoothSizeChange(Vector3 targetScale, bool grow = false)
     {
-        if (grow && transform.localScale.x < targetScale.x) transform.localScale += new Vector3(0.05f, 0.05f, 0);
-        else if (!grow && transform.localScale.x > targetScale.x) transform.localScale -= new Vector3(0.05f, 0.05f, 0);
-        else yield break;
-        
-        yield return new WaitForSeconds(0.005f);
-        runningFunc = StartCoroutine(SmoothSizeChange(targetScale, grow));
+        if (canDrag)
+        {
+            if (grow && transform.localScale.x < targetScale.x) transform.localScale += new Vector3(0.05f, 0.05f, 0);
+            else if (!grow && transform.localScale.x > targetScale.x) transform.localScale -= new Vector3(0.05f, 0.05f, 0);
+            else yield break;
+
+            yield return new WaitForSeconds(0.005f);
+            runningFunc = StartCoroutine(SmoothSizeChange(targetScale, grow));
+        }
     }
     public void StatsChange(int atk = 0, int health = 0)
     {

@@ -17,7 +17,7 @@ public class TurnBasedGameplay : MonoBehaviour
     void DrawCards()
     {
         playerHand.DrawCards();
-        enemyHand.DrawCards(true);
+        enemyEndMove();
     }    
 
     public void playerEndMove()
@@ -26,6 +26,9 @@ public class TurnBasedGameplay : MonoBehaviour
         endMoveBtn.interactable = false;
         foreach (Card card in playerHand.GetCards())
             card.canDrag = false;
+
+        foreach (Card card in field.GetCards(true))
+            card.used = false;
 
         playerHand.DrawCards();
         bb.EnemyTurn();

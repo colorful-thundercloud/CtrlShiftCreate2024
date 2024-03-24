@@ -783,8 +783,7 @@ MonoBehaviour:
   inField: 0
   canBuff: 0
   used: 0
-  canDrag: 1
-  canScale: 1
+  canDrag: 0
 --- !u!1 &5477064916560248571
 GameObject:
   m_ObjectHideFlags: 0

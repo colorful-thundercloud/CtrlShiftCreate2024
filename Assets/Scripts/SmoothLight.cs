@@ -10,6 +10,7 @@ public class SmoothLight
         float t = 0;
         while (t < smoothTime)
         {
+            if (light == null) yield break;
             light.falloffIntensity = (toLight) ? Mathf.Lerp(1f, 0f, t / smoothTime) : Mathf.Lerp(0f, 1f, t / smoothTime);
             t += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
