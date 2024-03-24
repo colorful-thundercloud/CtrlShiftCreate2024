@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb376084bf31551479e9a2562269730c, type: 3}
-  m_Name: "\u041D\u0435 \u0432\u043F\u0435\u0447\u0430\u0442\u043B\u0451\u043D\u043D\u044B\u0439"
+  m_Name: "\u0421\u0443\u0445\u0430\u0440\u044C"
   m_EditorClassIdentifier: 
   title: "\u0421\u0443\u0445\u0430\u0440\u044C"
   Avatar: {fileID: 21300000, guid: 8fd977dc1b6de7d439f0d6b506b8e91c, type: 3}
