@@ -115,8 +115,8 @@ public class BigBrain : MonoBehaviour
                 {
                     if (myCards[i] == cardsToSpawn[j])
                     {
-                        Card card = null;
-                        if (cardsToSpawn[j].HP > cardsToSpawn[j].Damage) card = GetMyHealthlessCard();
+                        Card card;
+                        if (cardsToSpawn[j].HP >= cardsToSpawn[j].Damage) {card = GetMyHealthlessCard(); if (card == null) card = GetMyWeakestCard();}
                         //else if (cardsToSpawn[j].HP < 0) card = GetPlayerHealthlessCard(cardsToSpawn[j].HP);
                         else card = GetMyWeakestCard();
                         //else if (cardsToSpawn[j].Damage < 0) card = GetPlayerWeakestCard(cardsToSpawn[j].Damage);
@@ -173,16 +173,35 @@ public class BigBrain : MonoBehaviour
     Card GetMyHealthlessCard()
     {
         myCardsOnBoard.Sort((a, b) => b.HP.CompareTo(a.HP));//убывание
-        Card card = myCardsOnBoard[myCardsOnBoard.Count - 1];
-        for (int i = 0; i < myCardsOnBoard.Count; i++)
+        Card card;
+        if (StartBoard.Count != 0)
         {
-            if (myCardsOnBoard[i].HP < 5 && myCardsOnBoard[i].HP > card.HP)
+            card = StartBoard[StartBoard.Count - 1];
+            for (int i = 0; i < StartBoard.Count; i++)
             {
-                card = myCardsOnBoard[i];
+                if (StartBoard[i].HP < 5 && StartBoard[i].HP > card.HP)
+                {
+                    card = StartBoard[i];
+                }
+                if (StartBoard[i].HP == card.HP)
+                {
+                    if (StartBoard[i].Damage > card.Damage) card = StartBoard[i];
+                }
             }
-            if (myCardsOnBoard[i].HP == card.HP)
+        }
+        else
+        {
+            card = myCardsOnBoard[myCardsOnBoard.Count - 1];
+            for (int i = 0; i < myCardsOnBoard.Count; i++)
             {
-                if (myCardsOnBoard[i].Damage > card.Damage) card = myCardsOnBoard[i];
+                if (myCardsOnBoard[i].HP < 5 && myCardsOnBoard[i].HP > card.HP)
+                {
+                    card = myCardsOnBoard[i];
+                }
+                if (myCardsOnBoard[i].HP == card.HP)
+                {
+                    if (myCardsOnBoard[i].Damage > card.Damage) card = myCardsOnBoard[i];
+                }
             }
         }
         if (card.HP > 4) card = null;
@@ -191,16 +210,35 @@ public class BigBrain : MonoBehaviour
     Card GetMyWeakestCard()
     {
         myCardsOnBoard.Sort((a, b) => b.Damage.CompareTo(a.Damage));//убывание
-        Card card = myCardsOnBoard[myCardsOnBoard.Count - 1];
-        for (int i = 0; i < myCardsOnBoard.Count; i++)
+        Card card;
+        if (StartBoard.Count != 0)
         {
-            if (myCardsOnBoard[i].Damage < 5 && myCardsOnBoard[i].Damage > card.Damage)
+            card = StartBoard[StartBoard.Count - 1];
+            for (int i = 0; i < StartBoard.Count; i++)
             {
-                card = myCardsOnBoard[i];
+                if (StartBoard[i].Damage < 5 && StartBoard[i].Damage > card.Damage)
+                {
+                    card = StartBoard[i];
+                }
+                if (StartBoard[i].Damage == card.Damage)
+                {
+                    if (StartBoard[i].HP > card.HP) card = StartBoard[i];
+                }
             }
-            if (myCardsOnBoard[i].Damage == card.Damage)
+        }
+        else
+        {
+            card = myCardsOnBoard[myCardsOnBoard.Count - 1];
+            for (int i = 0; i < myCardsOnBoard.Count; i++)
             {
-                if (myCardsOnBoard[i].HP > card.HP) card = myCardsOnBoard[i];
+                if (myCardsOnBoard[i].Damage < 5 && myCardsOnBoard[i].Damage > card.Damage)
+                {
+                    card = myCardsOnBoard[i];
+                }
+                if (myCardsOnBoard[i].Damage == card.Damage)
+                {
+                    if (myCardsOnBoard[i].HP > card.HP) card = myCardsOnBoard[i];
+                }
             }
         }
         if (card.Damage > 4) card = null;
