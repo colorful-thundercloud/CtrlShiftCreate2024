@@ -2015,6 +2015,7 @@ GameObject:
   - component: {fileID: 298799413}
   - component: {fileID: 298799412}
   - component: {fileID: 298799411}
+  - component: {fileID: 298799415}
   m_Layer: 6
   m_Name: Enemy
   m_TagString: enemyCard
@@ -2152,6 +2153,21 @@ Transform:
   - {fileID: 571361645}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &298799415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 298799410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe24935d205324e48830ea34c40e70bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  field: {fileID: 1101007283}
+  hand: {fileID: 8734245}
+  Player: {fileID: 1881340366}
 --- !u!1 &361583829
 GameObject:
   m_ObjectHideFlags: 0
@@ -3294,53 +3310,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 642504633}
   m_CullTransparentMesh: 1
---- !u!1 &653439001
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 653439003}
-  - component: {fileID: 653439002}
-  m_Layer: 0
-  m_Name: Enemy
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &653439002
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 653439001}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe24935d205324e48830ea34c40e70bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  field: {fileID: 1101007283}
-  hand: {fileID: 8734245}
-  Player: {fileID: 1881340366}
---- !u!4 &653439003
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 653439001}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5, y: 5, z: 0.044445273}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &684992733
 GameObject:
   m_ObjectHideFlags: 0
@@ -4890,7 +4859,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerTurn: 1
-  bb: {fileID: 653439002}
+  bb: {fileID: 298799415}
   playerHand: {fileID: 207316817}
   enemyHand: {fileID: 8734245}
   endMoveBtn: {fileID: 283278440}
@@ -8097,7 +8066,6 @@ SceneRoots:
   - {fileID: 8734246}
   - {fileID: 1101007284}
   - {fileID: 13589241}
-  - {fileID: 653439003}
   - {fileID: 2055697699}
   - {fileID: 161354797}
   - {fileID: 1881340368}

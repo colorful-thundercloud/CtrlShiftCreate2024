@@ -48,8 +48,14 @@ public class Users : MonoBehaviour
         if (checkAttack())
         {
             HP -= Damage;
+            if (HP <= 0) Death();
             hpText.text = HP.ToString();
             StartCoroutine(SmoothLight.smoothLight(lighting, 0.25f, false));
         }
+    }
+    void Death()
+    {
+        if (gameObject.tag == "myCard") Debug.Log("Player lose");
+        else Debug.Log("Player win");
     }
 }

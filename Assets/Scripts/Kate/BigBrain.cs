@@ -16,6 +16,7 @@ public class BigBrain : MonoBehaviour
     List<Card> playerCards = new();
     public void EnemyTurn()
     {
+        if (Player.Hp <= 0 || GetComponent<Users>().Hp <= 0) field.GetComponent<TurnBasedGameplay>().enemyEndMove();
         StartBoard = field.GetComponent<Field>().GetCards(true);
         playerCards = field.GetComponent<Field>().GetCards(false);
         myCards = hand.GetComponent<Hand>().GetCards();
@@ -294,11 +295,9 @@ public class BigBrain : MonoBehaviour
         {
             foreach (Card card in StartBoard)
             {
-                if (Player.Hp > 0)
-                {
-                    Player.attackUser(card.Damage);
-                    yield return new WaitForSeconds(1f);
-                }
+                if (Player.Hp <= 0) field.GetComponent<TurnBasedGameplay>().enemyEndMove();
+                Player.attackUser(card.Damage);
+                yield return new WaitForSeconds(1f);
             }
         }
         if (myCardsOnBoard.Count != 0 && myCardsOnBoard.Count < myCards.Count || myCardsOnBoard.Count == 3 && myCards.Count > 2) StashCard();

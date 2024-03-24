@@ -13,13 +13,13 @@ public class Card : MonoBehaviour
 
     [SerializeField] private BasicCard card;
     public BasicCard GetBasicCard { get { return card; } }
-    bool isCasted = false;
-    public bool IsCasted { get { return isCasted; } }
+    public bool isCasted = false;
     Camera cam;
     Animator anim;
     Vector3 startPosition, startScale;
     public void SavePosition()=> startPosition = transform.position;
-    public bool inField = false, canBuff = false, used = false;
+    public bool canBuff = false, used = false;
+    public Field field = null;
     int currentHP, currentAtk;
     public int HP { get { return currentHP; } }
     public int Damage { get { return currentAtk; } }
@@ -42,10 +42,6 @@ public class Card : MonoBehaviour
     bool isCasting = false;
     public bool canDrag = false;
     Coroutine runningFunc;
-    public void EnemyCast()
-    {
-        inField = true;
-    }
     private void OnMouseEnter()
     {
         if (Field.SelectedCard == this) return;
@@ -60,7 +56,7 @@ public class Card : MonoBehaviour
     private void OnMouseDown()
     {
         //CardUI.OnOpenCard(card);
-        if (IsCasted)
+        if (isCasted)
         {
             if (gameObject.tag == "myCard" )
             {
@@ -82,29 +78,21 @@ public class Card : MonoBehaviour
     public void OnMouseUp()
     {
         isCasting = false;
-        if (IsCasted) return;
-        if (inField)
+        if (isCasted) return;
+
+        if (card.Type == BasicCard.cardType.Unit && field?.GetCards(gameObject.CompareTag("enemyCard")).Count < 3)
         {
-            if (card.Type == BasicCard.cardType.Unit)
-            {
-                isCasted = true;
-                if(gameObject.tag !="enemyCard") Field.OnCast?.Invoke(this);
-                foreach (Transform t in transform) t.gameObject.SetActive(true);
-                transform.localScale = Vector3.one;
-            }
-            else if (canBuff)
-            {
-                canBuff = false;
-                canDrag = false;
-                otherCard.StatsChange(currentAtk, currentHP);
-                Field.OnCardBeat?.Invoke(this);
-            }
-            else
-            {
-                if (runningFunc != null) StopCoroutine(runningFunc);
-                runningFunc = StartCoroutine(SmoothSizeChange(startScale, true));
-                transform.position = startPosition;
-            }
+            isCasted = true;
+            if (gameObject.tag != "enemyCard") Field.OnCast?.Invoke(this);
+            foreach (Transform t in transform) t.gameObject.SetActive(true);
+            transform.localScale = Vector3.one;
+        }
+        else if (canBuff)
+        {
+            canBuff = false;
+            canDrag = false;
+            otherCard.StatsChange(currentAtk, currentHP);
+            Field.OnCardBeat?.Invoke(this);
         }
         else
         {
@@ -130,21 +118,21 @@ public class Card : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("field")) inField = true;
+        if (collision.CompareTag("field")) field = collision.GetComponent<Field>();
         if (collision.CompareTag(gameObject.tag) && card.Type == BasicCard.cardType.Buff)
         {
             otherCard = collision.gameObject.GetComponent<Card>();
-            if (otherCard.GetBasicCard.Type != BasicCard.cardType.Buff && otherCard.inField)
+            if (otherCard.GetBasicCard.Type != BasicCard.cardType.Buff && otherCard.field != null)
                 canBuff = true;
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("field")) inField = false;
+        if (collision.CompareTag("field")) field = null;
         if (collision.CompareTag(gameObject.tag) && card.Type == BasicCard.cardType.Buff)
         {
             otherCard = collision.gameObject.GetComponent<Card>();
-            if (otherCard.GetBasicCard.Type != BasicCard.cardType.Buff && otherCard.inField)
+            if (otherCard.GetBasicCard.Type != BasicCard.cardType.Buff && otherCard.field != null)
                 canBuff = false;
             otherCard = null;
         }
@@ -153,7 +141,7 @@ public class Card : MonoBehaviour
         if (collision.CompareTag(gameObject.tag) && card.Type == BasicCard.cardType.Buff)
         {
             otherCard = collision.gameObject.GetComponent<Card>();
-            if (otherCard.GetBasicCard.Type != BasicCard.cardType.Buff && otherCard.inField)
+            if (otherCard.GetBasicCard.Type != BasicCard.cardType.Buff && otherCard.field != null)
                 canBuff = true;
         }
     }
@@ -181,7 +169,7 @@ public class Card : MonoBehaviour
     IEnumerator death() 
     {
         //play animation
-        this.enabled= false;
+        this.enabled = false;
         yield return new WaitForSeconds(0.5f);
         Field.OnCardBeat(this);
     }
