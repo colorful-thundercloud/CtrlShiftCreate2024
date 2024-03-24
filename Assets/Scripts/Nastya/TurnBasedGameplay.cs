@@ -29,6 +29,12 @@ public class TurnBasedGameplay : MonoBehaviour
         foreach (Card card in field.GetCards(true))
             card.used = false;
 
+        foreach (Card card in field.GetCards(false))
+            card.used = true;
+
+        Field.SelectedCard?.turnOfLight();
+        Field.SelectedCard = null;
+
         playerHand.DrawCards();
         bb.EnemyTurn();
     }
