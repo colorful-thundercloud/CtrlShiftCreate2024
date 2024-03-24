@@ -158,7 +158,7 @@ public class BigBrain : MonoBehaviour
         Card card = myCardsOnBoard[0];
         for (int i = 0; i < myCardsOnBoard.Count; i++)
         {
-            if (myCardsOnBoard[i].Damage > 3 && !Strong)
+            if (myCardsOnBoard[i].Damage > 3 && myCardsOnBoard[i].HP < 5 && !Strong)
             {
                 card = myCardsOnBoard[i];
                 Strong = true;
@@ -167,11 +167,12 @@ public class BigBrain : MonoBehaviour
             {
                 if (card.HP < myCardsOnBoard[i].HP) card = myCardsOnBoard[i];
             }
-            else if (myCardsOnBoard[i].Damage > 3 && Strong)
+            else if (myCardsOnBoard[i].Damage > 3 && Strong && myCardsOnBoard[i].HP < 5)
             {
                 if (card.Damage < myCardsOnBoard[i].Damage) card = myCardsOnBoard[i];
             }
         }
+        if (card.HP > 4) card = null;
         return card;
     }
     Card GetPlayerHealthlessCard(int Debuf)
@@ -205,20 +206,21 @@ public class BigBrain : MonoBehaviour
         Card card = myCardsOnBoard[0];
         for (int i = 0; i < myCardsOnBoard.Count; i++)
         {
-            if (myCardsOnBoard[i].Damage > 3 && !Strong)
+            if (myCardsOnBoard[i].HP > 3 && myCardsOnBoard[i].Damage < 5 && !Strong)
             {
                 card = myCardsOnBoard[i];
                 Strong = true;
             }
             else if (!Strong)
             {
-                if (card.HP < myCardsOnBoard[i].HP) card = myCardsOnBoard[i];
+                if (card.Damage < myCardsOnBoard[i].Damage) card = myCardsOnBoard[i];
             }
-            else if (myCardsOnBoard[i].Damage > 3 && Strong)
+            else if (myCardsOnBoard[i].HP > 3 && myCardsOnBoard[i].Damage < 5 && Strong)
             {
                 if (card.Damage < myCardsOnBoard[i].Damage) card = myCardsOnBoard[i];
             }
         }
+        if (card.Damage > 4) card = null;
         return card;
     }
     Card GetPlayerWeakestCard(int Debuf)
