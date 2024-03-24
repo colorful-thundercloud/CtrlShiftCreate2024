@@ -153,6 +153,7 @@ public class BigBrain : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
         targetPosition = card.gameObject.transform.position;
+        if (buff == null) yield break;
         if (Buff && Vector2.Distance(buff.gameObject.transform.position, targetPosition) > 0.1f)
         {
             if (buff.gameObject.transform.localScale.x > 1f) buff.gameObject.transform.localScale /= 1.1f;

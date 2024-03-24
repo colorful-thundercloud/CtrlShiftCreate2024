@@ -7036,12 +7036,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c40a6c51d3d87a41838467ae2926a79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sound:
-  - {fileID: 8300000, guid: 248194946b56c5c4badefcb9f773ad21, type: 3}
-  - {fileID: 8300000, guid: e78dbf2a90ab3d04985563e6ba53b558, type: 3}
-  - {fileID: 8300000, guid: 097e4161e4bf9fd4b9692e78e3963a2a, type: 3}
-  - {fileID: 8300000, guid: 326d1cff752a19145bf0209ce0a89c76, type: 3}
-  - {fileID: 8300000, guid: 097e4161e4bf9fd4b9692e78e3963a2a, type: 3}
+  Mixer: {fileID: 0}
 --- !u!1 &1192609600
 GameObject:
   m_ObjectHideFlags: 0
@@ -10075,6 +10070,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1101007285}
+        m_TargetAssemblyTypeName: TurnBasedGameplay, Assembly-CSharp
+        m_MethodName: playerEndMove
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
