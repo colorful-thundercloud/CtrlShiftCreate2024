@@ -11,6 +11,7 @@ public class BigBrain : MonoBehaviour
     [SerializeField] Hand hand;
     [SerializeField] Users Player;
     List<Card> StartBoard;
+    bool Buff = false;
     List<Card> myCards = new();
     List<Card> myCardsOnBoard = new();
     List<Card> playerCards = new();
@@ -121,6 +122,7 @@ public class BigBrain : MonoBehaviour
                         //else if (cardsToSpawn[j].Damage < 0) card = GetPlayerWeakestCard(cardsToSpawn[j].Damage);
                         if (card != null)
                         {
+                            Buff = false;
                             yield return StartCoroutine(Buffer(card, cardsToSpawn[j]));
                             cardsToSpawn.Remove(cardsToSpawn[j]);
                             break;
@@ -133,17 +135,33 @@ public class BigBrain : MonoBehaviour
     }
     IEnumerator Buffer(Card card, Card buff)
     {
-        float moveSpeed = 10f;
-        Vector3 targetPosition = card.gameObject.transform.position;
-
-        if (Vector3.Distance(buff.gameObject.transform.position, targetPosition) > 0.1f)
+        float moveSpeed = 8f;
+        buff.gameObject.transform.position = new Vector3(buff.gameObject.transform.position.x, buff.gameObject.transform.position.y, -2f);
+        foreach (Transform child in buff.gameObject.transform) child.gameObject.SetActive(true);
+        Vector3 targetPosition = field.gameObject.transform.position;
+        if (!Buff && Vector2.Distance(buff.gameObject.transform.position, targetPosition) > 0.1f)
         {
+            if (buff.gameObject.transform.localScale.x < 1.5f) buff.gameObject.transform.localScale *= 1.1f;
             Vector3 direction = (targetPosition - buff.gameObject.transform.position).normalized;
             buff.gameObject.transform.position += moveSpeed * Time.deltaTime * direction;
             yield return null;
             yield return StartCoroutine(Buffer(card, buff));
         }
-        else UpplyBuff(card, buff);
+        else if (!Buff)
+        {
+            Buff = true;
+            yield return new WaitForSeconds(0.5f);
+        }
+        targetPosition = card.gameObject.transform.position;
+        if (Buff && Vector2.Distance(buff.gameObject.transform.position, targetPosition) > 0.1f)
+        {
+            if (buff.gameObject.transform.localScale.x > 1f) buff.gameObject.transform.localScale /= 1.1f;
+            Vector3 direction = (targetPosition - buff.gameObject.transform.position).normalized;
+            buff.gameObject.transform.position += moveSpeed * Time.deltaTime * direction;
+            yield return null;
+            yield return StartCoroutine(Buffer(card, buff));
+        }
+        else if (Buff) UpplyBuff(card, buff);
     }
     void UpplyBuff(Card card, Card buff)
     {
