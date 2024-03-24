@@ -28,19 +28,22 @@ public class Field : MonoBehaviour
     public void addCard(Card card, bool isEnemy)
     {
         List<GameObject> field = isEnemy ? enemyCards : myCards;
-        field.Add(card.gameObject);
-        for(int i = 0; i < field.Count; i++)
+        if (field.Count < 3)
         {
-            Vector3 pos = Vector3.zero;
-            pos.y = isEnemy ? enemyField.position.y : myField.position.y;
-            pos.x = distance * i;
-            pos.z = field[i].transform.position.z;
-            field[i].transform.position = pos;
+            field.Add(card.gameObject);
+            for(int i = 0; i < field.Count; i++)
+            {
+                Vector3 pos = Vector3.zero;
+                pos.y = isEnemy ? enemyField.position.y : myField.position.y;
+                pos.x = distance * i;
+                pos.z = field[i].transform.position.z;
+                field[i].transform.position = pos;
+            }
+            float center = field[field.Count - 1].transform.position.x / 2;
+            foreach (GameObject item in field) item.transform.Translate(-center, 0, 0);
+            if (isEnemy) enemyCards = field;
+            else myCards = field;
         }
-        float center = field[field.Count - 1].transform.position.x / 2;
-        foreach (GameObject item in field) item.transform.Translate(-center, 0, 0);
-        if (isEnemy) enemyCards = field;
-        else myCards = field;
     }
     public void BeatCard(Card card)
     {

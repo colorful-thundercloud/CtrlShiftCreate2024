@@ -16,7 +16,7 @@ public class Hand : MonoBehaviour
     void updateHand()
     {
         List<GameObject> t = new List<GameObject>();
-        foreach( GameObject item in hand ) if(item.GetComponent<Card>().IsCasted) t.Add(item);
+        foreach( GameObject item in hand ) if(item.GetComponent<Card>().isCasted) t.Add(item);
         foreach (GameObject item in t) hand.Remove(item);
         for (int i = 0; i < hand.Count; i++)
         {

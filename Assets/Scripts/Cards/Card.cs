@@ -13,8 +13,7 @@ public class Card : MonoBehaviour
 
     [SerializeField] private BasicCard card;
     public BasicCard GetBasicCard { get { return card; } }
-    bool isCasted = false;
-    public bool IsCasted { get { return isCasted; } }
+    public bool isCasted = false;
     Camera cam;
     Animator anim;
     Vector3 startPosition, startScale;
@@ -60,7 +59,7 @@ public class Card : MonoBehaviour
     private void OnMouseDown()
     {
         //CardUI.OnOpenCard(card);
-        if (IsCasted)
+        if (isCasted)
         {
             if (gameObject.tag == "myCard" )
             {
@@ -82,7 +81,7 @@ public class Card : MonoBehaviour
     public void OnMouseUp()
     {
         isCasting = false;
-        if (IsCasted) return;
+        if (isCasted) return;
         if (inField)
         {
             if (card.Type == BasicCard.cardType.Unit)
@@ -181,7 +180,7 @@ public class Card : MonoBehaviour
     IEnumerator death() 
     {
         //play animation
-        this.enabled= false;
+        this.enabled = false;
         yield return new WaitForSeconds(0.5f);
         Field.OnCardBeat(this);
     }

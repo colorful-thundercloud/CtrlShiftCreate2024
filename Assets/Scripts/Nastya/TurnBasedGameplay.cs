@@ -8,7 +8,6 @@ public class TurnBasedGameplay : MonoBehaviour
     public Hand playerHand, enemyHand;
     public Button endMoveBtn;
     public Field field;
-    bool temp;
     void Start()
     {
         Invoke("DrawCards", 0.5f);
