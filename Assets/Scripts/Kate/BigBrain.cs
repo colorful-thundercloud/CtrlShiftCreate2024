@@ -17,9 +17,9 @@ public class BigBrain : MonoBehaviour
     public void EnemyTurn()
     {
         if (Player.Hp <= 0 || GetComponent<Users>().Hp <= 0) field.GetComponent<TurnBasedGameplay>().enemyEndMove();
-        StartBoard = field.GetComponent<Field>().GetCards(true);
-        playerCards = field.GetComponent<Field>().GetCards(false);
-        myCards = hand.GetComponent<Hand>().GetCards();
+        myCardsOnBoard = StartBoard = field.GetCards(true);
+        playerCards = field.GetCards(false);
+        myCards = hand.GetCards();
         StartCoroutine(SpawnUnit(WhichCardsSpawnUnit()));
     }
     List<Card> WhichCardsSpawnUnit()
@@ -74,12 +74,12 @@ public class BigBrain : MonoBehaviour
             }
         }
         yield return new WaitForSeconds(1);
-        myCardsOnBoard = field.GetComponent<Field>().GetCards(true);
+        myCardsOnBoard = field.GetCards(true);
         StartCoroutine(DoBaff(WhichCardsSpawnBaff()));
     }
     IEnumerator MoveCard (Card card)
     {
-        float moveSpeed = 7f;
+        float moveSpeed = 10f;
         Vector3 targetPosition = field.GetEnemyField().position;
 
         if (Vector3.Distance(card.gameObject.transform.position, targetPosition) > 0.1f)
@@ -94,7 +94,7 @@ public class BigBrain : MonoBehaviour
     void UpplyCard(Card card)
     {
         card.OnMouseUp();
-        field.GetComponent<Field>().addCard(card, true);
+        field.addCard(card, true);
     }
     List<Card> WhichCardsSpawnBaff()
     {
@@ -135,7 +135,7 @@ public class BigBrain : MonoBehaviour
     }
     IEnumerator Buffer(Card card, Card buff)
     {
-        float moveSpeed = 7f;
+        float moveSpeed = 10f;
         Vector3 targetPosition = card.gameObject.transform.position;
 
         if (Vector3.Distance(buff.gameObject.transform.position, targetPosition) > 0.1f)
@@ -238,7 +238,14 @@ public class BigBrain : MonoBehaviour
     }
     void StashCard()
     {
-        //сброс всех карт с руки
+        /*myCards = hand.GetCards();
+        myCards.Sort((a, b) => a.Damage.CompareTo(b.Damage));//возрастание
+        for (int i = myCards.Count; i > 0; i--)
+        {
+            hand.BeatCard(myCards[0]);
+            myCards.Remove(myCards[0]);
+        }
+        Debug.Log("stash");*/
     }
     IEnumerator Attack(List<Card> StartBoard)
     {
@@ -255,7 +262,7 @@ public class BigBrain : MonoBehaviour
                 if (StartBoard[CanBeat].Damage > strongestCard.HP) playerCards.Remove(strongestCard);
                 StartBoard[CanBeat].attack(strongestCard);
                 StartBoard.Remove(StartBoard[CanBeat]);
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(0.5f);
                 continue;
             }
             Card healthlessCard = HealthlessPlayerCard();
@@ -265,7 +272,7 @@ public class BigBrain : MonoBehaviour
                 if (StartBoard[CanBeat].Damage > healthlessCard.HP) playerCards.Remove(healthlessCard);
                 StartBoard[CanBeat].attack(healthlessCard);
                 StartBoard.Remove(StartBoard[CanBeat]);
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(0.5f);
                 continue;
             }
             else
@@ -275,7 +282,7 @@ public class BigBrain : MonoBehaviour
                     if (StartBoard[0].Damage > strongestCard.HP) playerCards.Remove(strongestCard);
                     StartBoard[0].attack(strongestCard);
                     StartBoard.Remove(StartBoard[0]);
-                    yield return new WaitForSeconds(1f);
+                    yield return new WaitForSeconds(0.5f);
                 }
             }
         }
@@ -285,10 +292,10 @@ public class BigBrain : MonoBehaviour
             {
                 if (Player.Hp <= 0) field.GetComponent<TurnBasedGameplay>().enemyEndMove();
                 Player.attackUser(card.Damage);
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(0.5f);
             }
         }
-        if (myCardsOnBoard.Count != 0 && myCardsOnBoard.Count < myCards.Count || myCardsOnBoard.Count == 3 && myCards.Count > 2) StashCard();
+        if (myCards.Count > 1) StashCard();
         field.GetComponent<TurnBasedGameplay>().enemyEndMove();
     }
     Card StrongestPlayerCard()

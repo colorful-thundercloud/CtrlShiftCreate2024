@@ -81,4 +81,10 @@ public class Hand : MonoBehaviour
         cards = hand.ConvertAll(n => n.GetComponent<Card>());
         return cards;
     }
+    public void BeatCard(Card card)
+    {
+        hand.Remove(card.gameObject);
+        deckController.BeatCard(card.GetBasicCard);
+        Destroy(card.gameObject);
+    }
 }

@@ -67,7 +67,7 @@ public class Field : MonoBehaviour
     public List<Card> GetCards(bool isEnemy)
     {
         List<Card> cards;
-        if(isEnemy) cards = enemyCards.ConvertAll(n => n.GetComponent<Card>());
+        if (isEnemy) cards = enemyCards.ConvertAll(n => n.GetComponent<Card>());
         else cards = myCards.ConvertAll(n => n.GetComponent<Card>());
         return cards;
     }

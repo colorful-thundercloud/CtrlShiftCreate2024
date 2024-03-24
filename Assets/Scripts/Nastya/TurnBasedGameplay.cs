@@ -16,6 +16,7 @@ public class TurnBasedGameplay : MonoBehaviour
     void DrawCards()
     {
         playerHand.DrawCards();
+        enemyHand.DrawCards(true);
         enemyEndMove();
     }    
 
@@ -36,8 +37,8 @@ public class TurnBasedGameplay : MonoBehaviour
 
         Field.SelectedCard?.turnOfLight();
         Field.SelectedCard = null;
-
-        playerHand.DrawCards();
+        enemyHand.DrawCards(true);
+        
         bb.EnemyTurn();
     }
 
@@ -49,10 +50,10 @@ public class TurnBasedGameplay : MonoBehaviour
         foreach (Card card in playerHand.GetCards())
             card.canDrag = true;
 
-        if (field.GetCards(false).Count > 0)
+        if (GetComponent<Field>().GetCards(false).Count > 0)
             foreach (Card card in field.GetCards(false))
                 card.used = false;
 
-        enemyHand.DrawCards(true);
+        playerHand.DrawCards();
     }
 }
