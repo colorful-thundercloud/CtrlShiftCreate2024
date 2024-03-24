@@ -439,6 +439,7 @@ GameObject:
   - component: {fileID: 1412464419818324551}
   - component: {fileID: 2371678965951795392}
   - component: {fileID: 7866940442731589438}
+  - component: {fileID: 281279634270615213}
   m_Layer: 0
   m_Name: cardBuff
   m_TagString: Untagged
@@ -604,14 +605,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriter: {fileID: 3467776107165606816}
   lighting: {fileID: 6153824088226617279}
+  signalLight: {fileID: 0}
   damage: {fileID: 4546002237088523987}
   hp: {fileID: 5027995595741037652}
   title: {fileID: 6647206139642400751}
   card: {fileID: 0}
-  inField: 0
+  isCasted: 0
   canBuff: 0
-  used: 0
+  field: {fileID: 0}
   canDrag: 0
+--- !u!114 &281279634270615213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2044227114700308559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c40a6c51d3d87a41838467ae2926a79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sound:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &2757901168193473734
 GameObject:
   m_ObjectHideFlags: 0
