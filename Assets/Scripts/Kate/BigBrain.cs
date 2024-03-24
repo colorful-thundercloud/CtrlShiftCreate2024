@@ -226,54 +226,6 @@ public class BigBrain : MonoBehaviour
         if (card.Damage > 4) card = null;
         return card;
     }
-    Card GetPlayerHealthlessCard(int Debuf)
-    {
-        if (playerCards.Count == 0) return null;
-        Debuf *= -1;
-        bool kill = false;
-        Card card = playerCards[0];
-        for (int i = 0; i < playerCards.Count; i++)
-        {
-            if (playerCards[i].HP <= Debuf && !kill)
-            {
-                card = playerCards[i];
-                kill = true;
-            }
-            else if (playerCards[i].HP <= Debuf && kill)
-            {
-                if (card.HP < playerCards[i].HP) card = playerCards[i];
-            }
-            else if (!kill)
-            {
-                if (card.HP > playerCards[i].HP) card = playerCards[i];
-            }
-        }
-        return card;
-    }
-    Card GetPlayerWeakestCard(int Debuf)
-    {
-        Debuf *= -1;
-        if (playerCards.Count == 0) return null;
-        bool kill = false;
-        Card card = playerCards[0];
-        for (int i = 0; i < playerCards.Count; i++)
-        {
-            if (playerCards[i].Damage <= Debuf && !kill)
-            {
-                card = playerCards[i];
-                kill = true;
-            }
-            else if (playerCards[i].Damage <= Debuf && kill)
-            {
-                if (card.Damage < playerCards[i].Damage) card = playerCards[i];
-            }
-            else if (!kill)
-            {
-                if (card.Damage > playerCards[i].Damage) card = playerCards[i];
-            }
-        }
-        return card;
-    }
     void StashCard()
     {
         /*myCards = hand.GetCards();
@@ -295,7 +247,7 @@ public class BigBrain : MonoBehaviour
             if (playerCards.Count == 0) break;
             Card strongestCard = StrongestPlayerCard();
             int CanBeat = -1;
-            for (int i = 0; i < StartBoard.Count; i++) if (StartBoard[i].Damage > strongestCard.HP && strongestCard.Damage > 4) {CanBeat = i; break;}
+            for (int i = 0; i < StartBoard.Count; i++) if (StartBoard[i].Damage > strongestCard.HP) {CanBeat = i; break;}
             if (CanBeat != -1)
             {
                 if (StartBoard[CanBeat].Damage >= strongestCard.HP) playerCards.Remove(strongestCard);
@@ -314,7 +266,7 @@ public class BigBrain : MonoBehaviour
                 yield return new WaitForSeconds(0.5f);
                 continue;
             }
-            if (StartBoard.Count > 0 && playerCards.Count > 0 && strongestCard != null)
+            else if (StartBoard.Count > 0)
             {
                 if (StartBoard[0].Damage >= strongestCard.HP) playerCards.Remove(strongestCard);
                 StartBoard[0].attack(strongestCard);
