@@ -10,7 +10,7 @@ public class Users : HaveStats
     [SerializeField] GameObject winWindow, defeatWindow;
     [SerializeField] Light2D lighting;
     [SerializeField] int HP;
-    public int Hp { get { return HP; } }
+    public int Hp { get { return currentHP; } }
     private void Start()
     {
         currentHP = HP;

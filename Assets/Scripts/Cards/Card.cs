@@ -60,7 +60,8 @@ public class Card : HaveStats
     }
     private void OnMouseDown()
     {
-        //CardUI.OnOpenCard(card);
+        if(gameObject.CompareTag("enemyCard")&&isCasted) CardUI.OnOpenCard(card);
+        else if(gameObject.CompareTag("myCard")) CardUI.OnOpenCard(card);
         if (isCasted)
         {
             if (gameObject.tag == "myCard" )
@@ -98,6 +99,7 @@ public class Card : HaveStats
         }
         else if (canBuff)
         {
+            if (gameObject.CompareTag("enemyCard")) return;
             canBuff = false;
             canDrag = false;
             otherCard.StatsChange(currentAtk, currentHP);
@@ -225,7 +227,7 @@ public class Card : HaveStats
     Coroutine twink;
     private void twinckle(bool isEnabled)
     {
-        if (gameObject.tag == "enemyCard") return;
+        if (gameObject != null && gameObject.tag == "enemyCard") return;
         if (isEnabled) twink = StartCoroutine(SmoothLight.twinckle(signalLight, 0.75f));
         else if(twink!=null)
         {
