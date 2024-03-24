@@ -80,7 +80,7 @@ public class BigBrain : MonoBehaviour
     IEnumerator MoveCard (Card card)
     {
         float moveSpeed = 7f;
-        Vector3 targetPosition = field.gameObject.transform.position;
+        Vector3 targetPosition = field.GetEnemyField().position;
 
         if (Vector3.Distance(card.gameObject.transform.position, targetPosition) > 0.1f)
         {
@@ -154,26 +154,38 @@ public class BigBrain : MonoBehaviour
     }
     Card GetMyHealthlessCard()
     {
-        bool Strong = false;
-        if (myCardsOnBoard.Count == 0) return null;
-        Card card = myCardsOnBoard[0];
+        myCardsOnBoard.Sort((a, b) => b.HP.CompareTo(a.HP));//убывание
+        Card card = myCardsOnBoard[myCardsOnBoard.Count - 1];
         for (int i = 0; i < myCardsOnBoard.Count; i++)
         {
-            if (myCardsOnBoard[i].Damage > 3 && myCardsOnBoard[i].HP < 5 && !Strong)
+            if (myCardsOnBoard[i].HP < 5 && myCardsOnBoard[i].HP > card.HP)
             {
                 card = myCardsOnBoard[i];
-                Strong = true;
             }
-            else if (!Strong)
+            if (myCardsOnBoard[i].HP == card.HP)
             {
-                if (card.HP < myCardsOnBoard[i].HP) card = myCardsOnBoard[i];
-            }
-            else if (myCardsOnBoard[i].Damage > 3 && Strong && myCardsOnBoard[i].HP < 5)
-            {
-                if (card.Damage < myCardsOnBoard[i].Damage) card = myCardsOnBoard[i];
+                if (myCardsOnBoard[i].Damage > card.Damage) card = myCardsOnBoard[i];
             }
         }
         if (card.HP > 4) card = null;
+        return card;
+    }
+    Card GetMyWeakestCard()
+    {
+        myCardsOnBoard.Sort((a, b) => b.Damage.CompareTo(a.Damage));//убывание
+        Card card = myCardsOnBoard[myCardsOnBoard.Count - 1];
+        for (int i = 0; i < myCardsOnBoard.Count; i++)
+        {
+            if (myCardsOnBoard[i].Damage < 5 && myCardsOnBoard[i].Damage > card.Damage)
+            {
+                card = myCardsOnBoard[i];
+            }
+            if (myCardsOnBoard[i].Damage == card.Damage)
+            {
+                if (myCardsOnBoard[i].HP > card.HP) card = myCardsOnBoard[i];
+            }
+        }
+        if (card.Damage > 4) card = null;
         return card;
     }
     Card GetPlayerHealthlessCard(int Debuf)
@@ -198,30 +210,6 @@ public class BigBrain : MonoBehaviour
                 if (card.HP > playerCards[i].HP) card = playerCards[i];
             }
         }
-        return card;
-    }
-    Card GetMyWeakestCard()
-    {
-        if (myCardsOnBoard.Count == 0) return null;
-        bool Strong = false;
-        Card card = myCardsOnBoard[0];
-        for (int i = 0; i < myCardsOnBoard.Count; i++)
-        {
-            if (myCardsOnBoard[i].HP > 3 && myCardsOnBoard[i].Damage < 5 && !Strong)
-            {
-                card = myCardsOnBoard[i];
-                Strong = true;
-            }
-            else if (!Strong)
-            {
-                if (card.Damage < myCardsOnBoard[i].Damage) card = myCardsOnBoard[i];
-            }
-            else if (myCardsOnBoard[i].HP > 3 && myCardsOnBoard[i].Damage < 5 && Strong)
-            {
-                if (card.Damage < myCardsOnBoard[i].Damage) card = myCardsOnBoard[i];
-            }
-        }
-        if (card.Damage > 4) card = null;
         return card;
     }
     Card GetPlayerWeakestCard(int Debuf)
