@@ -66,6 +66,7 @@ public class Card : MonoBehaviour
         {
             if (gameObject.tag == "myCard" )
             {
+                if (Field.SelectedCard != this) Field.SelectedCard?.turnOfLight();
                 Field.SelectedCard = this;
                 lighting.color = Color.green;
                 StartCoroutine(SmoothLight.smoothLight(lighting, 0.25f));
@@ -120,8 +121,8 @@ public class Card : MonoBehaviour
     }
     private void OnMouseDrag()
     {
-        if (isCasted || !canDrag || gameObject.CompareTag("enemyCard")) return;
-        isCasting = true;
+        if (isCasted && !canDrag && gameObject.CompareTag("enemyCard")) return;
+        else if (!isCasted && canDrag) isCasting = true;
     }
     private void Update()
     {
@@ -169,7 +170,7 @@ public class Card : MonoBehaviour
         else yield break;
         
         yield return new WaitForSeconds(0.005f);
-        yield return runningFunc = StartCoroutine(SmoothSizeChange(targetScale, grow));
+        runningFunc = StartCoroutine(SmoothSizeChange(targetScale, grow));
     }
     public void StatsChange(int atk = 0, int health = 0)
     {
@@ -183,8 +184,8 @@ public class Card : MonoBehaviour
     {
         //play animation
         this.enabled= false;
+        yield return new WaitForSeconds(0.5f);
         Field.OnCardBeat(this);
-        yield return new WaitForSeconds(2f);
     }
     void updText()
     {
@@ -193,33 +194,27 @@ public class Card : MonoBehaviour
     }
     public void attack(Card toAttack)
     {
-<<<<<<< Updated upstream
-        if (!used) 
+        if (!used)
         {
             used = true;
-            toAttack.StatsChange(0, -currentAtk);
-=======
-        StartCoroutine(attackAnimation(0.5f, toAttack));   
+            StartCoroutine(attackAnimation(0.5f, toAttack));
+        }
     }
     IEnumerator attackAnimation(float smoothTime, Card toAttack)
     {
-        float t = 0;
         startPosition = transform.position;
         Vector3 target = toAttack.gameObject.transform.position;
-        while (t < smoothTime)
+        while (transform.position != target)
         {
-            transform.position = Vector3.Lerp(startPosition, target, t / smoothTime);
-            t += Time.fixedDeltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, target, smoothTime);
             yield return new WaitForFixedUpdate();
         }
-        t = 0;
         toAttack.StatsChange(0, -currentAtk);
-        while (t < smoothTime)
+        target = startPosition;
+        while (transform.position != target)
         {
-            transform.position = Vector3.Lerp(target, startPosition, t / smoothTime);
-            t += Time.fixedDeltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, startPosition, smoothTime);
             yield return new WaitForFixedUpdate();
->>>>>>> Stashed changes
         }
     }
 }

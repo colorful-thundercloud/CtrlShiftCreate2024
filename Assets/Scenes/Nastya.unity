@@ -4859,7 +4859,7 @@ MonoBehaviour:
   enemyHand: {fileID: 8734245}
   myField: {fileID: 409588186}
   enemyField: {fileID: 2145561457}
-  distance: 1.5
+  distance: 2
 --- !u!4 &1101007284
 Transform:
   m_ObjectHideFlags: 0

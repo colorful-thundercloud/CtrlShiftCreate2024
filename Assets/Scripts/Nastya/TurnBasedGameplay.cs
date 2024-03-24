@@ -28,7 +28,6 @@ public class TurnBasedGameplay : MonoBehaviour
             card.canDrag = false;
 
         playerHand.DrawCards();
-
         bb.EnemyTurn();
     }
 

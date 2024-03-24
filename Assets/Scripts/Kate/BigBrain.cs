@@ -21,8 +21,8 @@ public class BigBrain : MonoBehaviour
         myCards = hand.GetComponent<Hand>().GetCards();
         StartCoroutine(SpawnUnit(WhichCardsSpawnUnit()));
         //стопе здесь
-
     }
+
     List<Card> WhichCardsSpawnUnit()
     {
         List<Card> Spawn = new();
@@ -78,7 +78,7 @@ public class BigBrain : MonoBehaviour
         myCardsOnBoard = field.GetComponent<Field>().GetCards(true);
         StartCoroutine(DoBaff(WhichCardsSpawnBaff()));
     }
-    IEnumerator MoveCard (Card card)
+    IEnumerator MoveCard(Card card)
     {
         float moveSpeed = 7f;
         Vector3 targetPosition = field.gameObject.transform.position;
@@ -132,9 +132,8 @@ public class BigBrain : MonoBehaviour
             }
         }
         yield return new WaitForSeconds(1);
-        Attack(StartBoard);
+        yield return StartCoroutine(Attack(StartBoard));
         if (myCardsOnBoard.Count != 0 && myCardsOnBoard.Count < myCards.Count || myCardsOnBoard.Count == 3 && myCards.Count > 2) StashCard();
-        field.GetComponent<TurnBasedGameplay>().enemyEndMove();
     }
     IEnumerator Buffer(Card card, Card buff)
     {
@@ -253,11 +252,16 @@ public class BigBrain : MonoBehaviour
     {
         //сброс всех карт с руки
     }
-    IEnumerator waiter()
+    IEnumerator Attack(List<Card> StartBoard)
     {
+        if (StartBoard.Count == 0)
+        {
+            field.GetComponent<TurnBasedGameplay>().enemyEndMove();
+            yield break;
+        }
+        StartBoard.Sort((a, b) => a.Damage.CompareTo(b.Damage));//в возрастании
         while (StartBoard.Count != 0)
         {
-            yield return new WaitForSeconds(1.1f);
             playerCards = field.GetComponent<Field>().GetCards(false);
             playerCards.Sort((a, b) => b.HP.CompareTo(a.HP));//в убывании
             if (playerCards.Count == 0) break;
@@ -283,6 +287,7 @@ public class BigBrain : MonoBehaviour
                 StartBoard[0].attack(strongestCard);
                 StartBoard.Remove(StartBoard[0]);
             }
+            yield return new WaitForSeconds(1f);
         }
 
         if (StartBoard.Count != 0)
@@ -292,13 +297,7 @@ public class BigBrain : MonoBehaviour
                 Player.attackUser(card.Damage);
             }
         }
-    }
-    void Attack(List<Card> StartBoard)
-    {
-        if (StartBoard.Count == 0) return;
-        StartBoard.Sort((a, b) => a.Damage.CompareTo(b.Damage));//в возрастании
-        playerCards.Sort((a, b) => b.HP.CompareTo(a.HP));//в убывании
-        StartCoroutine(waiter());
+        field.GetComponent<TurnBasedGameplay>().enemyEndMove();
     }
     Card StrongestPlayerCard()
     {
