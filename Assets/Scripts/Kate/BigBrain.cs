@@ -16,6 +16,7 @@ public class BigBrain : MonoBehaviour
     List<Card> playerCards = new();
     public void EnemyTurn()
     {
+        if (Player.Hp <= 0 || GetComponent<Users>().Hp <= 0) field.GetComponent<TurnBasedGameplay>().enemyEndMove();
         StartBoard = field.GetComponent<Field>().GetCards(true);
         playerCards = field.GetComponent<Field>().GetCards(false);
         myCards = hand.GetComponent<Hand>().GetCards();
