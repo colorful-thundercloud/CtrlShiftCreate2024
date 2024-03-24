@@ -21,6 +21,7 @@ public class BigBrain : MonoBehaviour
         myCards = hand.GetComponent<Hand>().GetCards();
         StartCoroutine(SpawnUnit(WhichCardsSpawnUnit()));
         //стопе здесь
+
     }
     List<Card> WhichCardsSpawnUnit()
     {
@@ -77,7 +78,7 @@ public class BigBrain : MonoBehaviour
         myCardsOnBoard = field.GetComponent<Field>().GetCards(true);
         StartCoroutine(DoBaff(WhichCardsSpawnBaff()));
     }
-    IEnumerator MoveCard(Card card)
+    IEnumerator MoveCard (Card card)
     {
         float moveSpeed = 7f;
         Vector3 targetPosition = field.gameObject.transform.position;
@@ -131,8 +132,7 @@ public class BigBrain : MonoBehaviour
             }
         }
         yield return new WaitForSeconds(1);
-        yield return StartCoroutine(StartAttacking(StartBoard));
-        if (myCardsOnBoard.Count != 0 && myCardsOnBoard.Count < myCards.Count || myCardsOnBoard.Count == 3 && myCards.Count > 2) StashCard();
+        StartCoroutine(Attack(StartBoard));
     }
     IEnumerator Buffer(Card card, Card buff)
     {
@@ -247,53 +247,57 @@ public class BigBrain : MonoBehaviour
         }
         return card;
     }
-    void StashCard()
-    {
-        //сброс всех карт с руки
-    }
     IEnumerator Attack(List<Card> StartBoard)
     {
-        if (StartBoard.Count != 0)
-        {
-            playerCards = field.GetComponent<Field>().GetCards(false);
-            playerCards.Sort((a, b) => b.HP.CompareTo(a.HP));//в убывании
-            if (playerCards.Count == 0) yield break;
-            Card strongestCard = StrongestPlayerCard();
-            int CanBeat = -1;
-            for (int i = 0; i < StartBoard.Count; i++) if (StartBoard[i].Damage > strongestCard.HP) { CanBeat = i; break; }
-            if (CanBeat != -1)
-            {
-                StartBoard[CanBeat].attack(strongestCard);
-                StartBoard.Remove(StartBoard[CanBeat]);
-            }
-            CanBeat = -1;
-            Card healthlessCard = HealthlessPlayerCard();
-            for (int i = 0; i < StartBoard.Count; i++) if (StartBoard[i].Damage > healthlessCard.HP) { CanBeat = i; break; }
-            if (CanBeat == -1) CanBeat = 0;
-            StartBoard[CanBeat].attack(healthlessCard);
-            StartBoard.Remove(StartBoard[CanBeat]);
-            StartCoroutine(Attack(StartBoard));
-        }
-    }
-    IEnumerator StartAttacking(List<Card> StartBoard)
-    {
-
         if (StartBoard.Count == 0)
         {
-            field.GetComponent<TurnBasedGameplay>().enemyEndMove();
-            yield break;
-        }
-        StartBoard.Sort((a, b) => a.Damage.CompareTo(b.Damage));//в возрастании
-
-        yield return StartCoroutine(Attack(StartBoard));
-
-        if (StartBoard.Count != 0)
-        {
-            foreach (Card card in StartBoard)
+            StartBoard.Sort((a, b) => a.Damage.CompareTo(b.Damage));//в возрастании
+            playerCards.Sort((a, b) => b.HP.CompareTo(a.HP));//в убывании
+            while (StartBoard.Count != 0)
             {
-                if (Player.Hp > 0) Player.attackUser(card.Damage);
+                if (playerCards.Count == 0) break;
+                Card strongestCard = StrongestPlayerCard();
+                int CanBeat = -1;
+                for (int i = 0; i < StartBoard.Count; i++) if (StartBoard[i].Damage > strongestCard.HP) {CanBeat = i; break;}
+                if (CanBeat != -1)
+                {
+                    if (StartBoard[CanBeat].Damage > strongestCard.HP) playerCards.Remove(strongestCard);
+                    StartBoard[CanBeat].attack(strongestCard);
+                    StartBoard.Remove(StartBoard[CanBeat]);
+                    yield return new WaitForSeconds(2.1f);
+                    continue;
+                }
+                Card healthlessCard = HealthlessPlayerCard();
+                for (int i = 0; i < StartBoard.Count; i++) if (StartBoard[i].Damage > strongestCard.HP) {CanBeat = i; break;}
+                if (CanBeat != -1)
+                {
+                    if (StartBoard[CanBeat].Damage > healthlessCard.HP) playerCards.Remove(healthlessCard);
+                    StartBoard[CanBeat].attack(healthlessCard);
+                    StartBoard.Remove(StartBoard[CanBeat]);
+                    yield return new WaitForSeconds(2.1f);
+                    continue;
+                }
+                else
+                {
+                    StartBoard[0].attack(strongestCard);
+                    StartBoard.Remove(StartBoard[0]);
+                    yield return new WaitForSeconds(2.1f);
+                }
+            }
+            if (StartBoard.Count != 0)
+            {
+                foreach (Card card in StartBoard)
+                {
+                    if (Player.Hp > 0)
+                    {
+                        Player.attackUser(card.Damage);
+                        yield return new WaitForSeconds(2.1f);
+                    }
+                }
             }
         }
+        yield return new WaitForSeconds(0.3f);
+        if (myCardsOnBoard.Count != 0 && myCardsOnBoard.Count < myCards.Count || myCardsOnBoard.Count == 3 && myCards.Count > 2) StashCard();
         field.GetComponent<TurnBasedGameplay>().enemyEndMove();
     }
     Card StrongestPlayerCard()
@@ -315,5 +319,9 @@ public class BigBrain : MonoBehaviour
             if (card.HP > playerCards[i].HP) card = playerCards[i];
         }
         return card;
+    }
+    void StashCard()
+    {
+        //сброс всех карт с руки
     }
 }
