@@ -9,6 +9,7 @@ public class Users : MonoBehaviour
     [SerializeField] Field field;
     [SerializeField] Light2D lighting;
     [SerializeField] int HP;
+    public int Hp { get { return HP; } }
     [SerializeField] TMP_Text hpText;
     private void Start()
     {

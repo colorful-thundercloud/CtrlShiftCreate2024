@@ -22,7 +22,6 @@ public class BigBrain : MonoBehaviour
         StartCoroutine(SpawnUnit(WhichCardsSpawnUnit()));
         //стопе здесь
     }
-
     List<Card> WhichCardsSpawnUnit()
     {
         List<Card> Spawn = new();
@@ -276,7 +275,6 @@ public class BigBrain : MonoBehaviour
             StartCoroutine(Attack(StartBoard));
         }
     }
-
     IEnumerator StartAttacking(List<Card> StartBoard)
     {
 
@@ -293,7 +291,7 @@ public class BigBrain : MonoBehaviour
         {
             foreach (Card card in StartBoard)
             {
-                Player.attackUser(card.Damage);
+                if (Player.Hp > 0) Player.attackUser(card.Damage);
             }
         }
         field.GetComponent<TurnBasedGameplay>().enemyEndMove();
