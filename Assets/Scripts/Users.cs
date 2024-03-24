@@ -24,13 +24,13 @@ public class Users : MonoBehaviour
         if (Field.SelectedCard == null) return;
         if (gameObject.tag == "myCard") return;
         lighting.color = Color.red;
-        StartCoroutine(SmoothLight.smoothLight(lighting, 0.5f));
+        StartCoroutine(SmoothLight.smoothLight(lighting, 0.25f));
     }
     private void OnMouseExit()
     {
         if (Field.SelectedCard == null) return;
         if (gameObject.tag == "myCard") return;
-        StartCoroutine(SmoothLight.smoothLight(lighting, 0.5f, false));
+        StartCoroutine(SmoothLight.smoothLight(lighting, 0.25f, false));
     }
     private void OnMouseDown()
     {
@@ -48,7 +48,7 @@ public class Users : MonoBehaviour
         {
             HP -= Damage;
             hpText.text = HP.ToString();
-            StartCoroutine(SmoothLight.smoothLight(lighting, 0.5f, false));
+            StartCoroutine(SmoothLight.smoothLight(lighting, 0.25f, false));
         }
     }
 }

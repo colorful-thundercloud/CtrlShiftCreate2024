@@ -253,17 +253,17 @@ public class BigBrain : MonoBehaviour
     {
         //сброс всех карт с руки
     }
-    void Attack(List<Card> StartBoard)
+    IEnumerator waiter()
     {
-        if (StartBoard.Count == 0) return;
-        StartBoard.Sort((a, b) => a.Damage.CompareTo(b.Damage));//в возрастании
-        playerCards.Sort((a, b) => b.HP.CompareTo(a.HP));//в убывании
         while (StartBoard.Count != 0)
         {
+            yield return new WaitForSeconds(1.1f);
+            playerCards = field.GetComponent<Field>().GetCards(false);
+            playerCards.Sort((a, b) => b.HP.CompareTo(a.HP));//в убывании
             if (playerCards.Count == 0) break;
             Card strongestCard = StrongestPlayerCard();
             int CanBeat = -1;
-            for (int i = 0; i < StartBoard.Count; i++) if (StartBoard[i].Damage > strongestCard.HP) {CanBeat = i; break;}
+            for (int i = 0; i < StartBoard.Count; i++) if (StartBoard[i].Damage > strongestCard.HP) { CanBeat = i; break; }
             if (CanBeat != -1)
             {
                 StartBoard[CanBeat].attack(strongestCard);
@@ -271,7 +271,7 @@ public class BigBrain : MonoBehaviour
                 continue;
             }
             Card healthlessCard = HealthlessPlayerCard();
-            for (int i = 0; i < StartBoard.Count; i++) if (StartBoard[i].Damage > strongestCard.HP) {CanBeat = i; break;}
+            for (int i = 0; i < StartBoard.Count; i++) if (StartBoard[i].Damage > strongestCard.HP) { CanBeat = i; break; }
             if (CanBeat != -1)
             {
                 StartBoard[CanBeat].attack(strongestCard);
@@ -284,6 +284,7 @@ public class BigBrain : MonoBehaviour
                 StartBoard.Remove(StartBoard[0]);
             }
         }
+
         if (StartBoard.Count != 0)
         {
             foreach (Card card in StartBoard)
@@ -291,6 +292,13 @@ public class BigBrain : MonoBehaviour
                 Player.attackUser(card.Damage);
             }
         }
+    }
+    void Attack(List<Card> StartBoard)
+    {
+        if (StartBoard.Count == 0) return;
+        StartBoard.Sort((a, b) => a.Damage.CompareTo(b.Damage));//в возрастании
+        playerCards.Sort((a, b) => b.HP.CompareTo(a.HP));//в убывании
+        StartCoroutine(waiter());
     }
     Card StrongestPlayerCard()
     {
