@@ -150,6 +150,7 @@ public class BigBrain : MonoBehaviour
         }
         else if (!Buff)
         {
+            moveSpeed = 11f;
             Buff = true;
             yield return new WaitForSeconds(0.5f);
         }
@@ -313,12 +314,13 @@ public class BigBrain : MonoBehaviour
                 yield return new WaitForSeconds(0.5f);
                 continue;
             }
-            if (StartBoard.Count > 0)
+            if (StartBoard.Count > 0 && playerCards.Count > 0 && strongestCard != null)
             {
                 if (StartBoard[0].Damage >= strongestCard.HP) playerCards.Remove(strongestCard);
                 StartBoard[0].attack(strongestCard);
                 StartBoard.Remove(StartBoard[0]);
                 yield return new WaitForSeconds(0.5f);
+                continue;
             }
         }
         if (StartBoard.Count != 0)
