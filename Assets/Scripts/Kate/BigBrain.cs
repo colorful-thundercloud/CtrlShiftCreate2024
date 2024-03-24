@@ -325,10 +325,11 @@ public class BigBrain : MonoBehaviour
         }
         if (StartBoard.Count != 0)
         {
-            foreach (Card card in StartBoard)
+            for (int i = 0; i < StartBoard.Count; i++)
             {
                 if (Player.Hp <= 0) field.GetComponent<TurnBasedGameplay>().enemyEndMove();
-                Player.attackUser(card);
+                Player.attackUser(StartBoard[i]);
+                Debug.Log(StartBoard[i].gameObject.name);
                 yield return new WaitForSeconds(0.5f);
             }
         }
