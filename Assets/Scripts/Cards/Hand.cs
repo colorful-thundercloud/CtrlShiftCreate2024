@@ -73,6 +73,7 @@ public class Hand : MonoBehaviour
     public void RemoveCard(GameObject card)
     {
         hand.Remove(card);
+        updateHand();
     }
     public List<Card> GetCards()
     {

@@ -53,12 +53,14 @@ public class Field : MonoBehaviour
             myCards.Remove(card.gameObject);
             updateField(false);
             myDeck.BeatCard(card.GetBasicCard);
+            myHand.RemoveCard(card.gameObject);
         }
         else
         {
             enemyCards.Remove(card.gameObject);
             updateField(true);
             enemyDeck.BeatCard(card.GetBasicCard);
+            enemyHand.RemoveCard(card.gameObject);
         }
         Destroy(card.gameObject);
     }
