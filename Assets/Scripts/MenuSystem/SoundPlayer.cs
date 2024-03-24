@@ -1,20 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
-public class SoundPlayer : soundController
+public class SoundPlayer : MonoBehaviour
 {
-    private float musicVolue = 1f;
-    public void Play(int index=0)
+    [SerializeField] private AudioMixerGroup Mixer;
+    private static AudioSource source;
+    public static void Play(AudioClip clip)
     {
-        playSound(sound[index],musicVolue,true,1f,1f,1);
+        source.PlayOneShot(clip);
     }
-    public void setVolume(float vol)
+    private void Start()
     {
-        musicVolue = vol;
+        source = GetComponent<AudioSource>();
     }
-    private void Update()
+    private string mixerGroup;
+    public string MixerGroup { set { mixerGroup = value; } }
+    public void ChangeVolume(float volume)
     {
-        audioSRC.volume = musicVolue;
+        Mixer.audioMixer.SetFloat(mixerGroup, Mathf.Lerp(-80, 0, volume));
     }
 }

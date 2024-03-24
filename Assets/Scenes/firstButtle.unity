@@ -916,10 +916,10 @@ MonoBehaviour:
       - m_Target: {fileID: 668536335}
         m_TargetAssemblyTypeName: SoundPlayer, Assembly-CSharp
         m_MethodName: Play
-        m_Mode: 3
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 8300000, guid: 248194946b56c5c4badefcb9f773ad21, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -973,7 +973,6 @@ GameObject:
   m_Component:
   - component: {fileID: 198434564}
   - component: {fileID: 198434563}
-  - component: {fileID: 198434565}
   m_Layer: 0
   m_Name: MusicController
   m_TagString: Untagged
@@ -990,7 +989,7 @@ AudioSource:
   m_GameObject: {fileID: 198434561}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -1550250709261039319, guid: 2fb83e18ba855664daf4e17e13c10b4b, type: 2}
   m_audioClip: {fileID: 8300000, guid: 83a739fc80767044fb9d259e235c5616, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -1092,18 +1091,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &198434565
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 198434561}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72e35c064be019a4db70c544ea3595f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &207203908
 GameObject:
   m_ObjectHideFlags: 0
@@ -1895,9 +1882,21 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 198434565}
-        m_TargetAssemblyTypeName: MusicSustem, Assembly-CSharp
-        m_MethodName: setVolume
+      - m_Target: {fileID: 668536335}
+        m_TargetAssemblyTypeName: SoundPlayer, Assembly-CSharp
+        m_MethodName: set_MixerGroup
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Music
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 668536335}
+        m_TargetAssemblyTypeName: SoundPlayer, Assembly-CSharp
+        m_MethodName: ChangeVolume
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2181,10 +2180,10 @@ MonoBehaviour:
       - m_Target: {fileID: 668536335}
         m_TargetAssemblyTypeName: SoundPlayer, Assembly-CSharp
         m_MethodName: Play
-        m_Mode: 3
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 8300000, guid: 097e4161e4bf9fd4b9692e78e3963a2a, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3253,10 +3252,10 @@ MonoBehaviour:
       - m_Target: {fileID: 668536335}
         m_TargetAssemblyTypeName: SoundPlayer, Assembly-CSharp
         m_MethodName: Play
-        m_Mode: 3
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 8300000, guid: 248194946b56c5c4badefcb9f773ad21, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3410,10 +3409,10 @@ MonoBehaviour:
       - m_Target: {fileID: 668536335}
         m_TargetAssemblyTypeName: SoundPlayer, Assembly-CSharp
         m_MethodName: Play
-        m_Mode: 3
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 8300000, guid: 248194946b56c5c4badefcb9f773ad21, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3811,7 +3810,7 @@ AudioSource:
   m_GameObject: {fileID: 668536333}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 2695146368253816733, guid: 2fb83e18ba855664daf4e17e13c10b4b, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -3910,12 +3909,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c40a6c51d3d87a41838467ae2926a79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sound:
-  - {fileID: 8300000, guid: 248194946b56c5c4badefcb9f773ad21, type: 3}
-  - {fileID: 8300000, guid: e78dbf2a90ab3d04985563e6ba53b558, type: 3}
-  - {fileID: 8300000, guid: 097e4161e4bf9fd4b9692e78e3963a2a, type: 3}
-  - {fileID: 8300000, guid: 326d1cff752a19145bf0209ce0a89c76, type: 3}
-  - {fileID: 8300000, guid: 097e4161e4bf9fd4b9692e78e3963a2a, type: 3}
+  Mixer: {fileID: 24300002, guid: 2fb83e18ba855664daf4e17e13c10b4b, type: 2}
 --- !u!4 &668536336
 Transform:
   m_ObjectHideFlags: 0
@@ -4041,10 +4035,10 @@ MonoBehaviour:
       - m_Target: {fileID: 668536335}
         m_TargetAssemblyTypeName: SoundPlayer, Assembly-CSharp
         m_MethodName: Play
-        m_Mode: 3
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 8300000, guid: 248194946b56c5c4badefcb9f773ad21, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -4621,10 +4615,10 @@ MonoBehaviour:
       - m_Target: {fileID: 668536335}
         m_TargetAssemblyTypeName: SoundPlayer, Assembly-CSharp
         m_MethodName: Play
-        m_Mode: 3
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 8300000, guid: 248194946b56c5c4badefcb9f773ad21, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -5046,10 +5040,10 @@ MonoBehaviour:
       - m_Target: {fileID: 668536335}
         m_TargetAssemblyTypeName: SoundPlayer, Assembly-CSharp
         m_MethodName: Play
-        m_Mode: 3
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 8300000, guid: 248194946b56c5c4badefcb9f773ad21, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -5202,7 +5196,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -6, y: 2.3}
+  m_AnchoredPosition: {x: -6, y: 2.2999992}
   m_SizeDelta: {x: 0, y: -169.84}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1134855948
@@ -5831,7 +5825,19 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 668536335}
         m_TargetAssemblyTypeName: SoundPlayer, Assembly-CSharp
-        m_MethodName: setVolume
+        m_MethodName: set_MixerGroup
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Sounds
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 668536335}
+        m_TargetAssemblyTypeName: SoundPlayer, Assembly-CSharp
+        m_MethodName: ChangeVolume
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8208,10 +8214,10 @@ MonoBehaviour:
       - m_Target: {fileID: 668536335}
         m_TargetAssemblyTypeName: SoundPlayer, Assembly-CSharp
         m_MethodName: Play
-        m_Mode: 3
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 8300000, guid: 248194946b56c5c4badefcb9f773ad21, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -8713,10 +8719,10 @@ MonoBehaviour:
       - m_Target: {fileID: 668536335}
         m_TargetAssemblyTypeName: SoundPlayer, Assembly-CSharp
         m_MethodName: Play
-        m_Mode: 3
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 8300000, guid: 248194946b56c5c4badefcb9f773ad21, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -10367,10 +10373,10 @@ MonoBehaviour:
       - m_Target: {fileID: 668536335}
         m_TargetAssemblyTypeName: SoundPlayer, Assembly-CSharp
         m_MethodName: Play
-        m_Mode: 3
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 8300000, guid: 248194946b56c5c4badefcb9f773ad21, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
