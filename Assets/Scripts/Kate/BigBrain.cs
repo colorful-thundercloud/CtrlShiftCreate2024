@@ -73,7 +73,6 @@ public class BigBrain : MonoBehaviour
                 }
             }
         }
-        yield return new WaitForSeconds(1);
         myCardsOnBoard = field.GetCards(true);
         StartCoroutine(DoBaff(WhichCardsSpawnBaff()));
     }
@@ -130,7 +129,6 @@ public class BigBrain : MonoBehaviour
                 }
             }
         }
-        yield return new WaitForSeconds(1);
         StartCoroutine(Attack(StartBoard));
     }
     IEnumerator Buffer(Card card, Card buff)
