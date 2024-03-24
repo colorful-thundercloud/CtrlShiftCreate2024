@@ -13,12 +13,14 @@ MonoBehaviour:
   m_Name: Set Enemy2
   m_EditorClassIdentifier: 
   cards:
-  - {fileID: 11400000, guid: 02f8ec9b51f455c4b9417e5ea4d26dd6, type: 2}
   - {fileID: 11400000, guid: 4ae4a8b9114918748908fab084bcfa5f, type: 2}
+  - {fileID: 11400000, guid: 02f8ec9b51f455c4b9417e5ea4d26dd6, type: 2}
+  - {fileID: 11400000, guid: 6bb54d4c49fe83e4f973da2cf02b78eb, type: 2}
+  - {fileID: 11400000, guid: 4ae4a8b9114918748908fab084bcfa5f, type: 2}
+  - {fileID: 11400000, guid: 4ae4a8b9114918748908fab084bcfa5f, type: 2}
+  - {fileID: 11400000, guid: 02f8ec9b51f455c4b9417e5ea4d26dd6, type: 2}
+  - {fileID: 11400000, guid: 6bb54d4c49fe83e4f973da2cf02b78eb, type: 2}
   - {fileID: 11400000, guid: 23cec6e357cf40c468031e96feed547e, type: 2}
   - {fileID: 11400000, guid: 6bb54d4c49fe83e4f973da2cf02b78eb, type: 2}
   - {fileID: 11400000, guid: 2dcfc4f3da4ca9546bb8c72bd04eb02b, type: 2}
-  - {fileID: 11400000, guid: 79aa2018858b16f48a64f91828d74210, type: 2}
-  - {fileID: 11400000, guid: f626071b5c04f34498555a533edbea4e, type: 2}
-  - {fileID: 11400000, guid: 80f8bcd622fd4794eb8e4bc05e35633c, type: 2}
-  - {fileID: 11400000, guid: f626071b5c04f34498555a533edbea4e, type: 2}
+  - {fileID: 11400000, guid: 23cec6e357cf40c468031e96feed547e, type: 2}
