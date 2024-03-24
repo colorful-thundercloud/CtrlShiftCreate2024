@@ -173,35 +173,16 @@ public class BigBrain : MonoBehaviour
     Card GetMyHealthlessCard()
     {
         myCardsOnBoard.Sort((a, b) => b.HP.CompareTo(a.HP));//убывание
-        Card card;
-        if (StartBoard.Count != 0)
+        Card card = myCardsOnBoard[myCardsOnBoard.Count - 1];
+        for (int i = 0; i < myCardsOnBoard.Count; i++)
         {
-            card = StartBoard[StartBoard.Count - 1];
-            for (int i = 0; i < StartBoard.Count; i++)
+            if (myCardsOnBoard[i].HP < 5 && myCardsOnBoard[i].HP > card.HP)
             {
-                if (StartBoard[i].HP < 5 && StartBoard[i].HP > card.HP)
-                {
-                    card = StartBoard[i];
-                }
-                if (StartBoard[i].HP == card.HP)
-                {
-                    if (StartBoard[i].Damage > card.Damage) card = StartBoard[i];
-                }
+                card = myCardsOnBoard[i];
             }
-        }
-        else
-        {
-            card = myCardsOnBoard[myCardsOnBoard.Count - 1];
-            for (int i = 0; i < myCardsOnBoard.Count; i++)
+            if (myCardsOnBoard[i].HP == card.HP)
             {
-                if (myCardsOnBoard[i].HP < 5 && myCardsOnBoard[i].HP > card.HP)
-                {
-                    card = myCardsOnBoard[i];
-                }
-                if (myCardsOnBoard[i].HP == card.HP)
-                {
-                    if (myCardsOnBoard[i].Damage > card.Damage) card = myCardsOnBoard[i];
-                }
+                if (myCardsOnBoard[i].Damage > card.Damage) card = myCardsOnBoard[i];
             }
         }
         if (card.HP > 4) card = null;
