@@ -4,16 +4,17 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-public class Users : MonoBehaviour
+public class Users : HaveStats
 {
     [SerializeField] Field field;
+    [SerializeField] GameObject winWindow, defeatWindow;
     [SerializeField] Light2D lighting;
     [SerializeField] int HP;
     public int Hp { get { return HP; } }
-    [SerializeField] TMP_Text hpText;
     private void Start()
     {
-        hpText.text = HP.ToString();
+        currentHP = HP;
+        hp.text = HP.ToString();
     }
     private bool checkAttack()
     {
@@ -36,7 +37,7 @@ public class Users : MonoBehaviour
     private void OnMouseDown()
     {
         if (Field.SelectedCard == null) return;
-        attackUser(Field.SelectedCard.Damage);
+        Field.SelectedCard.attackUser(this);
         if(checkAttack())
         {
             Field.SelectedCard.used = true;
@@ -44,19 +45,23 @@ public class Users : MonoBehaviour
             Field.SelectedCard = null;
         }
     }
-    public void attackUser(int Damage)
+    public void attackUser(Card attacker)
     {
         if (checkAttack())
         {
-            HP -= Damage;
-            if (HP <= 0) Death();
-            hpText.text = HP.ToString();
+            attacker.attackUser(this);
             StartCoroutine(SmoothLight.smoothLight(lighting, 0.25f, false));
         }
     }
+    public override void StatsChange(int atk = 0, int health = 0)
+    {
+        base.StatsChange(atk, health);
+        if (currentHP <= 0) Death();
+    }
     void Death()
     {
-        if (gameObject.tag == "myCard") Debug.Log("Player lose");
-        else Debug.Log("Player win");
+        Time.timeScale = 0;
+        if (gameObject.tag == "myCard") defeatWindow.gameObject.SetActive(true);
+        else winWindow.gameObject.SetActive(true);
     }
 }
