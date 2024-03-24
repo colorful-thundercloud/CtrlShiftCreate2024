@@ -266,6 +266,7 @@ public class BigBrain : MonoBehaviour
     }
     IEnumerator Attack(List<Card> StartBoard)
     {
+        yield return new WaitForSeconds(1f);
         StartBoard.Sort((a, b) => a.Damage.CompareTo(b.Damage));//в возрастании
         playerCards.Sort((a, b) => b.HP.CompareTo(a.HP));//в убывании
         while (StartBoard.Count != 0)
@@ -276,7 +277,7 @@ public class BigBrain : MonoBehaviour
             for (int i = 0; i < StartBoard.Count; i++) if (StartBoard[i].Damage > strongestCard.HP && strongestCard.Damage > 4) {CanBeat = i; break;}
             if (CanBeat != -1)
             {
-                if (StartBoard[CanBeat].Damage > strongestCard.HP) playerCards.Remove(strongestCard);
+                if (StartBoard[CanBeat].Damage >= strongestCard.HP) playerCards.Remove(strongestCard);
                 StartBoard[CanBeat].attack(strongestCard);
                 StartBoard.Remove(StartBoard[CanBeat]);
                 yield return new WaitForSeconds(0.5f);
@@ -286,7 +287,7 @@ public class BigBrain : MonoBehaviour
             for (int i = 0; i < StartBoard.Count; i++) if (StartBoard[i].Damage > healthlessCard.HP) {CanBeat = i; break;}
             if (CanBeat != -1)
             {
-                if (StartBoard[CanBeat].Damage > healthlessCard.HP) playerCards.Remove(healthlessCard);
+                if (StartBoard[CanBeat].Damage >= healthlessCard.HP) playerCards.Remove(healthlessCard);
                 StartBoard[CanBeat].attack(healthlessCard);
                 StartBoard.Remove(StartBoard[CanBeat]);
                 yield return new WaitForSeconds(0.5f);
@@ -296,7 +297,7 @@ public class BigBrain : MonoBehaviour
             {
                 if (StartBoard.Count > 0)
                 {
-                    if (StartBoard[0].Damage > strongestCard.HP) playerCards.Remove(strongestCard);
+                    if (StartBoard[0].Damage >= strongestCard.HP) playerCards.Remove(strongestCard);
                     StartBoard[0].attack(strongestCard);
                     StartBoard.Remove(StartBoard[0]);
                     yield return new WaitForSeconds(0.5f);

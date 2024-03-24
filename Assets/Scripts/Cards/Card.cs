@@ -225,7 +225,7 @@ public class Card : HaveStats
     Coroutine twink;
     private void twinckle(bool isEnabled)
     {
-        if (gameObject.tag == "enemyCard") return;
+        if (gameObject != null && gameObject.tag == "enemyCard") return;
         if (isEnabled) twink = StartCoroutine(SmoothLight.twinckle(signalLight, 0.75f));
         else if(twink!=null)
         {
