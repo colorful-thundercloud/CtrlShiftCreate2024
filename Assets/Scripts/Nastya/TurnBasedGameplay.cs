@@ -26,11 +26,13 @@ public class TurnBasedGameplay : MonoBehaviour
         foreach (Card card in playerHand.GetCards())
             card.canDrag = false;
 
-        foreach (Card card in field.GetCards(true))
-            card.used = false;
+        if (field.GetCards(true).Count > 0)
+            foreach (Card card in field.GetCards(true))
+                card.used = false;
 
-        foreach (Card card in field.GetCards(false))
-            card.used = true;
+        if (field.GetCards(false).Count > 0)
+            foreach (Card card in field.GetCards(false))
+                card.used = true;
 
         Field.SelectedCard?.turnOfLight();
         Field.SelectedCard = null;
@@ -42,12 +44,14 @@ public class TurnBasedGameplay : MonoBehaviour
     public void enemyEndMove()
     {
         // начало хода игрока
-        endMoveBtn.interactable = true;  
+        endMoveBtn.interactable = true;
+
         foreach (Card card in playerHand.GetCards())
             card.canDrag = true;
 
-        foreach (Card card in field.GetCards(false))
-            card.used = false;
+        if (field.GetCards(false).Count > 0)
+            foreach (Card card in field.GetCards(false))
+                card.used = false;
 
         enemyHand.DrawCards(true);
     }
