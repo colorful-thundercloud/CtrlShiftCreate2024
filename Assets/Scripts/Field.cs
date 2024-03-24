@@ -27,9 +27,14 @@ public class Field : MonoBehaviour
     }
     public void addCard(Card card, bool isEnemy)
     {
+        if (isEnemy) enemyCards.Add(card.gameObject);
+        else myCards.Add(card.gameObject);
+        updateField(isEnemy);
+    }
+    public void updateField(bool isEnemy)
+    {
         List<GameObject> field = isEnemy ? enemyCards : myCards;
-        field.Add(card.gameObject);
-        for(int i = 0; i < field.Count; i++)
+        for (int i = 0; i < field.Count; i++)
         {
             Vector3 pos = Vector3.zero;
             pos.y = isEnemy ? enemyField.position.y : myField.position.y;
@@ -37,24 +42,23 @@ public class Field : MonoBehaviour
             pos.z = field[i].transform.position.z;
             field[i].transform.position = pos;
         }
+        if (field.Count == 0) return;
         float center = field[field.Count - 1].transform.position.x / 2;
         foreach (GameObject item in field) item.transform.Translate(-center, 0, 0);
-        if (isEnemy) enemyCards = field;
-        else myCards = field;
     }
     public void BeatCard(Card card)
     {
         if (card.gameObject.CompareTag("myCard"))
         {
             myCards.Remove(card.gameObject);
+            updateField(false);
             myDeck.BeatCard(card.GetBasicCard);
-            myHand.RemoveCard(card.gameObject);
         }
         else
         {
             enemyCards.Remove(card.gameObject);
+            updateField(true);
             enemyDeck.BeatCard(card.GetBasicCard);
-            enemyHand.RemoveCard(card.gameObject);
         }
         Destroy(card.gameObject);
     }
