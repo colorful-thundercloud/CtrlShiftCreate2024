@@ -118,7 +118,11 @@ public class Card : HaveStats
         if (isCasted && !canDrag && gameObject.CompareTag("enemyCard")) isCasting = false;
         else if (!isCasted && canDrag)
         {
-            isCasting = true;
+            if (!isCasting)
+            {
+                isCasting = true;
+                SoundPlayer.Play(SelectSound);
+            }
         }
     }
     private void Update()
