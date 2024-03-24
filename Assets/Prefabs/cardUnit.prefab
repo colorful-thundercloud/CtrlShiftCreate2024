@@ -857,12 +857,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cad651c7f0038ba48b03c3b41a096ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriter: {fileID: 868811696282032799}
-  lighting: {fileID: 1564628615307975834}
-  signalLight: {fileID: 7073640693868358652}
   damage: {fileID: 7651285416438748501}
   hp: {fileID: 8292840901566565420}
   title: {fileID: 983335562413830961}
+  spriter: {fileID: 868811696282032799}
+  lighting: {fileID: 1564628615307975834}
+  signalLight: {fileID: 7073640693868358652}
+  CastSound: {fileID: 8300000, guid: b5b2ea6680b89004ca3722427f684536, type: 3}
+  DeathSound: {fileID: 0}
+  AttackSound: {fileID: 0}
+  SelectSound: {fileID: 0}
   card: {fileID: 0}
   isCasted: 0
   canBuff: 0

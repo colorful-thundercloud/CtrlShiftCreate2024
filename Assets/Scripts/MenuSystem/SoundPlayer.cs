@@ -11,7 +11,7 @@ public class SoundPlayer : MonoBehaviour
     {
         source.PlayOneShot(clip);
     }
-    private void Start()
+    void Start()
     {
         source = GetComponent<AudioSource>();
     }

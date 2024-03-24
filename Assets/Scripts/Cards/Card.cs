@@ -5,12 +5,12 @@ using Unity.Burst.Intrinsics;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-public class Card : MonoBehaviour
+public class Card : HaveStats
 {
     [SerializeField] SpriteRenderer spriter;
     [SerializeField] Light2D lighting;
     [SerializeField] Light2D signalLight;
-    [SerializeField] TMP_Text damage, hp, title;
+    [SerializeField] AudioClip CastSound, DeathSound, AttackSound, SelectSound;
 
     [SerializeField] private BasicCard card;
     public BasicCard GetBasicCard { get { return card; } }
@@ -22,7 +22,6 @@ public class Card : MonoBehaviour
     public bool canBuff = false;
     private bool Used = true;
     public Field field = null;
-    int currentHP, currentAtk;
     public int HP { get { return currentHP; } }
     public int Damage { get { return currentAtk; } }
     Card otherCard;
@@ -32,7 +31,6 @@ public class Card : MonoBehaviour
         cam = Camera.main;
         anim = GetComponent<Animator>();
         startScale = transform.localScale;
-
         currentHP = card.HP;
         currentAtk = card.Damage;
         title.text = card.Title.ToString();
@@ -68,6 +66,7 @@ public class Card : MonoBehaviour
             if (gameObject.tag == "myCard" )
             {
                 if (used) return;
+                SoundPlayer.Play(SelectSound);
                 if (Field.SelectedCard != this) Field.SelectedCard?.turnOfLight();
                 twinckle(false);
                 Field.SelectedCard = this;
@@ -92,6 +91,7 @@ public class Card : MonoBehaviour
         if (card.Type == BasicCard.cardType.Unit && field?.GetCards(gameObject.CompareTag("enemyCard")).Count < 3)
         {
             isCasted = true;
+            SoundPlayer.Play(CastSound);
             if (gameObject.tag != "enemyCard") Field.OnCast?.Invoke(this);
             foreach (Transform t in transform) t.gameObject.SetActive(true);
             transform.localScale = Vector3.one;
@@ -101,6 +101,7 @@ public class Card : MonoBehaviour
             canBuff = false;
             canDrag = false;
             otherCard.StatsChange(currentAtk, currentHP);
+            SoundPlayer.Play(CastSound);
             Field.OnCardBeat?.Invoke(this);
         }
         else
@@ -113,7 +114,10 @@ public class Card : MonoBehaviour
     private void OnMouseDrag()
     {
         if (isCasted && !canDrag && gameObject.CompareTag("enemyCard")) isCasting = false;
-        else if (!isCasted && canDrag) isCasting = true;
+        else if (!isCasted && canDrag)
+        {
+            isCasting = true;
+        }
     }
     private void Update()
     {
@@ -167,32 +171,32 @@ public class Card : MonoBehaviour
             runningFunc = StartCoroutine(SmoothSizeChange(targetScale, grow));
         }
     }
-    public void StatsChange(int atk = 0, int health = 0)
+    public override void StatsChange(int atk = 0, int health = 0)
     {
-        currentAtk += atk;
-        if (currentAtk < 0) currentAtk = 0;
-        currentHP += health;
-        if (currentHP <= 0) StartCoroutine( death());
-        updText();
+        base.StatsChange(atk, health);
+        if (currentHP <= 0) StartCoroutine(death());
     }
-    IEnumerator death() 
+    IEnumerator death()
     {
         //play animation
+        SoundPlayer.Play(DeathSound);
         this.enabled = false;
         yield return new WaitForSeconds(0.5f);
         Field.OnCardBeat(this);
     }
-    void updText()
-    {
-        hp.text = currentHP.ToString();
-        damage.text = currentAtk.ToString();
-    }
     public void attack(Card toAttack)
     {
         used = true;
+
+        SoundPlayer.Play(AttackSound);
         StartCoroutine(attackAnimation(0.5f, toAttack));
     }
-    IEnumerator attackAnimation(float smoothTime, Card toAttack)
+    public void attackUser(Users toAttack)
+    {
+        SoundPlayer.Play(AttackSound);
+        StartCoroutine(attackAnimation(0.5f, toAttack));
+    }
+    IEnumerator attackAnimation(float smoothTime, HaveStats toAttack)
     {
         startPosition = transform.position;
         Vector3 target = toAttack.gameObject.transform.position;

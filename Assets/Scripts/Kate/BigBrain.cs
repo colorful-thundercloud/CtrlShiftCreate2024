@@ -289,7 +289,7 @@ public class BigBrain : MonoBehaviour
             foreach (Card card in StartBoard)
             {
                 if (Player.Hp <= 0) field.GetComponent<TurnBasedGameplay>().enemyEndMove();
-                Player.attackUser(card.Damage);
+                Player.attackUser(card);
                 yield return new WaitForSeconds(0.5f);
             }
         }

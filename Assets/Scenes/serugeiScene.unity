@@ -2533,12 +2533,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13b8789b4e3d0dc4ea9773a40a445f28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: {fileID: 0}
+  hp: {fileID: 1028661797}
+  title: {fileID: 0}
   field: {fileID: 831072871}
   winWindow: {fileID: 0}
   defeatWindow: {fileID: 0}
   lighting: {fileID: 302946761}
   HP: 5
-  hpText: {fileID: 1028661797}
 --- !u!4 &818273239
 Transform:
   m_ObjectHideFlags: 0
@@ -5236,12 +5238,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13b8789b4e3d0dc4ea9773a40a445f28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: {fileID: 0}
+  hp: {fileID: 1650221628}
+  title: {fileID: 0}
   field: {fileID: 831072871}
   winWindow: {fileID: 0}
   defeatWindow: {fileID: 0}
   lighting: {fileID: 1683799201}
   HP: 5
-  hpText: {fileID: 1650221628}
 --- !u!212 &1274663247
 SpriteRenderer:
   m_ObjectHideFlags: 0
