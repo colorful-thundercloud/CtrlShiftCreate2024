@@ -46,6 +46,7 @@ public class TurnBasedGameplay : MonoBehaviour
     {
         // начало хода игрока
         endMoveBtn.interactable = true;
+        playerHand.DrawCards();
 
         foreach (Card card in playerHand.GetCards())
             card.canDrag = true;
@@ -54,6 +55,5 @@ public class TurnBasedGameplay : MonoBehaviour
             foreach (Card card in field.GetCards(false))
                 card.used = false;
 
-        playerHand.DrawCards();
     }
 }
