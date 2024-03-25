@@ -97,9 +97,8 @@ public class Card : HaveStats
             foreach (Transform t in transform) t.gameObject.SetActive(true);
             transform.localScale = Vector3.one;
         }
-        else if (canBuff)
+        else if (canBuff && otherCard.CompareTag(gameObject.tag) && otherCard.isCasted)
         {
-            if (gameObject.CompareTag("enemyCard")) return;
             canBuff = false;
             canDrag = false;
             otherCard.StatsChange(currentAtk, currentHP);
