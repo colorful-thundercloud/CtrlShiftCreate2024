@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/firstButtle.unity
     guid: 70505d12d1c40e549a2a7a90dbbf0336
+  - enabled: 1
+    path: Assets/Scenes/secondBattle.unity
+    guid: 36c63057afb8d9940bfe32d31fc1bfe8
   m_configObjects: {}
