@@ -13,6 +13,7 @@ public class CardUI : MonoBehaviour
     private void Start()
     {
         OnOpenCard += ctx => openCard(ctx);
+        StartCoroutine(deactivate(0f));
     }
     private void OnDestroy()
     {
@@ -27,5 +28,15 @@ public class CardUI : MonoBehaviour
         hp.text = card.HP.ToString();
         description.text = card.Description;
         gameObject.SetActive(true);
+        StartCoroutine(deactivate(4f));
+    }
+    IEnumerator deactivate(float time)
+    {
+        while(time > 0)
+        {
+            time -= Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
+        }
+        gameObject.SetActive(false);
     }
 }
