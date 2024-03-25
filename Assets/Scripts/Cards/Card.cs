@@ -54,7 +54,8 @@ public class Card : HaveStats
         if(Field.SelectedCard!=this) turnOfLight();
     }
     public void turnOfLight() 
-    { 
+    {
+        if (lighting == null) return;
         StartCoroutine(SmoothLight.smoothLight(lighting, 0.25f,false));
         twinckle(!used);
     }
@@ -230,7 +231,8 @@ public class Card : HaveStats
     Coroutine twink;
     private void twinckle(bool isEnabled)
     {
-        if (gameObject != null && gameObject.tag == "enemyCard") return;
+        if (gameObject == null) return;
+        if (gameObject.tag == "enemyCard") return;
         if (isEnabled) twink = StartCoroutine(SmoothLight.twinckle(signalLight, 0.75f));
         else if(twink!=null)
         {

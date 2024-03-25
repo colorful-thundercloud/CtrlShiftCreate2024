@@ -37,9 +37,9 @@ public class Users : HaveStats
     private void OnMouseDown()
     {
         if (Field.SelectedCard == null) return;
-        Field.SelectedCard.attackUser(this);
         if(checkAttack())
         {
+            Field.SelectedCard.attackUser(this);
             Field.SelectedCard.used = true;
             Field.SelectedCard.turnOfLight();
             Field.SelectedCard = null;
