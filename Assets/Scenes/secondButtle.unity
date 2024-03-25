@@ -2773,9 +2773,49 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1516503713749682978, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 668536335}
+    - target: {fileID: 1516503713749682978, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 668536335}
+    - target: {fileID: 1516503713749682978, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: set_MixerGroup
+      objectReference: {fileID: 0}
+    - target: {fileID: 1516503713749682978, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: ChangeVolume
+      objectReference: {fileID: 0}
+    - target: {fileID: 1516503713749682978, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: SoundsVolume
+      objectReference: {fileID: 0}
     - target: {fileID: 1700412222425817120, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3051519726985187727, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 668536335}
+    - target: {fileID: 3051519726985187727, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 668536335}
+    - target: {fileID: 3051519726985187727, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: set_MixerGroup
+      objectReference: {fileID: 0}
+    - target: {fileID: 3051519726985187727, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: ChangeVolume
+      objectReference: {fileID: 0}
+    - target: {fileID: 3051519726985187727, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: MusicVolume
       objectReference: {fileID: 0}
     - target: {fileID: 5718686611218642333, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
       propertyPath: m_text
