@@ -240,7 +240,11 @@ public class Card : HaveStats
     {
         if (this == null) return;
         if (gameObject.tag == "enemyCard") return;
-        if (isEnabled) twink = StartCoroutine(SmoothLight.twinckle(signalLight, 0.75f));
+        if (isEnabled)
+        {
+            if(twink!=null) StopCoroutine(twink);
+            twink = StartCoroutine(SmoothLight.twinckle(signalLight, 0.75f));
+        }
         else if(twink!=null)
         {
             StopCoroutine(twink);
