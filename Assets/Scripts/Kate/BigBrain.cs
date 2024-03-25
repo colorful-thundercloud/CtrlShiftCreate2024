@@ -135,7 +135,7 @@ public class BigBrain : MonoBehaviour
     }
     IEnumerator Buffer(Card card, Card buff)
     {
-        float moveSpeed = 9f;
+        float moveSpeed = 15f;
         buff.isCasted= true;
         buff.gameObject.transform.position = new Vector3(buff.gameObject.transform.position.x, buff.gameObject.transform.position.y, -10f);
         foreach (Transform child in buff.gameObject.transform) child.gameObject.SetActive(true);
@@ -278,11 +278,11 @@ public class BigBrain : MonoBehaviour
         }
         if (StartBoard.Count != 0)
         {
+            yield return new WaitForSeconds(1.1f);
             for (int i = 0; i < StartBoard.Count; i++)
             {
                 if (Player.Hp <= 0) field.GetComponent<TurnBasedGameplay>().enemyEndMove();
                 Player.attackUser(StartBoard[i]);
-                Debug.Log(StartBoard[i].gameObject.name);
                 yield return new WaitForSeconds(0.5f);
             }
         }
