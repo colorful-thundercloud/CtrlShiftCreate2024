@@ -4403,15 +4403,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4890571309650381577, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2085655668}
-    - targetCorrespondingSourceObject: {fileID: 4116401672379899883, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 5477064916560248571, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 4762496673540581478, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
 --- !u!1 &415756726
 GameObject:
@@ -5616,15 +5607,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4890571309650381577, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1612996922}
-    - targetCorrespondingSourceObject: {fileID: 4116401672379899883, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 5477064916560248571, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 4762496673540581478, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
 --- !u!4 &507172305 stripped
 Transform:
@@ -6755,7 +6737,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &598859218
@@ -8034,15 +8016,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4890571309650381577, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1598757074}
-    - targetCorrespondingSourceObject: {fileID: 4116401672379899883, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 5477064916560248571, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 4762496673540581478, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
 --- !u!1 &758865200
 GameObject:
@@ -9110,15 +9083,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4890571309650381577, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 360046754}
-    - targetCorrespondingSourceObject: {fileID: 4116401672379899883, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 5477064916560248571, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 4762496673540581478, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
 --- !u!1 &792078379
 GameObject:
@@ -10135,7 +10099,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u0437\u0430\u0449\u0438\u0442\u0430 \u043A\u0443\u0440\u0441\u043E\u0432\u043E\u0439 "
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ddd7520950212654c94d5e980d86f4cd, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -10199,7 +10163,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &938164473
@@ -13475,15 +13439,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4890571309650381577, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1740686231}
-    - targetCorrespondingSourceObject: {fileID: 4116401672379899883, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 5477064916560248571, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 4762496673540581478, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
 --- !u!1 &1283279320
 GameObject:
@@ -17526,7 +17481,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u0432\u0435\u0447\u0435\u0440\u0438\u043D\u043A\u0430"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ddd7520950212654c94d5e980d86f4cd, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -17590,7 +17545,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1810792591
@@ -19453,15 +19408,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4890571309650381577, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1990960348}
-    - targetCorrespondingSourceObject: {fileID: 4116401672379899883, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 5477064916560248571, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 4762496673540581478, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
 --- !u!1 &2008800710
 GameObject:
