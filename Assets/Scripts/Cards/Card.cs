@@ -193,8 +193,8 @@ public class Card : HaveStats
     }
     public void attack(Card toAttack)
     {
+        if (this == null) return;
         used = true;
-
         SoundPlayer.Play(AttackSound);
         StartCoroutine(attackAnimation(0.5f, toAttack));
     }
@@ -207,6 +207,9 @@ public class Card : HaveStats
     {
         startPosition = transform.position;
         Vector3 target = toAttack.gameObject.transform.position;
+        GetComponent<SpriteRenderer>().sortingOrder++;
+        foreach(Transform t in transform) 
+            if (t.TryGetComponent<SpriteRenderer>(out SpriteRenderer spriteRenderer)) spriteRenderer.sortingOrder++;
         while (transform.position != target)
         {
             transform.position = Vector3.MoveTowards(transform.position, target, smoothTime);
@@ -219,6 +222,9 @@ public class Card : HaveStats
             transform.position = Vector3.MoveTowards(transform.position, startPosition, smoothTime);
             yield return new WaitForFixedUpdate();
         }
+        GetComponent<SpriteRenderer>().sortingOrder--;
+        foreach (Transform t in transform)
+            if (t.TryGetComponent<SpriteRenderer>(out SpriteRenderer spriteRenderer)) spriteRenderer.sortingOrder--;
     }
     public bool used
     {
@@ -232,7 +238,7 @@ public class Card : HaveStats
     Coroutine twink;
     private void twinckle(bool isEnabled)
     {
-        if (gameObject == null) return;
+        if (this == null) return;
         if (gameObject.tag == "enemyCard") return;
         if (isEnabled) twink = StartCoroutine(SmoothLight.twinckle(signalLight, 0.75f));
         else if(twink!=null)
