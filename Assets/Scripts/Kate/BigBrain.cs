@@ -169,6 +169,7 @@ public class BigBrain : MonoBehaviour
     void UpplyBuff(Card card, Card buff)
     {
         card.StatsChange(buff.Damage, buff.HP);
+        SoundPlayer.Play(buff.CastSound);
         Field.OnCardBeat?.Invoke(buff);
     }
     Card GetMyHealthlessCard()
