@@ -17,6 +17,7 @@ public class Field : MonoBehaviour
     public static Card SelectedCard;
     private void Start()
     {
+        Time.timeScale = 1f;
         OnCast += ctx => addCard(ctx, false);
         OnEnemyCast += ctx => addCard(ctx, true);
         OnCardBeat += ctx => BeatCard(ctx);
