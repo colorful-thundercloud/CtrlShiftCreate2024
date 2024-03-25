@@ -185,9 +185,10 @@ public class Card : HaveStats
     IEnumerator death()
     {
         //play animation
+        anim.SetTrigger("deathTrigger");
         SoundPlayer.Play(DeathSound);
         this.enabled = false;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         Field.OnCardBeat(this);
     }
     public void attack(Card toAttack)
