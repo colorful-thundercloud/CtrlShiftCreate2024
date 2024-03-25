@@ -116,9 +116,9 @@ public class BigBrain : MonoBehaviour
                     if (myCards[i] == cardsToSpawn[j])
                     {
                         Card card;
-                        if (cardsToSpawn[j].HP >= cardsToSpawn[j].Damage) {card = GetMyHealthlessCard(); if (card == null) card = GetMyWeakestCard();}
+                        if (cardsToSpawn[j].HP >= cardsToSpawn[j].Damage) {card = GetMyHealthlessCard(); if (card == null) card = GetMyHealthyestCard();}
                         //else if (cardsToSpawn[j].HP < 0) card = GetPlayerHealthlessCard(cardsToSpawn[j].HP);
-                        else card = GetMyWeakestCard();
+                        else card = GetMyHealthlessCard();
                         //else if (cardsToSpawn[j].Damage < 0) card = GetPlayerWeakestCard(cardsToSpawn[j].Damage);
                         if (card != null)
                         {
@@ -190,7 +190,7 @@ public class BigBrain : MonoBehaviour
         if (card.HP > 4) card = null;
         return card;
     }
-    Card GetMyWeakestCard()
+    Card GetMyHealthyestCard()
     {
         myCardsOnBoard.Sort((a, b) => b.Damage.CompareTo(a.Damage));//убывание
         Card card;
@@ -199,7 +199,7 @@ public class BigBrain : MonoBehaviour
             card = StartBoard[StartBoard.Count - 1];
             for (int i = 0; i < StartBoard.Count; i++)
             {
-                if (StartBoard[i].Damage < 6 && StartBoard[i].Damage > card.Damage)
+                if (StartBoard[i].Damage < 6 && StartBoard[i].HP > card.HP)
                 {
                     card = StartBoard[i];
                 }
@@ -214,7 +214,7 @@ public class BigBrain : MonoBehaviour
             card = myCardsOnBoard[myCardsOnBoard.Count - 1];
             for (int i = 0; i < myCardsOnBoard.Count; i++)
             {
-                if (myCardsOnBoard[i].Damage < 6 && myCardsOnBoard[i].Damage > card.Damage)
+                if (myCardsOnBoard[i].Damage < 6 && myCardsOnBoard[i].HP > card.HP)
                 {
                     card = myCardsOnBoard[i];
                 }
