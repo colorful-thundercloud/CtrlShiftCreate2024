@@ -650,8 +650,8 @@ MonoBehaviour:
   hp: {fileID: 604569722}
   title: {fileID: 0}
   field: {fileID: 1523470344}
-  winWindow: {fileID: 0}
-  defeatWindow: {fileID: 0}
+  winWindow: {fileID: 1380384132}
+  defeatWindow: {fileID: 1741716943}
   lighting: {fileID: 168682090}
   HP: 9
 --- !u!212 &308797504
@@ -1155,6 +1155,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &743930880 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 294240726813320913, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
+  m_PrefabInstance: {fileID: 1491092209859678187}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &778089194
 GameObject:
   m_ObjectHideFlags: 0
@@ -1528,6 +1539,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1380384132 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1362398529852725160, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
+  m_PrefabInstance: {fileID: 1491092209859678187}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1523470343
 GameObject:
   m_ObjectHideFlags: 0
@@ -1599,7 +1615,7 @@ MonoBehaviour:
   bb: {fileID: 308797501}
   playerHand: {fileID: 401788618}
   enemyHand: {fileID: 1085298350}
-  endMoveBtn: {fileID: 0}
+  endMoveBtn: {fileID: 743930880}
   field: {fileID: 1523470344}
 --- !u!61 &1523470347
 BoxCollider2D:
@@ -1728,6 +1744,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1741716943 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7173449885738342409, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
+  m_PrefabInstance: {fileID: 1491092209859678187}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1998206467
 GameObject:
   m_ObjectHideFlags: 0
@@ -2461,8 +2482,8 @@ MonoBehaviour:
   hp: {fileID: 778089195}
   title: {fileID: 0}
   field: {fileID: 1523470344}
-  winWindow: {fileID: 0}
-  defeatWindow: {fileID: 0}
+  winWindow: {fileID: 1380384132}
+  defeatWindow: {fileID: 1741716943}
   lighting: {fileID: 0}
   HP: 9
 --- !u!212 &1999154785
@@ -2608,6 +2629,70 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 294240726813320913, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 294240726813320913, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 294240726813320913, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1523470346}
+    - target: {fileID: 294240726813320913, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 668536335}
+    - target: {fileID: 294240726813320913, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: playerEndMove
+      objectReference: {fileID: 0}
+    - target: {fileID: 294240726813320913, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: Play
+      objectReference: {fileID: 0}
+    - target: {fileID: 294240726813320913, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TurnBasedGameplay, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 294240726813320913, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: SoundPlayer, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 294240726813320913, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 294240726813320913, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 8300000, guid: 8974121708457eb4ca5f33b9692332fc, type: 3}
+    - target: {fileID: 294240726813320913, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 294240726813320913, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.AudioClip, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 1061343266601967793, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
+      propertyPath: m_text
+      value: "\u0418 \u0442\u0430\u043A, \u0443 \u0432\u0430\u0441 \u043F\u043E\u043B\u0443\u0447\u0438\u043B\u043E\u0441\u044C,
+        \u0432\u0441\u0435\u043C\u0438 \u043F\u0440\u0430\u0432\u0434\u0432\u043C\u0438
+        \u0438 \u043D\u0435\u043F\u0440\u0430\u0432\u0434\u0430\u043C\u0438 \u0432\u0430\u0448\u0430
+        \u0433\u0440\u0443\u043F\u043F\u0430, \u0432 \u0446\u0435\u043B\u043E\u043C
+        \u0437\u0430\u0449\u0438\u0442\u0438\u043B\u0430 \u043A\u0443\u0440\u0441\u0430\u0447,
+        \u0432 \u044D\u0442\u043E\u043C \u0441\u0435\u043C\u0435\u0441\u0442\u0440\u0435,
+        \u0438 \u0443 \u0432\u0430\u0441 \u0435\u0449\u0435 \u0435\u0441\u0442\u044C
+        \u0446\u0435\u043B\u044B\u0445 5 \u043C\u0435\u0441\u044F\u0446\u0435\u0432
+        \u043D\u0430 \u0442\u043E \u0447\u0442\u043E \u0431\u044B \u043F\u043E\u0434\u0433\u043E\u0442\u043E\u0432\u0438\u0442\u044C
+        \u043A\u0443\u0440\u0441\u043E\u0432\u0443\u044E \u043A \u0441\u043B\u0435\u0434\u0443\u044E\u0449\u0435\u043C\u0443
+        \u0441\u0435\u043C\u0435\u0441\u0442\u0440\u0443, \u0432\u044B \u0436\u0435
+        \u0431\u0443\u0434\u0438\u0442\u0435 \u0433\u043E\u0442\u043E\u0432\u0438\u0442\u044C\u0441\u044F,
+        \u0442\u0430\u043A?"
+      objectReference: {fileID: 0}
     - target: {fileID: 1187442070822471478, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -2687,6 +2772,21 @@ PrefabInstance:
     - target: {fileID: 1187442070822471478, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1700412222425817120, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5718686611218642333, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
+      propertyPath: m_text
+      value: "\u041D\u0435\u0441\u043C\u043E\u0442\u0440\u044F \u043D\u0430 \u043E\u0442\u043C\u0435\u043D\u0443
+        \u0432\u0435\u0447\u0435\u0440\u0438\u043D\u043A\u0438 \u0438 \u0442\u0438\u0442\u0430\u043D\u0438\u0447\u0435\u0441\u043A\u0438\u0435
+        \u0443\u0441\u0438\u043B\u0438\u044F \u0432\u0430\u0448\u0435\u0439 \u0433\u0440\u0443\u043F\u043F\u044B
+        \u043F\u043E \u0437\u0430\u0449\u0438\u0442\u0435 \u043A\u0443\u0440\u0441\u0430\u0447\u0430
+        \u043F\u0440\u0435\u043F\u043E\u0434\u0430\u0432\u0430\u0442\u0435\u043B\u0438
+        \u043D\u0430\u0434 \u0432\u0430\u043C\u0438 \u043D\u0435 \u0441\u0436\u0430\u043B\u0438\u043B\u0438\u0441\u044C
+        , \u0430 \u0447\u0442\u043E \u0432\u044B \u0445\u043E\u0442\u0435\u043B\u0438
+        ?"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
