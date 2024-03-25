@@ -137,7 +137,7 @@ public class BigBrain : MonoBehaviour
     {
         float moveSpeed = 9f;
         buff.isCasted= true;
-        buff.gameObject.transform.position = new Vector3(buff.gameObject.transform.position.x, buff.gameObject.transform.position.y, -2f);
+        buff.gameObject.transform.position = new Vector3(buff.gameObject.transform.position.x, buff.gameObject.transform.position.y, -5f);
         foreach (Transform child in buff.gameObject.transform) child.gameObject.SetActive(true);
         Vector3 targetPosition = field.gameObject.transform.position;
         if (!Buff && Vector2.Distance(buff.gameObject.transform.position, targetPosition) > 0.1f)
@@ -169,6 +169,7 @@ public class BigBrain : MonoBehaviour
     void UpplyBuff(Card card, Card buff)
     {
         card.StatsChange(buff.Damage, buff.HP);
+        SoundPlayer.Play(buff.CastSound);
         Field.OnCardBeat?.Invoke(buff);
     }
     Card GetMyHealthlessCard()

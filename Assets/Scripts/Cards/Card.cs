@@ -10,7 +10,7 @@ public class Card : HaveStats
     [SerializeField] SpriteRenderer spriter;
     [SerializeField] Light2D lighting;
     [SerializeField] Light2D signalLight;
-    [SerializeField] AudioClip CastSound, DeathSound, AttackSound, SelectSound;
+    [SerializeField] public AudioClip CastSound, DeathSound, AttackSound, SelectSound;
 
     [SerializeField] private BasicCard card;
     public BasicCard GetBasicCard { get { return card; } }
