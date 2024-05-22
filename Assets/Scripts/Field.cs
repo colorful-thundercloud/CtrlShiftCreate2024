@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Field : MonoBehaviour
 {
@@ -9,18 +10,21 @@ public class Field : MonoBehaviour
     [SerializeField] Hand myHand, enemyHand;
     [SerializeField] Transform myField, enemyField;
     [SerializeField] float distance;
-    List<GameObject> myCards = new List<GameObject>();
-    List<GameObject> enemyCards = new List<GameObject>();
-    public static Action<Card> OnCast;
-    public static Action<Card> OnEnemyCast;
-    public static Action<Card> OnCardBeat;
-    public static Card SelectedCard;
+    [SerializeField] int maxCardCount;
+    public bool CheckCount(bool isEnemy = false)
+    {
+        if(isEnemy) return enemyCards.Count < maxCardCount;
+        else return myCards.Count < maxCardCount;
+    }
+    static List<GameObject> myCards = new List<GameObject>();
+    static List<GameObject> enemyCards = new List<GameObject>();
+    public static UnityEvent<Card> OnCast = new();
+    public static UnityEvent<Card> OnCardBeat = new();
     private void Start()
     {
         Time.timeScale = 1f;
-        OnCast += ctx => addCard(ctx, false);
-        OnEnemyCast += ctx => addCard(ctx, true);
-        OnCardBeat += ctx => BeatCard(ctx);
+        OnCast.AddListener(ctx => addCard(ctx, ctx.CompareTag("enemyCard")));
+        OnCardBeat.AddListener(BeatCard);
     }
     public Transform GetEnemyField()
     {
@@ -66,7 +70,7 @@ public class Field : MonoBehaviour
         }
         Destroy(card.gameObject);
     }
-    public List<Card> GetCards(bool isEnemy)
+    public static List<Card> GetCards(bool isEnemy)
     {
         List<Card> cards;
         if (isEnemy) cards = enemyCards.ConvertAll(n => n.GetComponent<Card>());

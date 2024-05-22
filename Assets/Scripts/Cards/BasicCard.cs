@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public abstract class BasicCard : ScriptableObject
@@ -6,28 +7,31 @@ public abstract class BasicCard : ScriptableObject
     public string Title { get { return title; } }
     [SerializeField] Sprite Avatar;
     public Sprite GetAvatar { get { return Avatar; } }
-    [SerializeField] cardType type;
-    public cardType Type { get { return type; } }
-    [SerializeField] private int hp;
-    public int HP { get { return hp; } }
-    [SerializeField] private int damage;
-    public int Damage { get { return damage; } }
     [SerializeField][TextArea] string description;
     public string Description { get { return description; } }
-    public void changeHP(int value)
-    {
-        hp = value;
-    }
-    public virtual void cast()
-    {
+    protected Action action;
+    /// <summary>
+    /// Инициализирует все компоненты карты
+    /// Срабатывает при появлении карты
+    /// </summary>
+    public abstract void initialize(Card card);
+    /// <summary>
+    /// Проверка доступности способности
+    /// </summary>
+    public bool CheckAction() { return action.CheckAviability(); }
+    /// <summary>
+    /// Действия при выкладывании карты на поле
+    /// </summary>
+    public abstract bool cast();
 
-    }
-    public abstract void OnClick();
-
-    protected int steps = 0;
-    public virtual bool CheckSteps()
-    {
-        return steps != 0;
-    }
-    public enum cardType { Unit, Buff }
+    /// <summary>
+    /// Активация действия выбранной карты на эту
+    /// </summary>
+    public virtual bool OnClick() { return false; }
+    /// <summary>
+    /// Сохранение данной карты при выборе
+    /// </summary>
+    public virtual void OnSelect() { }
+    public virtual IHaveStats TryGetAttack() { return null; }
+    public virtual Health TryGetHealth() { return null; }
 }

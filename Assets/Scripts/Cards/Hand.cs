@@ -8,10 +8,10 @@ public class Hand : MonoBehaviour
     List<GameObject> hand = new List<GameObject>();
     [SerializeField] Transform HandPosition;
     [SerializeField] float distance;
-    [SerializeField] GameObject cardUnitPrefab, cardBuffPrefab;
+    [SerializeField] GameObject cardPrefab;
     private void Start()
     {
-        Field.OnCast += ctx => updateHand();
+        Field.OnCast.AddListener(ctx => updateHand());
     }
     void updateHand()
     {
@@ -42,10 +42,7 @@ public class Hand : MonoBehaviour
         GameObject go;
         if (card != null)
         {
-            if (card.Type == BasicCard.cardType.Unit)
-                go = Instantiate(cardUnitPrefab, HandPosition.position - new Vector3(0, 0, 4), Quaternion.identity);
-            else
-                go = Instantiate(cardBuffPrefab, HandPosition.position - new Vector3(0, 0, 5), Quaternion.identity);
+            go = Instantiate(cardPrefab, HandPosition.position - new Vector3(0, 0, 4), Quaternion.identity);
 
             if (enemy)
             {

@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class BigBrain : MonoBehaviour
 {
-    [SerializeField] Field field;
+    /*[SerializeField] Field field;
     [SerializeField] Hand hand;
     [SerializeField] Users Player;
     List<Card> StartBoard;
@@ -17,9 +17,9 @@ public class BigBrain : MonoBehaviour
     List<Card> playerCards = new();
     public void EnemyTurn()
     {
-        if (Player.Hp <= 0 || GetComponent<Users>().Hp <= 0) field.GetComponent<TurnBasedGameplay>().enemyEndMove();
-        myCardsOnBoard = StartBoard = field.GetCards(true);
-        playerCards = field.GetCards(false);
+        //if (Player.Hp <= 0 || GetComponent<Users>().Hp <= 0) field.GetComponent<TurnBasedGameplay>().enemyEndMove();
+        myCardsOnBoard = StartBoard = Field.GetCards(true);
+        playerCards = Field.GetCards(false);
         myCards = hand.GetCards();
         StartCoroutine(SpawnUnit(WhichCardsSpawnUnit()));
     }
@@ -28,11 +28,11 @@ public class BigBrain : MonoBehaviour
         List<Card> Spawn = new();
         foreach (Card card in myCards)
         {
-            if (card.GetBasicCard.Type == BasicCard.cardType.Unit) Spawn.Add(card);
+            //if (card.GetBasicCard.Type == BasicCard.cardType.Unit) Spawn.Add(card);
         }
         //добавить сортировку по урону или по хп
         if (StrengthInHealth()) myCards.Sort((x, y) => x.HP.CompareTo(y.HP));
-        else myCards.Sort((x, y) => x.Damage.CompareTo(y.Damage));
+        else myCards.Sort((x, y) => x.Damage.CompareTo(y.damage));
         return Spawn;
     }
     bool StrengthInHealth()
@@ -43,12 +43,12 @@ public class BigBrain : MonoBehaviour
         foreach (Card card in playerCards)
         {
             PlHP += card.HP;
-            PlDM += card.Damage;
+            PlDM += card.damage;
         }
         foreach (Card card in myCardsOnBoard)
         {
             HP += card.HP;
-            DM += card.Damage;
+            DM += card.damage;
         }
         if (PlDM >= HP || PlHP < DM) healthMatter = true;
         else healthMatter = false;
@@ -74,7 +74,7 @@ public class BigBrain : MonoBehaviour
                 }
             }
         }
-        myCardsOnBoard = field.GetCards(true);
+        myCardsOnBoard = Field.GetCards(true);
         StartCoroutine(DoBaff(WhichCardsSpawnBaff()));
     }
     IEnumerator MoveCard (Card card)
@@ -101,7 +101,7 @@ public class BigBrain : MonoBehaviour
         List<Card> Spawn = new();
         foreach (Card card in myCards)
         {
-            if (card.GetBasicCard.Type == BasicCard.cardType.Buff) Spawn.Add(card);
+            //if (card.GetBasicCard.Type == BasicCard.cardType.Buff) Spawn.Add(card);
         }
         return Spawn;
     }
@@ -116,7 +116,7 @@ public class BigBrain : MonoBehaviour
                     if (myCards[i] == cardsToSpawn[j])
                     {
                         Card card;
-                        if (cardsToSpawn[j].HP >= cardsToSpawn[j].Damage) {card = GetMyHealthlessCard(); if (card == null) card = GetMyHealthyestCard();}
+                        if (cardsToSpawn[j].HP >= cardsToSpawn[j].damage) {card = GetMyHealthlessCard(); if (card == null) card = GetMyHealthyestCard();}
                         //else if (cardsToSpawn[j].HP < 0) card = GetPlayerHealthlessCard(cardsToSpawn[j].HP);
                         else card = GetMyHealthlessCard();
                         //else if (cardsToSpawn[j].Damage < 0) card = GetPlayerWeakestCard(cardsToSpawn[j].Damage);
@@ -168,7 +168,7 @@ public class BigBrain : MonoBehaviour
     }
     void UpplyBuff(Card card, Card buff)
     {
-        card.StatsChange(buff.Damage, buff.HP);
+        card.StatsChange(buff.damage, buff.HP);
         SoundPlayer.Play(buff.CastSound);
         Field.OnCardBeat?.Invoke(buff);
     }
@@ -184,7 +184,7 @@ public class BigBrain : MonoBehaviour
             }
             if (myCardsOnBoard[i].HP == card.HP)
             {
-                if (myCardsOnBoard[i].Damage > card.Damage) card = myCardsOnBoard[i];
+                if (myCardsOnBoard[i].damage > card.damage) card = myCardsOnBoard[i];
             }
         }
         if (card.HP > 4) card = null;
@@ -192,18 +192,18 @@ public class BigBrain : MonoBehaviour
     }
     Card GetMyHealthyestCard()
     {
-        myCardsOnBoard.Sort((a, b) => b.Damage.CompareTo(a.Damage));//убывание
+        myCardsOnBoard.Sort((a, b) => b.Damage.CompareTo(a.damage));//убывание
         Card card;
         if (StartBoard.Count != 0)
         {
             card = StartBoard[StartBoard.Count - 1];
             for (int i = 0; i < StartBoard.Count; i++)
             {
-                if (StartBoard[i].Damage < 6 && StartBoard[i].HP > card.HP)
+                if (StartBoard[i].damage < 6 && StartBoard[i].HP > card.HP)
                 {
                     card = StartBoard[i];
                 }
-                if (StartBoard[i].Damage == card.Damage)
+                if (StartBoard[i].damage == card.damage)
                 {
                     if (StartBoard[i].HP > card.HP) card = StartBoard[i];
                 }
@@ -214,63 +214,63 @@ public class BigBrain : MonoBehaviour
             card = myCardsOnBoard[myCardsOnBoard.Count - 1];
             for (int i = 0; i < myCardsOnBoard.Count; i++)
             {
-                if (myCardsOnBoard[i].Damage < 6 && myCardsOnBoard[i].HP > card.HP)
+                if (myCardsOnBoard[i].damage < 6 && myCardsOnBoard[i].HP > card.HP)
                 {
                     card = myCardsOnBoard[i];
                 }
-                if (myCardsOnBoard[i].Damage == card.Damage)
+                if (myCardsOnBoard[i].damage == card.damage)
                 {
                     if (myCardsOnBoard[i].HP > card.HP) card = myCardsOnBoard[i];
                 }
             }
         }
-        if (card.Damage > 4) card = null;
+        if (card.damage > 4) card = null;
         return card;
     }
     void StashCard()
     {
-        /*myCards = hand.GetCards();
+        *//*myCards = hand.GetCards();
         myCards.Sort((a, b) => a.Damage.CompareTo(b.Damage));//возрастание
         for (int i = myCards.Count; i > 0; i--)
         {
             hand.BeatCard(myCards[0]);
             myCards.Remove(myCards[0]);
         }
-        Debug.Log("stash");*/
+        Debug.Log("stash");*//*
     }
     IEnumerator Attack(List<Card> StartBoard)
     {
         yield return new WaitForSeconds(1f);
-        StartBoard.Sort((a, b) => a.Damage.CompareTo(b.Damage));//в возрастании
+        StartBoard.Sort((a, b) => a.Damage.CompareTo(b.damage));//в возрастании
         playerCards.Sort((a, b) => b.HP.CompareTo(a.HP));//в убывании
         while (StartBoard.Count != 0)
         {
             if (playerCards.Count == 0) break;
             Card strongestCard = StrongestPlayerCard();
             int CanBeat = -1;
-            for (int i = 0; i < StartBoard.Count; i++) if (StartBoard[i].Damage > strongestCard.HP) {CanBeat = i; break;}
+            for (int i = 0; i < StartBoard.Count; i++) if (StartBoard[i].damage > strongestCard.HP) {CanBeat = i; break;}
             if (CanBeat != -1)
             {
-                if (StartBoard[CanBeat].Damage >= strongestCard.HP) playerCards.Remove(strongestCard);
-                StartBoard[CanBeat].attack(strongestCard);
+                if (StartBoard[CanBeat].damage >= strongestCard.HP) playerCards.Remove(strongestCard);
+                //StartBoard[CanBeat].attack(strongestCard);
                 StartBoard.Remove(StartBoard[CanBeat]);
                 yield return new WaitForSeconds(0.5f);
                 continue;
             }
             Card healthlessCard = HealthlessPlayerCard();
-            for (int i = 0; i < StartBoard.Count; i++) if (StartBoard[i].Damage > healthlessCard.HP) {CanBeat = i; break;}
+            for (int i = 0; i < StartBoard.Count; i++) if (StartBoard[i].damage > healthlessCard.HP) {CanBeat = i; break;}
             if (CanBeat != -1)
             {
-                if (StartBoard[CanBeat].Damage >= healthlessCard.HP) playerCards.Remove(healthlessCard);
-                StartBoard[CanBeat].attack(healthlessCard);
+                if (StartBoard[CanBeat].damage >= healthlessCard.HP) playerCards.Remove(healthlessCard);
+                //StartBoard[CanBeat].attack(healthlessCard);
                 StartBoard.Remove(StartBoard[CanBeat]);
                 yield return new WaitForSeconds(0.5f);
                 continue;
             }
             else if (StartBoard.Count > 0)
             {
-                if (StartBoard[0].Damage >= strongestCard.HP) playerCards.Remove(strongestCard);
-                StartBoard[0].attack(strongestCard);
+                if (StartBoard[0].damage >= strongestCard.HP) playerCards.Remove(strongestCard);
+                //StartBoard[0].attack(strongestCard);
                 StartBoard.Remove(StartBoard[0]);
                 yield return new WaitForSeconds(0.5f);
                 continue;
@@ -281,8 +281,8 @@ public class BigBrain : MonoBehaviour
             yield return new WaitForSeconds(1.1f);
             for (int i = 0; i < StartBoard.Count; i++)
             {
-                if (Player.Hp <= 0) field.GetComponent<TurnBasedGameplay>().enemyEndMove();
-                Player.attackUser(StartBoard[i]);
+                //if (Player.Hp <= 0) field.GetComponent<TurnBasedGameplay>().enemyEndMove();
+                //Player.attackUser(StartBoard[i]);
                 yield return new WaitForSeconds(0.5f);
             }
         }
@@ -295,7 +295,7 @@ public class BigBrain : MonoBehaviour
         Card card = playerCards[0];
         for (int i = 0; i < playerCards.Count; i++)
         {
-            if (card.Damage < playerCards[i].Damage) card = playerCards[i];
+            if (card.damage < playerCards[i].damage) card = playerCards[i];
         }
         return card;
     }
@@ -308,5 +308,5 @@ public class BigBrain : MonoBehaviour
             if (card.HP > playerCards[i].HP) card = playerCards[i];
         }
         return card;
-    }
+    }*/
 }

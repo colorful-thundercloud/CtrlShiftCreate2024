@@ -24,8 +24,8 @@ public class CardUI : MonoBehaviour
         if (image == null) return;
         image.sprite = card.GetAvatar;
         title.text = card.Title;
-        damage.text = card.Damage.ToString();
-        hp.text = card.HP.ToString();
+        //damage.text = card.Damage.ToString();
+        //hp.text = card.HP.ToString();
         description.text = card.Description;
         gameObject.SetActive(true);
         StartCoroutine(deactivate(4f));

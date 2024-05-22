@@ -4,60 +4,44 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-public class Users : HaveStats
+public class Users : MonoBehaviour
 {
     [SerializeField] Field field;
     [SerializeField] GameObject winWindow, defeatWindow;
     [SerializeField] Light2D lighting;
-    [SerializeField] int HP;
-    public int Hp { get { return currentHP; } }
+
+    [SerializeField] Health hp;
     private void Start()
     {
-        currentHP = HP;
-        hp.text = HP.ToString();
+        //hp = new();
     }
     private bool checkAttack()
     {
-        if (gameObject.tag == "enemyCard") return field.GetCards(true).Count == 0;
-        else return field.GetCards(false).Count == 0;
+        if (gameObject.tag == "enemyCard") return Field.GetCards(true).Count == 0;
+        else return Field.GetCards(false).Count == 0;
     }
     private void OnMouseEnter()
     {
-        if (Field.SelectedCard == null) return;
+        if (Card.Selected == null) return;
         if (gameObject.tag == "myCard") return;
         lighting.color = Color.red;
         StartCoroutine(SmoothLight.smoothLight(lighting, 0.25f));
     }
     private void OnMouseExit()
     {
-        if (Field.SelectedCard == null) return;
+        if (Card.Selected == null) return;
         if (gameObject.tag == "myCard") return;
         StartCoroutine(SmoothLight.smoothLight(lighting, 0.25f, false));
     }
     private void OnMouseDown()
     {
-        if (Field.SelectedCard == null) return;
+        if (Card.Selected == null) return;
         if(checkAttack())
         {
-            Field.SelectedCard.attackUser(this);
-            Field.SelectedCard.used = true;
-            Field.SelectedCard.turnOfLight();
-            Field.SelectedCard = null;
+            //Card.Selected.attack(this);
         }
     }
-    public void attackUser(Card attacker)
-    {
-        if (checkAttack())
-        {
-            attacker.attackUser(this);
-            StartCoroutine(SmoothLight.smoothLight(lighting, 0.25f, false));
-        }
-    }
-    public override void StatsChange(int atk = 0, int health = 0)
-    {
-        base.StatsChange(atk, health);
-        if (currentHP <= 0) Death();
-    }
+    public Health GetHealth { get { return hp; } }
     void Death()
     {
         Time.timeScale = 0;

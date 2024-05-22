@@ -2,121 +2,156 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.Burst.Intrinsics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-public class Card : HaveStats
+public class Card: MonoBehaviour
 {
-    [SerializeField] SpriteRenderer spriter;
-    [SerializeField] Light2D lighting;
-    [SerializeField] Light2D signalLight;
-    [SerializeField] public AudioClip CastSound, DeathSound, AttackSound, SelectSound;
+    [SerializeField] public TMP_Text damage;
+    [SerializeField] public TMP_Text health;
+    [SerializeField] public TMP_Text title;
 
-    [SerializeField] private BasicCard card;
-    public BasicCard GetBasicCard { get { return card; } }
-    public bool isCasted = false;
+    [SerializeField] SpriteRenderer spriter;
+    [SerializeField] public Light2D lighting;
+    [SerializeField] Light2D signalLight;
+
+    [SerializeField] public AudioClip CastSound, SelectSound;
+
+    [SerializeField] private BasicCard basicCard;
+    public BasicCard GetBasicCard { get { return basicCard; } }
     Camera cam;
-    Animator anim;
+    
+    public static Card otherCard { get; private set; }
+    private static Action selected;
+    public static Action Selected 
+    { 
+        set 
+        { 
+            if (value == null)
+            {
+                selected?.card.turnOfLight();
+            }
+            else
+            {
+                if (!value.card.basicCard.CheckAction()) return;
+                if(selected!=value) selected?.card.turnOfLight();
+
+                SoundPlayer.Play(value.card.SelectSound);
+                value.card.lighting.color = Color.green;
+                value.card.StartCoroutine(SmoothLight.smoothLight(value.card.lighting, 0.25f));
+                value.card.twinckle(false);
+            }
+            selected = value;
+        }
+        get { return selected; }
+    }
+
+    bool isCasting = false;
+    public bool isCasted = false;
+    Field field = null;
+    bool myTurn = true;
+    Coroutine runningFunc;
     Vector3 startPosition, startScale;
     public void SavePosition()=> startPosition = transform.position;
-    public bool canBuff = false;
-    private bool Used = true;
-    public Field field = null;
-    public int HP { get { return currentHP; } }
-    public int Damage { get { return currentAtk; } }
-    Card otherCard;
     private void Start()
     {
-        startPosition = transform.position;
         cam = Camera.main;
-        anim = GetComponent<Animator>();
         startScale = transform.localScale;
-        currentHP = card.HP;
-        currentAtk = card.Damage;
-        title.text = card.Title.ToString();
-
-        spriter.sprite = card.GetAvatar;
-        updText();
+        startPosition = transform.position;
+        basicCard.initialize(this);
+        TurnBasedGameplay.OnEndTurn.AddListener(isEnemyTurn =>
+        {
+            myTurn = !isEnemyTurn;
+            if (myTurn) twinckle(basicCard.CheckAction());
+            else twinckle(false);
+        });
     }
-    public void SetCard(BasicCard newCard) => card = newCard;
-    bool isCasting = false;
-    public bool canDrag = false;
-    Coroutine runningFunc;
-    private void OnMouseEnter()
+    public void SetCard(BasicCard newCard)
     {
-        if (Field.SelectedCard == this) return;
+        basicCard = newCard;
+        title.text = basicCard.Title.ToString();
+        spriter.sprite = basicCard.GetAvatar;
+    }
+    private void hover()
+    {
         twinckle(false);
         lighting.color = (gameObject.tag == "enemyCard") ? Color.red : Color.blue;
         StartCoroutine(SmoothLight.smoothLight(lighting, 0.25f));
     }
+    private void OnMouseEnter()
+    {
+        if (Selected == null || Selected.card != this) hover();
+    }
     private void OnMouseExit()
     {
-        if(Field.SelectedCard!=this) turnOfLight();
+        if (Selected == null || Selected.card != this)
+        {
+            turnOfLight();
+            if (isCasted && myTurn) twinckle(basicCard.CheckAction());
+        }
     }
     public void turnOfLight() 
     {
         if (lighting == null) return;
         StartCoroutine(SmoothLight.smoothLight(lighting, 0.25f,false));
-        twinckle(!used);
+        if (selected?.card == this) twinckle(selected.CheckAviability());
     }
     private void OnMouseDown()
     {
-        if(gameObject.CompareTag("enemyCard")&&isCasted) CardUI.OnOpenCard(card);
-        else if(gameObject.CompareTag("myCard")) CardUI.OnOpenCard(card);
+        if (runningFunc != null) StopCoroutine(runningFunc);
+        if (myTurn) runningFunc = StartCoroutine(SmoothSizeChange(new Vector3(1, 1, 1)));
+
+        // все карты
         if (isCasted)
         {
-            if (gameObject.tag == "myCard" )
+            CardUI.OnOpenCard(basicCard);
+            if (selected != null) if (selected.card.basicCard.OnClick()) return;
+        }
+
+        if (gameObject.CompareTag("enemyCard")) return;
+        // только карты игрока
+
+        CardUI.OnOpenCard(basicCard);
+
+        if (isCasted)
+        {
+            if (selected?.card != this && myTurn)//////////условие говно
             {
-                if (used) return;
-                SoundPlayer.Play(SelectSound);
-                if (Field.SelectedCard != this) Field.SelectedCard?.turnOfLight();
-                twinckle(false);
-                Field.SelectedCard = this;
-                lighting.color = Color.green;
-                StartCoroutine(SmoothLight.smoothLight(lighting, 0.25f));
-            }
-            else if (gameObject.tag == "enemyCard")
-            {
-                Field.SelectedCard?.attack(this);
-                Field.SelectedCard?.turnOfLight();
-                Field.SelectedCard = null;
+                basicCard.OnSelect();
             }
         }
-        if (runningFunc != null ) StopCoroutine(runningFunc);
-        if (canDrag) runningFunc = StartCoroutine(SmoothSizeChange(new Vector3(1, 1, 1)));
+    }
+    void cast()
+    {
+        isCasting = false;
+        isCasted = true;
+        SoundPlayer.Play(CastSound);
+        Field.OnCast?.Invoke(this);
+        transform.localScale = Vector3.one;
+        //foreach (Transform t in transform) t.gameObject.SetActive(true);
+    }
+    void backToHand()
+    {
+        isCasting = false;
+        if (runningFunc != null) StopCoroutine(runningFunc);
+        runningFunc = StartCoroutine(SmoothSizeChange(startScale, true));
+        transform.position = startPosition;
     }
     public void OnMouseUp()
     {
-        isCasting = false;
         if (isCasted) return;
-
-        if (card.Type == BasicCard.cardType.Unit && field?.GetCards(gameObject.CompareTag("enemyCard")).Count < 3)
-        {
-            isCasted = true;
-            SoundPlayer.Play(CastSound);
-            if (gameObject.tag != "enemyCard") Field.OnCast?.Invoke(this);
-            foreach (Transform t in transform) t.gameObject.SetActive(true);
-            transform.localScale = Vector3.one;
-        }
-        else if (canBuff && otherCard.CompareTag(gameObject.tag) && otherCard.isCasted)
-        {
-            canBuff = false;
-            canDrag = false;
-            otherCard.StatsChange(currentAtk, currentHP);
-            SoundPlayer.Play(CastSound);
-            Field.OnCardBeat?.Invoke(this);
-        }
+        if(field==null||!field.CheckCount()) backToHand();
         else
         {
-            if (runningFunc != null) StopCoroutine(runningFunc);
-            runningFunc = StartCoroutine(SmoothSizeChange(startScale, true));
-            transform.position = startPosition;
+            if(basicCard.cast())cast();
+            else backToHand();
         }
     }
-    private void OnMouseDrag()
+    private void OnMouseDrag() //настроить доступность по экшену
     {
-        if (isCasted && !canDrag && gameObject.CompareTag("enemyCard")) isCasting = false;
-        else if (!isCasted && canDrag)
+        //if (isCasted && !myTurn && gameObject.CompareTag("enemyCard")) isCasting = false;
+        if (!isCasted && myTurn)
         {
             if (!isCasting)
             {
@@ -138,36 +173,25 @@ public class Card : HaveStats
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("field")) field = collision.GetComponent<Field>();
-        if (collision.CompareTag(gameObject.tag) && card.Type == BasicCard.cardType.Buff)
-        {
-            otherCard = collision.gameObject.GetComponent<Card>();
-            if (otherCard.GetBasicCard.Type != BasicCard.cardType.Buff && otherCard.field != null)
-                canBuff = true;
-        }
+        if (collision.TryGetComponent<Card>(out Card card)) if(card.isCasted) otherCard = card;
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("field")) field = null;
-        if (collision.CompareTag(gameObject.tag) && card.Type == BasicCard.cardType.Buff)
-        {
-            otherCard = collision.gameObject.GetComponent<Card>();
-            if (otherCard.GetBasicCard.Type != BasicCard.cardType.Buff && otherCard.field != null)
-                canBuff = false;
-            otherCard = null;
-        }
+        if (collision.TryGetComponent<Card>(out Card card)) if (card==otherCard) otherCard = null;
     }
     private void OnTriggerStay2D(Collider2D collision) {
-        if (collision.CompareTag(gameObject.tag) && card.Type == BasicCard.cardType.Buff)
+        /*if (collision.CompareTag(gameObject.tag) && card.Type == BasicCard.cardType.Buff)
         {
             otherCard = collision.gameObject.GetComponent<Card>();
             if (otherCard.GetBasicCard.Type != BasicCard.cardType.Buff && otherCard.field != null)
                 canBuff = true;
-        }
+        }*/
     }
 
     IEnumerator SmoothSizeChange(Vector3 targetScale, bool grow = false)
     {
-        if (canDrag)
+        if (myTurn)
         {
             if (grow && transform.localScale.x < targetScale.x) transform.localScale += new Vector3(0.05f, 0.05f, 0);
             else if (!grow && transform.localScale.x > targetScale.x) transform.localScale -= new Vector3(0.05f, 0.05f, 0);
@@ -177,66 +201,8 @@ public class Card : HaveStats
             runningFunc = StartCoroutine(SmoothSizeChange(targetScale, grow));
         }
     }
-    public override void StatsChange(int atk = 0, int health = 0)
-    {
-        base.StatsChange(atk, health);
-        if (currentHP <= 0) StartCoroutine(death());
-    }
-    IEnumerator death()
-    {
-        //play animation
-        anim.SetTrigger("deathTrigger");
-        SoundPlayer.Play(DeathSound);
-        this.enabled = false;
-        yield return new WaitForSeconds(1f);
-        Field.OnCardBeat(this);
-    }
-    public void attack(Card toAttack)
-    {
-        if (this == null) return;
-        used = true;
-        SoundPlayer.Play(AttackSound);
-        StartCoroutine(attackAnimation(0.5f, toAttack));
-    }
-    public void attackUser(Users toAttack)
-    {
-        SoundPlayer.Play(AttackSound);
-        StartCoroutine(attackAnimation(0.5f, toAttack));
-    }
-    IEnumerator attackAnimation(float smoothTime, HaveStats toAttack)
-    {
-        startPosition = transform.position;
-        Vector3 target = toAttack.gameObject.transform.position;
-        GetComponent<SpriteRenderer>().sortingOrder++;
-        foreach(Transform t in transform) 
-            if (t.TryGetComponent<SpriteRenderer>(out SpriteRenderer spriteRenderer)) spriteRenderer.sortingOrder++;
-        while (transform.position != target)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, target, smoothTime);
-            yield return new WaitForFixedUpdate();
-        }
-        toAttack.StatsChange(0, -currentAtk);
-        target = startPosition;
-        while (transform.position != target)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, startPosition, smoothTime);
-            yield return new WaitForFixedUpdate();
-        }
-        GetComponent<SpriteRenderer>().sortingOrder--;
-        foreach (Transform t in transform)
-            if (t.TryGetComponent<SpriteRenderer>(out SpriteRenderer spriteRenderer)) spriteRenderer.sortingOrder--;
-    }
-    public bool used
-    {
-        get { return Used; }
-        set
-        {
-            Used = value;
-            twinckle(!used);
-        }
-    }
     Coroutine twink;
-    private void twinckle(bool isEnabled)
+    public void twinckle(bool isEnabled)
     {
         if (this == null) return;
         if (gameObject.tag == "enemyCard") return;

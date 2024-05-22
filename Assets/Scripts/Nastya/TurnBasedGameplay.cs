@@ -1,16 +1,16 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class TurnBasedGameplay : MonoBehaviour
 {
-    public bool playerTurn = true;
-    public BigBrain bb;
     public Hand playerHand, enemyHand;
     public Button endMoveBtn;
-    public Field field;
+    public static UnityEvent<bool> OnEndTurn = new();
     void Start()
     {
         Invoke("DrawCards", 0.5f);
+        OnEndTurn.AddListener(onNextTurn);
     }
 
     void DrawCards()
@@ -18,28 +18,33 @@ public class TurnBasedGameplay : MonoBehaviour
         playerHand.DrawCards();
         enemyHand.DrawCards(true);
         enemyEndMove();
-    }    
+    }
+
+    public void NextTurn(bool isEnemyTurn) => OnEndTurn.Invoke(isEnemyTurn);
+    void onNextTurn(bool isEnemyTurn)
+    {
+        endMoveBtn.interactable = !isEnemyTurn;
+        Card.Selected = null;
+    }
 
     public void playerEndMove()
     {
-        // начало хода врага
-        endMoveBtn.interactable = false;
+        /*// начало хода врага
+        
         foreach (Card card in playerHand.GetCards())
             card.canDrag = false;
 
-        if (field.GetCards(true).Count > 0)
-            foreach (Card card in field.GetCards(true))
+        if (Field.GetCards(true).Count > 0)
+            foreach (Card card in Field.GetCards(true))
                 card.used = false;
 
-        if (field.GetCards(false).Count > 0)
-            foreach (Card card in field.GetCards(false))
+        if (Field.GetCards(false).Count > 0)
+            foreach (Card card in Field.GetCards(false))
                 card.used = true;
-
-        Field.SelectedCard?.turnOfLight();
-        Field.SelectedCard = null;
+        Card.Selected = null;
         enemyHand.DrawCards(true);
-        
-        bb.EnemyTurn();
+
+        bb.EnemyTurn();*/
     }
 
     public void enemyEndMove()
@@ -48,12 +53,12 @@ public class TurnBasedGameplay : MonoBehaviour
         endMoveBtn.interactable = true;
         playerHand.DrawCards();
 
-        foreach (Card card in playerHand.GetCards())
+        /*foreach (Card card in playerHand.GetCards())
             card.canDrag = true;
 
-        if (GetComponent<Field>().GetCards(false).Count > 0)
-            foreach (Card card in field.GetCards(false))
-                card.used = false;
+        if (Field.GetCards(false).Count > 0)
+            foreach (Card card in Field.GetCards(false))
+                card.used = false;*/
 
     }
 }
