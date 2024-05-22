@@ -860,20 +860,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: {fileID: 7651285416438748501}
-  hp: {fileID: 8292840901566565420}
+  health: {fileID: 8292840901566565420}
   title: {fileID: 983335562413830961}
   spriter: {fileID: 868811696282032799}
   lighting: {fileID: 1564628615307975834}
   signalLight: {fileID: 7073640693868358652}
   CastSound: {fileID: 8300000, guid: 24cf2b51b1e38b544b5dcbe567876773, type: 3}
-  DeathSound: {fileID: 8300000, guid: 6c7a9802f0f492f459572d0942a03efb, type: 3}
-  AttackSound: {fileID: 8300000, guid: f270f2dd380d848429784d8818333c87, type: 3}
   SelectSound: {fileID: 8300000, guid: 8974121708457eb4ca5f33b9692332fc, type: 3}
-  card: {fileID: 0}
+  basicCard: {fileID: 0}
   isCasted: 0
-  canBuff: 0
-  field: {fileID: 0}
-  canDrag: 0
 --- !u!95 &7848098203260924149
 Animator:
   serializedVersion: 5

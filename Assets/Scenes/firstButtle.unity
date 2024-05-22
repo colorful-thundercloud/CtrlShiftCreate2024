@@ -586,9 +586,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe24935d205324e48830ea34c40e70bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  field: {fileID: 1523470344}
-  hand: {fileID: 1085298350}
-  Player: {fileID: 1999154784}
 --- !u!61 &308797502
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -646,14 +643,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13b8789b4e3d0dc4ea9773a40a445f28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: {fileID: 0}
-  hp: {fileID: 5610212795892792592}
-  title: {fileID: 0}
   field: {fileID: 1523470344}
   winWindow: {fileID: 2019098523272512511}
   defeatWindow: {fileID: 6615235663157918523}
   lighting: {fileID: 168682090}
-  HP: 9
+  hp:
+    MaxHP: 0
+    DeathSound: {fileID: 0}
 --- !u!212 &308797504
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -758,8 +754,7 @@ MonoBehaviour:
   deckController: {fileID: 401788619}
   HandPosition: {fileID: 401788621}
   distance: 3.1
-  cardUnitPrefab: {fileID: 4890571309650381577, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
-  cardBuffPrefab: {fileID: 2044227114700308559, guid: 1cf0b9780eb2ac44dac08860c1b6b430, type: 3}
+  cardPrefab: {fileID: 4890571309650381577, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
 --- !u!114 &401788619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1102,8 +1097,7 @@ MonoBehaviour:
   deckController: {fileID: 1085298352}
   HandPosition: {fileID: 1085298351}
   distance: 1
-  cardUnitPrefab: {fileID: 4890571309650381577, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
-  cardBuffPrefab: {fileID: 2044227114700308559, guid: 1cf0b9780eb2ac44dac08860c1b6b430, type: 3}
+  cardPrefab: {fileID: 4890571309650381577, guid: e959619375579fb4a96bfd49c5d4a8b3, type: 3}
 --- !u!4 &1085298351
 Transform:
   m_ObjectHideFlags: 0
@@ -1395,6 +1389,7 @@ MonoBehaviour:
   myField: {fileID: 2141492097}
   enemyField: {fileID: 2116132364}
   distance: 2
+  maxCardCount: 3
 --- !u!4 &1523470345
 Transform:
   m_ObjectHideFlags: 0
@@ -1424,12 +1419,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dc440f8c704ac84aac6c397cc591953, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTurn: 1
-  bb: {fileID: 308797501}
   playerHand: {fileID: 401788618}
   enemyHand: {fileID: 1085298350}
   endMoveBtn: {fileID: 1999006083696787375}
-  field: {fileID: 1523470344}
 --- !u!61 &1523470347
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2185,14 +2177,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13b8789b4e3d0dc4ea9773a40a445f28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: {fileID: 0}
-  hp: {fileID: 1208992307}
-  title: {fileID: 0}
   field: {fileID: 1523470344}
   winWindow: {fileID: 2019098523272512511}
   defeatWindow: {fileID: 6615235663157918523}
   lighting: {fileID: 0}
-  HP: 9
+  hp:
+    MaxHP: 0
+    DeathSound: {fileID: 0}
 --- !u!212 &1999154785
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5208,15 +5199,15 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1523470346}
         m_TargetAssemblyTypeName: TurnBasedGameplay, Assembly-CSharp
-        m_MethodName: playerEndMove
-        m_Mode: 1
+        m_MethodName: NextTurn
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!1 &2017337184967550174
 GameObject:
@@ -8921,7 +8912,7 @@ GameObject:
   - component: {fileID: 349291979470590895}
   - component: {fileID: 1999006083696787375}
   m_Layer: 5
-  m_Name: netTurnButton
+  m_Name: nextTurnButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
