@@ -16,7 +16,7 @@ public abstract class Action
     [Header("ћаксимальное количество активаций за ход")]
     public int maxSteps;
 
-    protected int steps;
+    public int steps { get; set; }
     public Card card { get; set; }
 
     public abstract void Initialize(Card card);

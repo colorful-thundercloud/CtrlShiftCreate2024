@@ -8,6 +8,7 @@ using UnityEngine.Rendering.Universal;
 
 public class Card: MonoBehaviour
 {
+    [Header("Поля для данных карт")]
     [SerializeField] public TMP_Text damage;
     [SerializeField] public TMP_Text health;
     [SerializeField] public TMP_Text title;
@@ -95,8 +96,6 @@ public class Card: MonoBehaviour
     {
         if (lighting == null) return;
         StartCoroutine(SmoothLight.smoothLight(lighting, 0.25f,false));
-        if(myTurn) twinckle(GetBasicCard.GetAction().CheckAviability());
-        else twinckle(false);
     }
     private void OnMouseDown()
     {
@@ -150,9 +149,8 @@ public class Card: MonoBehaviour
             else backToHand();
         }
     }
-    private void OnMouseDrag() //настроить доступность по экшену
+    private void OnMouseDrag()
     {
-        //if (isCasted && !myTurn && gameObject.CompareTag("enemyCard")) isCasting = false;
         if (!isCasted && myTurn)
         {
             if (!isCasting)
@@ -181,14 +179,6 @@ public class Card: MonoBehaviour
     {
         if (collision.CompareTag("field")) field = null;
         if (collision.TryGetComponent<Card>(out Card card)) if (card==otherCard) otherCard = null;
-    }
-    private void OnTriggerStay2D(Collider2D collision) {
-        /*if (collision.CompareTag(gameObject.tag) && card.Type == BasicCard.cardType.Buff)
-        {
-            otherCard = collision.gameObject.GetComponent<Card>();
-            if (otherCard.GetBasicCard.Type != BasicCard.cardType.Buff && otherCard.field != null)
-                canBuff = true;
-        }*/
     }
 
     IEnumerator SmoothSizeChange(Vector3 targetScale, bool grow = false)

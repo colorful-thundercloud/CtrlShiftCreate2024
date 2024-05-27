@@ -18,7 +18,6 @@ public class Attack: Action, IHaveStats
     public override void Initialize(Card card)
     {
         this.card = card;
-        reloadSteps();
         TurnBasedGameplay.OnEndTurn.AddListener(isEnemy=>reloadSteps());
         currentDamage = damage;
         ui = card.damage;
@@ -42,6 +41,7 @@ public class Attack: Action, IHaveStats
 
     public override void Directed(Card target)
     {
+        steps--;
         this.card.StartCoroutine(attackAnimation(0.5f, target.GetBasicCard.TryGetHealth(), target));
         Card.Selected = null;
         SoundPlayer.Play(AttackSound);

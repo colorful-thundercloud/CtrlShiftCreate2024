@@ -12,6 +12,7 @@ public class UnitCard : BasicCard
     {
         action = attack;
         action.Initialize(card);
+        action.steps = 0;
         hp.Initialize(action.card, action.card.GetComponent<Animator>());
 
     }
