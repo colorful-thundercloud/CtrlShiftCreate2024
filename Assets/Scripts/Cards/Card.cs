@@ -23,24 +23,24 @@ public class Card: MonoBehaviour
     Camera cam;
     
     public static Card otherCard { get; private set; }
-    private static Action selected;
-    public static Action Selected 
+    private static Card selected;
+    public static Card Selected 
     { 
         set 
         { 
             if (value == null)
             {
-                selected?.card.turnOfLight();
+                selected?.turnOfLight();
             }
             else
             {
-                if (!value.card.basicCard.CheckAction()) return;
-                if(selected!=value) selected?.card.turnOfLight();
+                if (!value.GetBasicCard.CheckAction()) return;
+                selected?.turnOfLight();
 
-                SoundPlayer.Play(value.card.SelectSound);
-                value.card.lighting.color = Color.green;
-                value.card.StartCoroutine(SmoothLight.smoothLight(value.card.lighting, 0.25f));
-                value.card.twinckle(false);
+                SoundPlayer.Play(value.SelectSound);
+                value.lighting.color = Color.green;
+                value.StartCoroutine(SmoothLight.smoothLight(value.lighting, 0.25f));
+                value.twinckle(false);
             }
             selected = value;
         }
@@ -59,7 +59,6 @@ public class Card: MonoBehaviour
         cam = Camera.main;
         startScale = transform.localScale;
         startPosition = transform.position;
-        basicCard.initialize(this);
         TurnBasedGameplay.OnEndTurn.AddListener(isEnemyTurn =>
         {
             myTurn = !isEnemyTurn;
@@ -70,6 +69,7 @@ public class Card: MonoBehaviour
     public void SetCard(BasicCard newCard)
     {
         basicCard = newCard;
+        basicCard.initialize(this);
         title.text = basicCard.Title.ToString();
         spriter.sprite = basicCard.GetAvatar;
     }
@@ -81,11 +81,11 @@ public class Card: MonoBehaviour
     }
     private void OnMouseEnter()
     {
-        if (Selected == null || Selected.card != this) hover();
+        if (Selected != this) hover();
     }
     private void OnMouseExit()
     {
-        if (Selected == null || Selected.card != this)
+        if (Selected != this)
         {
             turnOfLight();
             if (isCasted && myTurn) twinckle(basicCard.CheckAction());
@@ -95,7 +95,8 @@ public class Card: MonoBehaviour
     {
         if (lighting == null) return;
         StartCoroutine(SmoothLight.smoothLight(lighting, 0.25f,false));
-        if (selected?.card == this) twinckle(selected.CheckAviability());
+        if(myTurn) twinckle(GetBasicCard.GetAction().CheckAviability());
+        else twinckle(false);
     }
     private void OnMouseDown()
     {
@@ -106,7 +107,7 @@ public class Card: MonoBehaviour
         if (isCasted)
         {
             CardUI.OnOpenCard(basicCard);
-            if (selected != null) if (selected.card.basicCard.OnClick()) return;
+            if (selected != null) if (selected.GetBasicCard.OnClick()) return;
         }
 
         if (gameObject.CompareTag("enemyCard")) return;
@@ -116,9 +117,10 @@ public class Card: MonoBehaviour
 
         if (isCasted)
         {
-            if (selected?.card != this && myTurn)//////////условие говно
+            if (selected != this && myTurn)
             {
-                basicCard.OnSelect();
+                Selected = this;
+                GetBasicCard.OnSelect();
             }
         }
     }

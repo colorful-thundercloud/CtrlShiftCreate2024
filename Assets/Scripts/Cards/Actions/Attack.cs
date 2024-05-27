@@ -18,6 +18,7 @@ public class Attack: Action, IHaveStats
     public override void Initialize(Card card)
     {
         this.card = card;
+        reloadSteps();
         TurnBasedGameplay.OnEndTurn.AddListener(isEnemy=>reloadSteps());
         currentDamage = damage;
         ui = card.damage;

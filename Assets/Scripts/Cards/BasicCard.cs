@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
@@ -19,6 +20,7 @@ public abstract class BasicCard : ScriptableObject
     /// ѕроверка доступности способности
     /// </summary>
     public bool CheckAction() { return action.CheckAviability(); }
+    public Action GetAction() { return action; }
     /// <summary>
     /// ƒействи€ при выкладывании карты на поле
     /// </summary>

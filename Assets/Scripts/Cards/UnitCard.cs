@@ -15,14 +15,10 @@ public class UnitCard : BasicCard
         hp.Initialize(action.card, action.card.GetComponent<Animator>());
 
     }
-    public override void OnSelect()
-    {
-        Card.Selected = action;
-    }
     public override bool OnClick()
     {
-        if (!action.CheckAlies(action.card)) return false;
-        Card.Selected.Directed(action.card);    
+        if (!Card.Selected.GetBasicCard.GetAction().CheckAlies(action.card)) return false;
+        Card.Selected.GetBasicCard.GetAction().Directed(action.card);    
         return true;
     }
     public override bool cast() { return true; }
