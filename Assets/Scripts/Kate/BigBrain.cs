@@ -7,8 +7,51 @@ using UnityEngine;
 
 public class BigBrain : MonoBehaviour
 {
-    /*[SerializeField] Field field;
+    [SerializeField] float CardSpeed;
     [SerializeField] Hand hand;
+    [SerializeField] Field field;
+
+    List<Card> myCardsOnBoard, playerCards, myCards;
+
+    private void Start()
+    {
+        TurnBasedGameplay.OnEndTurn.AddListener(onNewTurn);
+    }
+    void onNewTurn(bool isEnemy)
+    {
+        if (!isEnemy) return;
+
+        playerCards = Field.GetCards(false);
+        myCards = hand.GetCards();
+
+        StartCoroutine(SpawnUnit(myCards));
+
+    }
+    IEnumerator SpawnUnit(List<Card> cardsToSpawn)
+    {
+        foreach (Card card in cardsToSpawn)
+        {
+            if (!field.CheckCount(true)) break;
+            if (typeof(UnitCard) != card.GetBasicCard.GetType()) continue;
+            if (card.GetBasicCard.cast()) yield return StartCoroutine(MoveCard(card, CardSpeed));
+
+            myCardsOnBoard = Field.GetCards(true);
+        }
+        TurnBasedGameplay.OnEndTurn.Invoke(false); // возврат хода игроку
+    }
+    IEnumerator MoveCard(Card card, float speed)
+    {
+        Vector3 targetPosition = field.GetEnemyField.position;
+        targetPosition.z = card.transform.position.z;
+
+        while (card.transform.position != targetPosition)
+        {
+            card.transform.position = Vector3.MoveTowards(card.transform.position, targetPosition, speed);
+            yield return new WaitForFixedUpdate();
+        }
+        card.cast();
+    }
+    /*
     [SerializeField] Users Player;
     List<Card> StartBoard;
     bool Buff = false;
@@ -76,20 +119,6 @@ public class BigBrain : MonoBehaviour
         }
         myCardsOnBoard = Field.GetCards(true);
         StartCoroutine(DoBaff(WhichCardsSpawnBaff()));
-    }
-    IEnumerator MoveCard (Card card)
-    {
-        float moveSpeed = 10f;
-        Vector3 targetPosition = field.GetEnemyField().position;
-
-        if (Vector3.Distance(card.gameObject.transform.position, targetPosition) > 0.1f)
-        {
-            Vector3 direction = (targetPosition - card.gameObject.transform.position).normalized;
-            card.gameObject.transform.position += moveSpeed * Time.deltaTime * direction;
-            yield return null;
-            yield return StartCoroutine(MoveCard(card));
-        }
-        else UpplyCard(card);
     }
     void UpplyCard(Card card)
     {
