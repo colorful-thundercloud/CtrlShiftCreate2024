@@ -586,6 +586,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe24935d205324e48830ea34c40e70bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CardSpeed: 0.1
+  hand: {fileID: 1085298350}
+  field: {fileID: 1523470344}
 --- !u!61 &308797502
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -831,7 +834,7 @@ Transform:
   m_GameObject: {fileID: 401788617}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -3.05, z: 4.5}
+  m_LocalPosition: {x: 0, y: -3.05, z: 1}
   m_LocalScale: {x: 0.47999996, y: 0.47999996, z: 0.47999996}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1399,8 +1402,8 @@ Transform:
   m_GameObject: {fileID: 1523470343}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.04, z: 4}
-  m_LocalScale: {x: 6.1579, y: 4.676925, z: 6.1579}
+  m_LocalPosition: {x: 0, y: 1, z: 100}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2141492097}
@@ -1465,7 +1468,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 10, y: 3.5}
   m_EdgeRadius: 0
 --- !u!1 &1532900845
 GameObject:
@@ -2278,7 +2281,7 @@ Transform:
   m_GameObject: {fileID: 2116132363}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.25, z: -2}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2309,7 +2312,7 @@ Transform:
   m_GameObject: {fileID: 2141492096}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.25, z: -2}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

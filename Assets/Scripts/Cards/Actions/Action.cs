@@ -23,7 +23,10 @@ public abstract class Action
     /// <summary>
     /// Восстановка ходов у способности
     /// </summary>
-    protected void reloadSteps() => steps = maxSteps;
+    protected void reloadSteps()
+    {
+        if(card.isCasted) steps = maxSteps;
+    }
     /// <summary>
     /// Ненаправленная на карту способность
     /// </summary>

@@ -26,10 +26,7 @@ public class Field : MonoBehaviour
         OnCast.AddListener(ctx => addCard(ctx, ctx.CompareTag("enemyCard")));
         OnCardBeat.AddListener(BeatCard);
     }
-    public Transform GetEnemyField()
-    {
-        return enemyField;
-    }
+    public Transform GetEnemyField { get { return enemyField; } }
     public void addCard(Card card, bool isEnemy)
     {
         if (isEnemy) enemyCards.Add(card.gameObject);

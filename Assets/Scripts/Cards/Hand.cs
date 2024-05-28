@@ -42,7 +42,7 @@ public class Hand : MonoBehaviour
         GameObject go;
         if (card != null)
         {
-            go = Instantiate(cardPrefab, HandPosition.position - new Vector3(0, 0, 4), Quaternion.identity);
+            go = Instantiate(cardPrefab, HandPosition.position - new Vector3(0, 0, 0), Quaternion.identity);
 
             if (enemy)
             {

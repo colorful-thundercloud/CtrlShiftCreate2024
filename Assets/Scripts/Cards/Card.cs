@@ -51,7 +51,6 @@ public class Card: MonoBehaviour
     bool isCasting = false;
     public bool isCasted = false;
     Field field = null;
-    bool myTurn = true;
     Coroutine runningFunc;
     Vector3 startPosition, startScale;
     public void SavePosition()=> startPosition = transform.position;
@@ -60,17 +59,19 @@ public class Card: MonoBehaviour
         cam = Camera.main;
         startScale = transform.localScale;
         startPosition = transform.position;
-        TurnBasedGameplay.OnEndTurn.AddListener(isEnemyTurn =>
-        {
-            myTurn = !isEnemyTurn;
-            if (myTurn) twinckle(basicCard.CheckAction());
-            else twinckle(false);
-        });
     }
     public void SetCard(BasicCard newCard)
     {
         basicCard = newCard;
         basicCard.initialize(this);
+
+        TurnBasedGameplay.OnEndTurn.AddListener(isEnemyTurn =>
+        {
+            if (CompareTag("enemyCard")) return;
+            if (!isEnemyTurn) twinckle(GetBasicCard.CheckAction());
+            else twinckle(false);
+        });
+
         title.text = basicCard.Title.ToString();
         spriter.sprite = basicCard.GetAvatar;
     }
@@ -82,14 +83,14 @@ public class Card: MonoBehaviour
     }
     private void OnMouseEnter()
     {
-        if (Selected != this) hover();
+        if (Selected != this || Selected == null) hover();
     }
     private void OnMouseExit()
     {
         if (Selected != this)
         {
             turnOfLight();
-            if (isCasted && myTurn) twinckle(basicCard.CheckAction());
+            if (isCasted && TurnBasedGameplay.myTurn) twinckle(basicCard.CheckAction());
         }
     }
     public void turnOfLight() 
@@ -100,13 +101,13 @@ public class Card: MonoBehaviour
     private void OnMouseDown()
     {
         if (runningFunc != null) StopCoroutine(runningFunc);
-        if (myTurn) runningFunc = StartCoroutine(SmoothSizeChange(new Vector3(1, 1, 1)));
+        if (TurnBasedGameplay.myTurn) runningFunc = StartCoroutine(SmoothSizeChange(new Vector3(1, 1, 1)));
 
         // все карты
         if (isCasted)
         {
             CardUI.OnOpenCard(basicCard);
-            if (selected != null) if (selected.GetBasicCard.OnClick()) return;
+            if (selected != null) if (GetBasicCard.OnClick()) return;
         }
 
         if (gameObject.CompareTag("enemyCard")) return;
@@ -116,21 +117,21 @@ public class Card: MonoBehaviour
 
         if (isCasted)
         {
-            if (selected != this && myTurn)
+            if (selected != this && TurnBasedGameplay.myTurn)
             {
                 Selected = this;
                 GetBasicCard.OnSelect();
             }
         }
     }
-    void cast()
+    public void cast()
     {
         isCasting = false;
         isCasted = true;
         SoundPlayer.Play(CastSound);
         Field.OnCast?.Invoke(this);
         transform.localScale = Vector3.one;
-        //foreach (Transform t in transform) t.gameObject.SetActive(true);
+        foreach (Transform t in transform) t.gameObject.SetActive(true);
     }
     void backToHand()
     {
@@ -142,16 +143,20 @@ public class Card: MonoBehaviour
     public void OnMouseUp()
     {
         if (isCasted) return;
-        if(field==null||!field.CheckCount()) backToHand();
+        if(field==null||(!field.CheckCount()&&typeof(BuffOneshot)!=GetBasicCard.GetType())) backToHand();
         else
         {
-            if(basicCard.cast())cast();
+            if (basicCard.cast())
+            {
+                cast();
+            }
             else backToHand();
         }
     }
     private void OnMouseDrag()
     {
-        if (!isCasted && myTurn)
+        if (CompareTag("enemyCard")) return;
+        if (!isCasted && TurnBasedGameplay.myTurn)
         {
             if (!isCasting)
             {
@@ -180,10 +185,16 @@ public class Card: MonoBehaviour
         if (collision.CompareTag("field")) field = null;
         if (collision.TryGetComponent<Card>(out Card card)) if (card==otherCard) otherCard = null;
     }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+
+        if (collision.CompareTag("field")) field = collision.GetComponent<Field>();
+        if (collision.TryGetComponent<Card>(out Card card)) if (card.isCasted) otherCard = card;
+    }
 
     IEnumerator SmoothSizeChange(Vector3 targetScale, bool grow = false)
     {
-        if (myTurn)
+        if (TurnBasedGameplay.myTurn)
         {
             if (grow && transform.localScale.x < targetScale.x) transform.localScale += new Vector3(0.05f, 0.05f, 0);
             else if (!grow && transform.localScale.x > targetScale.x) transform.localScale -= new Vector3(0.05f, 0.05f, 0);

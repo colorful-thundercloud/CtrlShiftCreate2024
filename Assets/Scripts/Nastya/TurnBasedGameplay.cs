@@ -7,7 +7,8 @@ public class TurnBasedGameplay : MonoBehaviour
     public Hand playerHand, enemyHand;
     public Button endMoveBtn;
     public static UnityEvent<bool> OnEndTurn = new();
-    void Start()
+    public static bool myTurn = true;
+    void Awake()
     {
         Invoke("DrawCards", 0.5f);
         OnEndTurn.AddListener(onNextTurn);
@@ -15,8 +16,6 @@ public class TurnBasedGameplay : MonoBehaviour
 
     void DrawCards()
     {
-        playerHand.DrawCards();
-        enemyHand.DrawCards(true);
         enemyEndMove();
     }
 
@@ -24,7 +23,10 @@ public class TurnBasedGameplay : MonoBehaviour
     void onNextTurn(bool isEnemyTurn)
     {
         endMoveBtn.interactable = !isEnemyTurn;
+        myTurn = !isEnemyTurn;
         Card.Selected = null;
+        if(isEnemyTurn) enemyHand.DrawCards(true);
+        else playerHand.DrawCards();
     }
 
     public void playerEndMove()
