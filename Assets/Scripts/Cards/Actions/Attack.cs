@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -8,9 +8,9 @@ using UnityEngine;
 public class Attack: Action, IHaveStats
 {
     /// <summary>
-    /// Наносимый урон
+    /// РќР°РЅРѕСЃРёРјС‹Р№ СѓСЂРѕРЅ
     /// </summary>
-    [Header("Наносимый урон")]
+    [Header("РќР°РЅРѕСЃРёРјС‹Р№ СѓСЂРѕРЅ")]
     [SerializeField] int damage;
     [SerializeField] AudioClip AttackSound;
     TMP_Text ui;

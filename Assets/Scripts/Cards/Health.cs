@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -8,9 +8,9 @@ using UnityEngine;
 public class Health:IHaveStats
 {
     /// <summary>
-    /// Стартовое значение здоровья карты
+    /// РЎС‚Р°СЂС‚РѕРІРѕРµ Р·РЅР°С‡РµРЅРёРµ Р·РґРѕСЂРѕРІСЊСЏ РєР°СЂС‚С‹
     /// </summary>
-    [Header("Стартовое значение здоровья карты")]
+    [Header("РЎС‚Р°СЂС‚РѕРІРѕРµ Р·РЅР°С‡РµРЅРёРµ Р·РґРѕСЂРѕРІСЊСЏ РєР°СЂС‚С‹")]
     [SerializeField] int MaxHP;
     [SerializeField] AudioClip DeathSound;
     TMP_Text ui;

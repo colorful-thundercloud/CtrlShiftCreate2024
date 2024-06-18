@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -13,19 +13,19 @@ public class Effect : Action
         Health
     }
     /// <summary>
-    /// Определяет баффаемый параметр
+    /// РћРїСЂРµРґРµР»СЏРµС‚ Р±Р°С„С„Р°РµРјС‹Р№ РїР°СЂР°РјРµС‚СЂ
     /// </summary>
-    [Header("Определяет баффаемый параметр")]
+    [Header("РћРїСЂРµРґРµР»СЏРµС‚ Р±Р°С„С„Р°РµРјС‹Р№ РїР°СЂР°РјРµС‚СЂ")]
     [SerializeField] Type type;
     /// <summary>
-    /// На сколько умножается выбранный параметр
+    /// РќР° СЃРєРѕР»СЊРєРѕ СѓРјРЅРѕР¶Р°РµС‚СЃСЏ РІС‹Р±СЂР°РЅРЅС‹Р№ РїР°СЂР°РјРµС‚СЂ
     /// </summary>
-    [Header("На сколько умножается выбранный параметр")]
+    [Header("РќР° СЃРєРѕР»СЊРєРѕ СѓРјРЅРѕР¶Р°РµС‚СЃСЏ РІС‹Р±СЂР°РЅРЅС‹Р№ РїР°СЂР°РјРµС‚СЂ")]
     [SerializeField] int multiplier = 1;
     /// <summary>
-    /// Сколько прибавляется к выбранному параметру
+    /// РЎРєРѕР»СЊРєРѕ РїСЂРёР±Р°РІР»СЏРµС‚СЃСЏ Рє РІС‹Р±СЂР°РЅРЅРѕРјСѓ РїР°СЂР°РјРµС‚СЂСѓ
     /// </summary>
-    [Header("Сколько прибавляется к выбранному параметру")]
+    [Header("РЎРєРѕР»СЊРєРѕ РїСЂРёР±Р°РІР»СЏРµС‚СЃСЏ Рє РІС‹Р±СЂР°РЅРЅРѕРјСѓ РїР°СЂР°РјРµС‚СЂСѓ")]
     [SerializeField] int value = 0;
     [SerializeField] AudioClip buffSound;
     public override bool CheckAviability()

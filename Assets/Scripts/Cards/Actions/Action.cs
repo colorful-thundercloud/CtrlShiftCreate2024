@@ -1,4 +1,4 @@
-using System.Collections;
+п»їusing System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -6,14 +6,14 @@ using UnityEngine.Events;
 public abstract class Action
 {
     /// <summary>
-    /// Действует ли способность на союзные карты
+    /// Р”РµР№СЃС‚РІСѓРµС‚ Р»Рё СЃРїРѕСЃРѕР±РЅРѕСЃС‚СЊ РЅР° СЃРѕСЋР·РЅС‹Рµ РєР°СЂС‚С‹
     /// </summary>
-    [Header("Действует ли способность на союзные карты")]
+    [Header("Р”РµР№СЃС‚РІСѓРµС‚ Р»Рё СЃРїРѕСЃРѕР±РЅРѕСЃС‚СЊ РЅР° СЃРѕСЋР·РЅС‹Рµ РєР°СЂС‚С‹")]
     public bool toAllies = false;
     /// <summary>
-    /// Максимальное количество активаций за ход
+    /// РњР°РєСЃРёРјР°Р»СЊРЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ Р°РєС‚РёРІР°С†РёР№ Р·Р° С…РѕРґ
     /// </summary>
-    [Header("Максимальное количество активаций за ход")]
+    [Header("РњР°РєСЃРёРјР°Р»СЊРЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ Р°РєС‚РёРІР°С†РёР№ Р·Р° С…РѕРґ")]
     public int maxSteps;
 
     public int steps { get; set; }
@@ -30,25 +30,25 @@ public abstract class Action
 
     protected abstract void Initialize();
     /// <summary>
-    /// Восстановка ходов у способности
+    /// Р’РѕСЃСЃС‚Р°РЅРѕРІРєР° С…РѕРґРѕРІ Сѓ СЃРїРѕСЃРѕР±РЅРѕСЃС‚Рё
     /// </summary>
     protected void reloadSteps()
     {
         if(Card.isCasted) steps = maxSteps;
     }
     /// <summary>
-    /// Ненаправленная на карту способность
+    /// РќРµРЅР°РїСЂР°РІР»РµРЅРЅР°СЏ РЅР° РєР°СЂС‚Сѓ СЃРїРѕСЃРѕР±РЅРѕСЃС‚СЊ
     /// </summary>
     public virtual void Undirected() { }
     /// <summary>
-    /// Направленная на другую карту способность, активируется вторым кликом по карте-цели
+    /// РќР°РїСЂР°РІР»РµРЅРЅР°СЏ РЅР° РґСЂСѓРіСѓСЋ РєР°СЂС‚Сѓ СЃРїРѕСЃРѕР±РЅРѕСЃС‚СЊ, Р°РєС‚РёРІРёСЂСѓРµС‚СЃСЏ РІС‚РѕСЂС‹Рј РєР»РёРєРѕРј РїРѕ РєР°СЂС‚Рµ-С†РµР»Рё
     /// </summary>
     public virtual void Directed(Card card) 
     {
 
     }
     /// <summary>
-    /// Проверяет может ли выбранная карта взаимодействовать с этой
+    /// РџСЂРѕРІРµСЂСЏРµС‚ РјРѕР¶РµС‚ Р»Рё РІС‹Р±СЂР°РЅРЅР°СЏ РєР°СЂС‚Р° РІР·Р°РёРјРѕРґРµР№СЃС‚РІРѕРІР°С‚СЊ СЃ СЌС‚РѕР№
     /// </summary>
     public bool CheckAlies(Card target)
     {
@@ -57,11 +57,11 @@ public abstract class Action
         else return !match;
     }
     /// <summary>
-    /// Проверка доступности способности
+    /// РџСЂРѕРІРµСЂРєР° РґРѕСЃС‚СѓРїРЅРѕСЃС‚Рё СЃРїРѕСЃРѕР±РЅРѕСЃС‚Рё
     /// </summary>
     public abstract bool CheckAviability();
     /// <summary>
-    /// Получить из Field все карты на которые действует Action
+    /// РџРѕР»СѓС‡РёС‚СЊ РёР· Field РІСЃРµ РєР°СЂС‚С‹ РЅР° РєРѕС‚РѕСЂС‹Рµ РґРµР№СЃС‚РІСѓРµС‚ Action
     /// </summary>
     protected List<Card> GetAllTargets()
     {

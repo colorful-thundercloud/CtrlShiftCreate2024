@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -9,7 +9,7 @@ using UnityEngine.Rendering.Universal;
 
 public class Card: MonoBehaviour
 {
-    [Header("Поля для данных карт")]
+    [Header("РџРѕР»СЏ РґР»СЏ РґР°РЅРЅС‹С… РєР°СЂС‚")]
     [SerializeField] public TMP_Text damage;
     [SerializeField] public TMP_Text health;
     [SerializeField] public TMP_Text title;
@@ -106,7 +106,7 @@ public class Card: MonoBehaviour
         if (runningFunc != null) StopCoroutine(runningFunc);
         if (TurnBasedGameplay.myTurn) runningFunc = StartCoroutine(SmoothSizeChange(new Vector3(1, 1, 1)));
 
-        // все карты
+        // РІСЃРµ РєР°СЂС‚С‹
         if (isCasted)
         {
             CardUI.OnOpenCard(basicCard);
@@ -114,7 +114,7 @@ public class Card: MonoBehaviour
         }
 
         if (gameObject.CompareTag("enemyCard")) return;
-        // только карты игрока
+        // С‚РѕР»СЊРєРѕ РєР°СЂС‚С‹ РёРіСЂРѕРєР°
 
         CardUI.OnOpenCard(basicCard);
 

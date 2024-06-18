@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
@@ -13,26 +13,26 @@ public abstract class BasicCard : ScriptableObject
     public string Description { get { return description; } }
     protected Action action;
     /// <summary>
-    /// Инициализирует все компоненты карты
-    /// Срабатывает при появлении карты
+    /// РРЅРёС†РёР°Р»РёР·РёСЂСѓРµС‚ РІСЃРµ РєРѕРјРїРѕРЅРµРЅС‚С‹ РєР°СЂС‚С‹
+    /// РЎСЂР°Р±Р°С‚С‹РІР°РµС‚ РїСЂРё РїРѕСЏРІР»РµРЅРёРё РєР°СЂС‚С‹
     /// </summary>
     public abstract void initialize();
     /// <summary>
-    /// Проверка доступности способности
+    /// РџСЂРѕРІРµСЂРєР° РґРѕСЃС‚СѓРїРЅРѕСЃС‚Рё СЃРїРѕСЃРѕР±РЅРѕСЃС‚Рё
     /// </summary>
     public bool CheckAction() { return action.CheckAviability(); }
     public Action GetAction() { return action; }
     /// <summary>
-    /// Действия при выкладывании карты на поле
+    /// Р”РµР№СЃС‚РІРёСЏ РїСЂРё РІС‹РєР»Р°РґС‹РІР°РЅРёРё РєР°СЂС‚С‹ РЅР° РїРѕР»Рµ
     /// </summary>
     public abstract bool cast();
 
     /// <summary>
-    /// Активация действия выбранной карты на эту
+    /// РђРєС‚РёРІР°С†РёСЏ РґРµР№СЃС‚РІРёСЏ РІС‹Р±СЂР°РЅРЅРѕР№ РєР°СЂС‚С‹ РЅР° СЌС‚Сѓ
     /// </summary>
     public virtual bool OnClick() { return false; }
     /// <summary>
-    /// Сохранение данной карты при выборе
+    /// РЎРѕС…СЂР°РЅРµРЅРёРµ РґР°РЅРЅРѕР№ РєР°СЂС‚С‹ РїСЂРё РІС‹Р±РѕСЂРµ
     /// </summary>
     public virtual void OnSelect() { }
     public virtual IHaveStats TryGetAttack() { return null; }
