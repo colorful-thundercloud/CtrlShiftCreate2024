@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class BasicCard : ScriptableObject
 {
     [SerializeField] string title;
+    public bool isIngoringFieldCapacity { get; protected set; }
     public string Title { get { return title; } }
     [SerializeField] Sprite Avatar;
     public Sprite GetAvatar { get { return Avatar; } }
@@ -15,7 +16,7 @@ public abstract class BasicCard : ScriptableObject
     /// Инициализирует все компоненты карты
     /// Срабатывает при появлении карты
     /// </summary>
-    public abstract void initialize(Card card);
+    public abstract void initialize();
     /// <summary>
     /// Проверка доступности способности
     /// </summary>

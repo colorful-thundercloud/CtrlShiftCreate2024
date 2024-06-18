@@ -33,10 +33,6 @@ public class Effect : Action
         return steps > 0;
     }
 
-    public override void Initialize(Card card)
-    {
-        this.card = card;
-    }
 
     public override void Undirected()
     {
@@ -51,4 +47,6 @@ public class Effect : Action
         victim.parameter *= multiplier;
         victim.parameter += value;
     }
+
+    protected override void Initialize() { }
 }

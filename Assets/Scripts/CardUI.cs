@@ -38,5 +38,6 @@ public class CardUI : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
         gameObject.SetActive(false);
+        GameObject.FindGameObjectWithTag("");
     }
 }

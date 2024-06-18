@@ -15,12 +15,11 @@ public class Attack: Action, IHaveStats
     [SerializeField] AudioClip AttackSound;
     TMP_Text ui;
     int currentDamage;
-    public override void Initialize(Card card)
+    protected override void Initialize()
     {
-        this.card = card;
         TurnBasedGameplay.OnEndTurn.AddListener(isEnemy=>reloadSteps());
         currentDamage = damage;
-        ui = card.damage;
+        ui = Card.damage;
         ui.text = currentDamage.ToString();
     }
 
@@ -42,32 +41,32 @@ public class Attack: Action, IHaveStats
     public override void Directed(Card target)
     {
         steps--;
-        this.card.StartCoroutine(attackAnimation(0.5f, target.GetBasicCard.TryGetHealth(), target));
+        this.Card.StartCoroutine(attackAnimation(0.5f, target.GetBasicCard.TryGetHealth(), target));
         Card.Selected = null;
         SoundPlayer.Play(AttackSound);
     }
 
     IEnumerator attackAnimation(float smoothTime, IHaveStats health, Card toAttack)
     {
-        Vector3 startPosition = card.transform.position;
+        Vector3 startPosition = Card.transform.position;
         Vector3 target = toAttack.transform.position;
-        card.GetComponent<SpriteRenderer>().sortingOrder++;
-        foreach (Transform t in card.transform)
+        Card.GetComponent<SpriteRenderer>().sortingOrder++;
+        foreach (Transform t in Card.transform)
             if (t.TryGetComponent<SpriteRenderer>(out SpriteRenderer spriteRenderer)) spriteRenderer.sortingOrder++;
-        while (card.transform.position != target)
+        while (Card.transform.position != target)
         {
-            card.transform.position = Vector3.MoveTowards(card.transform.position, target, smoothTime);
+            Card.transform.position = Vector3.MoveTowards(Card.transform.position, target, smoothTime);
             yield return new WaitForFixedUpdate();
         }
         health.parameter = health.parameter - currentDamage;
         target = startPosition;
-        while (card.transform.position != target)
+        while (Card.transform.position != target)
         {
-            card.transform.position = Vector3.MoveTowards(card.transform.position, startPosition, smoothTime);
+            Card.transform.position = Vector3.MoveTowards(Card.transform.position, startPosition, smoothTime);
             yield return new WaitForFixedUpdate();
         }
-        card.GetComponent<SpriteRenderer>().sortingOrder--;
-        foreach (Transform t in card.transform)
+        Card.GetComponent<SpriteRenderer>().sortingOrder--;
+        foreach (Transform t in Card.transform)
             if (t.TryGetComponent<SpriteRenderer>(out SpriteRenderer spriteRenderer)) spriteRenderer.sortingOrder--;
     }
     public override IHaveStats TryGetStats()

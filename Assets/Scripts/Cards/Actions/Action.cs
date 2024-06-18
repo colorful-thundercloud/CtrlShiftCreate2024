@@ -17,15 +17,24 @@ public abstract class Action
     public int maxSteps;
 
     public int steps { get; set; }
-    public Card card { get; set; }
+    Card card;
+    public Card Card 
+    {
+        get { return card; }
+        set
+        {
+            card = value;
+            Initialize();
+        }
+    }
 
-    public abstract void Initialize(Card card);
+    protected abstract void Initialize();
     /// <summary>
     /// Восстановка ходов у способности
     /// </summary>
     protected void reloadSteps()
     {
-        if(card.isCasted) steps = maxSteps;
+        if(Card.isCasted) steps = maxSteps;
     }
     /// <summary>
     /// Ненаправленная на карту способность
@@ -43,7 +52,7 @@ public abstract class Action
     /// </summary>
     public bool CheckAlies(Card target)
     {
-        bool match = card.CompareTag(target.tag);
+        bool match = Card.CompareTag(target.tag);
         if (toAllies) return match;
         else return !match;
     }
@@ -56,8 +65,8 @@ public abstract class Action
     /// </summary>
     protected List<Card> GetAllTargets()
     {
-        if (toAllies) return Field.GetCards(card.CompareTag("enemyCard"));
-        else return Field.GetCards(card.CompareTag("myCard"));
+        if (toAllies) return Field.GetCards(Card.CompareTag("enemyCard"));
+        else return Field.GetCards(Card.CompareTag("myCard"));
     }
     public virtual IHaveStats TryGetStats() { return null; }
 }

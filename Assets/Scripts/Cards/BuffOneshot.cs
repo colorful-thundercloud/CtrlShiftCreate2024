@@ -6,14 +6,14 @@ using UnityEngine;
 public class BuffOneshot : BasicCard
 {
     [SerializeField] Effect buff;
-    public override void initialize(Card card)
+    public override void initialize()
     {
+        isIngoringFieldCapacity = true;
         action = buff;
-        action.Initialize(card);
-        Field.OnCast.AddListener(ctx => { if (ctx == card) destroy(); });
+        Field.OnCast.AddListener(ctx => { if (ctx == action.Card) destroy(); });
     }
 
-    void destroy() => Field.OnCardBeat?.Invoke(action.card);
+    void destroy() => Field.OnCardBeat?.Invoke(action.Card);
 
     public override bool cast()
     {

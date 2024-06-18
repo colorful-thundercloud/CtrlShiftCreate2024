@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -63,7 +64,9 @@ public class Card: MonoBehaviour
     public void SetCard(BasicCard newCard)
     {
         basicCard = newCard;
-        basicCard.initialize(this);
+        basicCard.initialize();
+        GetBasicCard.GetAction().Card = this;
+        GetBasicCard.TryGetHealth()?.Initialize(this, GetComponent<Animator>());
 
         TurnBasedGameplay.OnEndTurn.AddListener(isEnemyTurn =>
         {
@@ -143,7 +146,7 @@ public class Card: MonoBehaviour
     public void OnMouseUp()
     {
         if (isCasted) return;
-        if(field==null||(!field.CheckCount()&&typeof(BuffOneshot)!=GetBasicCard.GetType())) backToHand();
+        if(field==null||(!field.CheckCount()&&!GetBasicCard.isIngoringFieldCapacity)) backToHand();
         else
         {
             if (basicCard.cast())

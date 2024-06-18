@@ -8,18 +8,15 @@ public class UnitCard : BasicCard
 {
     [SerializeField] Attack attack;
     [SerializeField] Health hp;
-    public override void initialize(Card card)
+    public override void initialize()
     {
         action = attack;
-        action.Initialize(card);
         action.steps = 0;
-        hp.Initialize(action.card, action.card.GetComponent<Animator>());
-
     }
     public override bool OnClick()
     {
-        if (!Card.Selected.GetBasicCard.GetAction().CheckAlies(action.card)) return false;
-        Card.Selected.GetBasicCard.GetAction().Directed(action.card);    
+        if (!Card.Selected.GetBasicCard.GetAction().CheckAlies(action.Card)) return false;
+        Card.Selected.GetBasicCard.GetAction().Directed(action.Card);    
         return true;
     }
     public override bool cast() { return true; }
