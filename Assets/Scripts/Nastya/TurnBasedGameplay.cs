@@ -24,7 +24,7 @@ public class TurnBasedGameplay : MonoBehaviour
     {
         endMoveBtn.interactable = !isEnemyTurn;
         myTurn = !isEnemyTurn;
-        Card.Selected = null;
+        CardController.Selected = null;
         if(isEnemyTurn) enemyHand.DrawCards(true);
         else playerHand.DrawCards();
     }

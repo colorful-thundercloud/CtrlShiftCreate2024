@@ -2,10 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 
 [Serializable]
-public class Attack: Action, IHaveStats
+public class Attack: Action, IHaveStat
 {
     /// <summary>
     /// Наносимый урон
@@ -13,64 +14,58 @@ public class Attack: Action, IHaveStats
     [Header("Наносимый урон")]
     [SerializeField] int damage;
     [SerializeField] AudioClip AttackSound;
-    TMP_Text ui;
-    int currentDamage;
-    protected override void Initialize()
+    public override bool CheckAviability(CardController card)
     {
-        TurnBasedGameplay.OnEndTurn.AddListener(isEnemy=>reloadSteps());
-        currentDamage = damage;
-        ui = Card.damage;
-        ui.text = currentDamage.ToString();
+        return card.GetStat("steps").Value > 0;
     }
 
-    public int parameter 
+    public override void Directed(CardController card, CardController target)
     {
-        get { return currentDamage; } 
-        set
-        {
-            currentDamage = value;
-            ui.text = currentDamage.ToString();
-        }
-    }
-
-    public override bool CheckAviability()
-    {
-        return steps > 0;
-    }
-
-    public override void Directed(Card target)
-    {
-        steps--;
-        this.Card.StartCoroutine(attackAnimation(0.5f, target.GetBasicCard.TryGetHealth(), target));
-        Card.Selected = null;
+        card.GetStat("steps").Value--;
+        card.StartCoroutine(attackAnimation(0.5f, card, target));
+        CardController.Selected = null;
         SoundPlayer.Play(AttackSound);
     }
 
-    IEnumerator attackAnimation(float smoothTime, IHaveStats health, Card toAttack)
+    IEnumerator attackAnimation(float smoothTime,CardController card, CardController target)
     {
-        Vector3 startPosition = Card.transform.position;
-        Vector3 target = toAttack.transform.position;
-        Card.GetComponent<SpriteRenderer>().sortingOrder++;
-        foreach (Transform t in Card.transform)
-            if (t.TryGetComponent<SpriteRenderer>(out SpriteRenderer spriteRenderer)) spriteRenderer.sortingOrder++;
-        while (Card.transform.position != target)
+        Vector3 startPosition = card.transform.position;
+        Vector3 direction = target.transform.position;
+
+        card.GetComponent<SpriteRenderer>().sortingOrder++;
+        foreach (Transform t in card.transform)
+            if (t.TryGetComponent<SpriteRenderer>(out SpriteRenderer spriteRenderer)) 
+                spriteRenderer.sortingOrder++;
+
+        while (card.transform.position != direction)
         {
-            Card.transform.position = Vector3.MoveTowards(Card.transform.position, target, smoothTime);
+            card.transform.position = Vector3.MoveTowards(card.transform.position, direction, smoothTime);
             yield return new WaitForFixedUpdate();
         }
-        health.parameter = health.parameter - currentDamage;
-        target = startPosition;
-        while (Card.transform.position != target)
+
+        target.GetStat("hp").Value -= card.GetStat("damage").Value;
+
+        direction = startPosition;
+        while (card.transform.position != direction)
         {
-            Card.transform.position = Vector3.MoveTowards(Card.transform.position, startPosition, smoothTime);
+            card.transform.position = Vector3.MoveTowards(card.transform.position, startPosition, smoothTime);
             yield return new WaitForFixedUpdate();
         }
-        Card.GetComponent<SpriteRenderer>().sortingOrder--;
-        foreach (Transform t in Card.transform)
-            if (t.TryGetComponent<SpriteRenderer>(out SpriteRenderer spriteRenderer)) spriteRenderer.sortingOrder--;
+
+        card.GetComponent<SpriteRenderer>().sortingOrder--;
+        foreach (Transform t in card.transform)
+            if (t.TryGetComponent<SpriteRenderer>(out SpriteRenderer spriteRenderer)) 
+                spriteRenderer.sortingOrder--;
     }
-    public override IHaveStats TryGetStats()
+
+    public override Stat GetStat(CardController card)
     {
-        return this;
+        TurnBasedGameplay.OnEndTurn.AddListener(isEnemy => reloadSteps(card));
+        Stat stat = new();
+        stat.Name = "damage";
+        stat.field = card.transform.Find("attack").GetComponentInChildren<TMP_Text>();
+        stat.Value = damage;
+        stat.maxValue = damage;
+        return stat;
     }
 }

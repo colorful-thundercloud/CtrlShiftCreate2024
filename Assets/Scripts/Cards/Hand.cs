@@ -19,7 +19,7 @@ public class Hand : MonoBehaviour
         foreach( GameObject item in hand )
         {
             if (item == null) return;
-            if(item.GetComponent<Card>().isCasted) t.Add(item);
+            if(item.GetComponent<CardController>().isCasted) t.Add(item);
         }
         foreach (GameObject item in t) hand.Remove(item);
         for (int i = 0; i < hand.Count; i++)
@@ -34,7 +34,7 @@ public class Hand : MonoBehaviour
         foreach (GameObject item in hand)
         {
             item.transform.Translate(-center, 0, 0);
-            item.GetComponent<Card>().SavePosition();
+            item.GetComponent<CardController>().SavePosition();
         }
     }
     void addCard(BasicCard card, bool enemy = false)
@@ -54,7 +54,7 @@ public class Hand : MonoBehaviour
                 go.transform.localScale = new Vector3(2f, 2f, 1);
                 go.tag = "myCard";
             }
-            go.GetComponent<Card>().SetCard(card);
+            go.GetComponent<CardController>().SetCard(card);
             hand.Add(go);
 
             if (enemy)
@@ -76,13 +76,13 @@ public class Hand : MonoBehaviour
         hand.Remove(card);
         updateHand();
     }
-    public List<Card> GetCards()
+    public List<CardController> GetCards()
     {
-        List<Card> cards;
-        cards = hand.ConvertAll(n => n.GetComponent<Card>());
+        List<CardController> cards;
+        cards = hand.ConvertAll(n => n.GetComponent<CardController>());
         return cards;
     }
-    public void BeatCard(Card card)
+    public void BeatCard(CardController card)
     {
         hand.Remove(card.gameObject);
         deckController.BeatCard(card.GetBasicCard);

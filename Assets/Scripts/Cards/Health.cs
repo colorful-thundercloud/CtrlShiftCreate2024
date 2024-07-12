@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using TMPro;
 using UnityEngine;
 
 [Serializable]
-public class Health:IHaveStats
+public class Health: IHaveStat
 {
     /// <summary>
     /// Стартовое значение здоровья карты
@@ -13,31 +14,24 @@ public class Health:IHaveStats
     [Header("Стартовое значение здоровья карты")]
     [SerializeField] int MaxHP;
     [SerializeField] AudioClip DeathSound;
-    TMP_Text ui;
-    int currentHP;
-    public Card card { get; set; }
-    Animator anim;
-    public void Initialize(Card card, Animator anim)
-    {
-        this.card = card;
-        currentHP = MaxHP;
-        ui = card.health;
-        ui.text = currentHP.ToString();
-        this.anim = anim;
-    }
 
-    public int parameter
+    public Stat GetStat(CardController card)
     {
-        get { return currentHP; }
-        set
+        void OnHealthChange()
         {
-            currentHP = value;
-            ui.text = currentHP.ToString();
-            if (currentHP <= 0) card.StartCoroutine(death());
+            if (card.GetStat("hp").Value <= 0)
+                card.StartCoroutine(death(card, card.GetComponent<Animator>()));
         }
+        Stat stat = new();
+        stat.Name = "hp";
+        stat.field = card.transform.Find("hp").GetComponentInChildren<TMP_Text>();
+        stat.Value = MaxHP;
+        stat.maxValue = MaxHP;
+        stat.OnChange.AddListener(OnHealthChange);
+        return stat;
     }
 
-    IEnumerator death()
+    IEnumerator death(CardController card, Animator anim)
     {
         //play animation
         anim.SetTrigger("deathTrigger");

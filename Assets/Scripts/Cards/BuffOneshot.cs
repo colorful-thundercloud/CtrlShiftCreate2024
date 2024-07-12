@@ -6,19 +6,19 @@ using UnityEngine;
 public class BuffOneshot : BasicCard
 {
     [SerializeField] Effect buff;
-    public override void initialize()
+    public override void initialize(CardController card)
     {
         isIngoringFieldCapacity = true;
         action = buff;
-        Field.OnCast.AddListener(ctx => { if (ctx == action.Card) destroy(); });
+        Field.OnCast.AddListener(ctx => { if (ctx == card) destroy(card); });
     }
 
-    void destroy() => Field.OnCardBeat?.Invoke(action.Card);
+    void destroy(CardController card) => Field.OnCardBeat?.Invoke(card);
 
-    public override bool cast()
+    public override bool cast(CardController card)
     {
-        if (Card.otherCard == null) return false;
-        action.Directed(Card.otherCard);
+        if (CardController.otherCard == null) return false;
+        action.Directed(card, CardController.otherCard);
         return true;
     }
 }

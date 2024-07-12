@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2978300614720893150}
   - component: {fileID: 7073640693868358652}
   m_Layer: 0
-  m_Name: Light 2D (1)
+  m_Name: Signal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -856,17 +856,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 4890571309650381577}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cad651c7f0038ba48b03c3b41a096ff4, type: 3}
+  m_Script: {fileID: 11500000, guid: e15819adede203e40a4ca90e731cdd39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: {fileID: 7651285416438748501}
-  health: {fileID: 8292840901566565420}
   title: {fileID: 983335562413830961}
   spriter: {fileID: 868811696282032799}
   lighting: {fileID: 1564628615307975834}
   signalLight: {fileID: 7073640693868358652}
   CastSound: {fileID: 8300000, guid: 24cf2b51b1e38b544b5dcbe567876773, type: 3}
-  SelectSound: {fileID: 8300000, guid: 8974121708457eb4ca5f33b9692332fc, type: 3}
+  SelectSound: {fileID: 8300000, guid: e78dbf2a90ab3d04985563e6ba53b558, type: 3}
   basicCard: {fileID: 0}
   isCasted: 0
 --- !u!95 &7848098203260924149

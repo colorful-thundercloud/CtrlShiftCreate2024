@@ -7,16 +7,11 @@ using UnityEngine;
 [Serializable]
 public class Effect : Action
 {
-    public enum Type
-    {
-        Damage,
-        Health
-    }
     /// <summary>
     /// Определяет баффаемый параметр
     /// </summary>
     [Header("Определяет баффаемый параметр")]
-    [SerializeField] Type type;
+    [SerializeField] string buffedStatName;
     /// <summary>
     /// На сколько умножается выбранный параметр
     /// </summary>
@@ -28,25 +23,23 @@ public class Effect : Action
     [Header("Сколько прибавляется к выбранному параметру")]
     [SerializeField] int value = 0;
     [SerializeField] AudioClip buffSound;
-    public override bool CheckAviability()
+    public override bool CheckAviability(CardController card)
     {
-        return steps > 0;
+        return card.GetStat("steps").Value > 0;
     }
 
 
-    public override void Undirected()
+    public override void Undirected(CardController card)
     {
-        List<Card> targets = GetAllTargets();
-        foreach (Card card in targets) Directed(card);
+        List<CardController> targets = GetAllTargets(card);
+        foreach (CardController target in targets) Directed(card, target);
     }
-    public override void Directed(Card target)
+    public override void Directed(CardController card, CardController target)
     {
-        IHaveStats victim = (type==Type.Damage)? target.GetBasicCard.TryGetAttack():target.GetBasicCard.TryGetHealth();
+        Stat victim = target.GetStat(buffedStatName);
         if (victim == null) return;
         SoundPlayer.Play(buffSound);
-        victim.parameter *= multiplier;
-        victim.parameter += value;
+        victim.Value *= multiplier;
+        victim.Value += value;
     }
-
-    protected override void Initialize() { }
 }

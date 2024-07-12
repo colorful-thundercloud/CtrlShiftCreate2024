@@ -3,32 +3,31 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class CardUI : MonoBehaviour
 {
     [SerializeField] private Image image;
     [SerializeField] TMP_Text title, damage, hp, description;
-    public static Action<BasicCard> OnOpenCard;
+    public static UnityEvent<CardController> OnOpenCard;
+    Coroutine hideUI;
     private void Start()
     {
-        OnOpenCard += ctx => openCard(ctx);
-        StartCoroutine(deactivate(0f));
+        OnOpenCard.AddListener(openCard);
+        hideUI = StartCoroutine(deactivate(0f));
     }
-    private void OnDestroy()
-    {
-        OnOpenCard -= openCard;
-    }
-    void openCard(BasicCard card)
+    void openCard(CardController card)
     {
         if (image == null) return;
-        image.sprite = card.GetAvatar;
-        title.text = card.Title;
-        //damage.text = card.Damage.ToString();
-        //hp.text = card.HP.ToString();
-        description.text = card.Description;
+        if (hideUI != null) StopCoroutine(hideUI);
+        image.sprite = card.GetBasicCard.GetAvatar;
+        title.text = card.GetBasicCard.Title;
+        damage.text = card.GetStat("damage").maxValue.ToString();
+        hp.text = card.GetStat("hp").maxValue.ToString();
+        description.text = card.GetBasicCard.Description;
         gameObject.SetActive(true);
-        StartCoroutine(deactivate(4f));
+        hideUI = StartCoroutine(deactivate(4f));
     }
     IEnumerator deactivate(float time)
     {
@@ -38,6 +37,5 @@ public class CardUI : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
         gameObject.SetActive(false);
-        //GameObject.FindGameObjectWithTag("");
     }
 }

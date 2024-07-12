@@ -18,8 +18,8 @@ public class Field : MonoBehaviour
     }
     static List<GameObject> myCards = new List<GameObject>();
     static List<GameObject> enemyCards = new List<GameObject>();
-    public static UnityEvent<Card> OnCast = new();
-    public static UnityEvent<Card> OnCardBeat = new();
+    public static UnityEvent<CardController> OnCast = new();
+    public static UnityEvent<CardController> OnCardBeat = new();
     private void Start()
     {
         Time.timeScale = 1f;
@@ -27,7 +27,7 @@ public class Field : MonoBehaviour
         OnCardBeat.AddListener(BeatCard);
     }
     public Transform GetEnemyField { get { return enemyField; } }
-    public void addCard(Card card, bool isEnemy)
+    public void addCard(CardController card, bool isEnemy)
     {
         if (isEnemy) enemyCards.Add(card.gameObject);
         else myCards.Add(card.gameObject);
@@ -49,7 +49,7 @@ public class Field : MonoBehaviour
         float center = field[field.Count - 1].transform.position.x / 2;
         foreach (GameObject item in field) item.transform.Translate(-center, 0, 0);
     }
-    public void BeatCard(Card card)
+    public void BeatCard(CardController card)
     {
         if (card.gameObject.CompareTag("myCard"))
         {
@@ -67,11 +67,11 @@ public class Field : MonoBehaviour
         }
         Destroy(card.gameObject);
     }
-    public static List<Card> GetCards(bool isEnemy)
+    public static List<CardController> GetCards(bool isEnemy)
     {
-        List<Card> cards;
-        if (isEnemy) cards = enemyCards.ConvertAll(n => n.GetComponent<Card>());
-        else cards = myCards.ConvertAll(n => n.GetComponent<Card>());
+        List<CardController> cards;
+        if (isEnemy) cards = enemyCards.ConvertAll(n => n.GetComponent<CardController>());
+        else cards = myCards.ConvertAll(n => n.GetComponent<CardController>());
         return cards;
     }
 }

@@ -8,24 +8,27 @@ public class UnitCard : BasicCard
 {
     [SerializeField] Attack attack;
     [SerializeField] Health hp;
-    public override void initialize()
+    public override void initialize(CardController card)
     {
         action = attack;
-        action.steps = 0;
     }
-    public override bool OnClick()
+    public override bool OnClick(CardController card)
     {
-        if (!Card.Selected.GetBasicCard.GetAction().CheckAlies(action.Card)) return false;
-        Card.Selected.GetBasicCard.GetAction().Directed(action.Card);    
+        if (!CardController.Selected.GetBasicCard.GetAction()
+            .CheckAlies(CardController.Selected,card)) return false;
+        CardController.Selected.GetBasicCard.GetAction()
+            .Directed(CardController.Selected, card);    
         return true;
     }
-    public override bool cast() { return true; }
-    public override IHaveStats TryGetAttack()
+    public override bool cast(CardController card) { return true; }
+    
+    public override List<Stat> GetBasicStats(CardController card)
     {
-        return action.TryGetStats();
-    }
-    public override Health TryGetHealth()
-    {
-        return hp;
+        List<Stat> stats = base.GetBasicStats(card);
+
+        stats.Add(hp.GetStat(card));
+        stats.Add(action.GetStat(card));
+
+        return stats;
     }
 }

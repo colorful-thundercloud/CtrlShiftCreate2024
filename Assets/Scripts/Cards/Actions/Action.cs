@@ -16,57 +16,44 @@ public abstract class Action
     [Header("Максимальное количество активаций за ход")]
     public int maxSteps;
 
-    public int steps { get; set; }
-    Card card;
-    public Card Card 
-    {
-        get { return card; }
-        set
-        {
-            card = value;
-            Initialize();
-        }
-    }
-
-    protected abstract void Initialize();
     /// <summary>
     /// Восстановка ходов у способности
     /// </summary>
-    protected void reloadSteps()
+    protected void reloadSteps(CardController card)
     {
-        if(Card.isCasted) steps = maxSteps;
+        if(card.isCasted) card.GetStat("steps").Value = maxSteps;
     }
     /// <summary>
     /// Ненаправленная на карту способность
     /// </summary>
-    public virtual void Undirected() { }
+    public virtual void Undirected(CardController card) { }
     /// <summary>
     /// Направленная на другую карту способность, активируется вторым кликом по карте-цели
     /// </summary>
-    public virtual void Directed(Card card) 
+    public virtual void Directed(CardController card, CardController target) 
     {
 
     }
     /// <summary>
     /// Проверяет может ли выбранная карта взаимодействовать с этой
     /// </summary>
-    public bool CheckAlies(Card target)
+    public bool CheckAlies(CardController card, CardController target)
     {
-        bool match = Card.CompareTag(target.tag);
+        bool match = card.CompareTag(target.tag);
         if (toAllies) return match;
         else return !match;
     }
     /// <summary>
     /// Проверка доступности способности
     /// </summary>
-    public abstract bool CheckAviability();
+    public abstract bool CheckAviability(CardController card);
     /// <summary>
     /// Получить из Field все карты на которые действует Action
     /// </summary>
-    protected List<Card> GetAllTargets()
+    protected List<CardController> GetAllTargets(CardController card)
     {
-        if (toAllies) return Field.GetCards(Card.CompareTag("enemyCard"));
-        else return Field.GetCards(Card.CompareTag("myCard"));
+        if (toAllies) return Field.GetCards(card.CompareTag("enemyCard"));
+        else return Field.GetCards(card.CompareTag("myCard"));
     }
-    public virtual IHaveStats TryGetStats() { return null; }
+    public virtual Stat GetStat(CardController card) { return null; }
 }

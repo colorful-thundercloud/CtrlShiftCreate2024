@@ -11,7 +11,7 @@ public class BigBrain : MonoBehaviour
     [SerializeField] Hand hand;
     [SerializeField] Field field;
 
-    List<Card> myCardsOnBoard, playerCards, myCards;
+    List<CardController> myCardsOnBoard, playerCards, myCards;
 
     private void Start()
     {
@@ -27,19 +27,19 @@ public class BigBrain : MonoBehaviour
         StartCoroutine(SpawnUnit(myCards));
 
     }
-    IEnumerator SpawnUnit(List<Card> cardsToSpawn)
+    IEnumerator SpawnUnit(List<CardController> cardsToSpawn)
     {
-        foreach (Card card in cardsToSpawn)
+        foreach (CardController card in cardsToSpawn)
         {
             if (!field.CheckCount(true)) break;
             if (typeof(UnitCard) != card.GetBasicCard.GetType()) continue;
-            if (card.GetBasicCard.cast()) yield return StartCoroutine(MoveCard(card, CardSpeed));
+            if (card.GetBasicCard.cast(card)) yield return StartCoroutine(MoveCard(card, CardSpeed));
 
             myCardsOnBoard = Field.GetCards(true);
         }
         TurnBasedGameplay.OnEndTurn.Invoke(false); // возврат хода игроку
     }
-    IEnumerator MoveCard(Card card, float speed)
+    IEnumerator MoveCard(CardController card, float speed)
     {
         Vector3 targetPosition = field.GetEnemyField.position;
         targetPosition.z = card.transform.position.z;

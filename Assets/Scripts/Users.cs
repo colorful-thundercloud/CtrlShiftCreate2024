@@ -22,20 +22,20 @@ public class Users : MonoBehaviour
     }
     private void OnMouseEnter()
     {
-        if (Card.Selected == null) return;
+        if (CardController.Selected == null) return;
         if (gameObject.tag == "myCard") return;
         lighting.color = Color.red;
         StartCoroutine(SmoothLight.smoothLight(lighting, 0.25f));
     }
     private void OnMouseExit()
     {
-        if (Card.Selected == null) return;
+        if (CardController.Selected == null) return;
         if (gameObject.tag == "myCard") return;
         StartCoroutine(SmoothLight.smoothLight(lighting, 0.25f, false));
     }
     private void OnMouseDown()
     {
-        if (Card.Selected == null) return;
+        if (CardController.Selected == null) return;
         if(checkAttack())
         {
             //Card.Selected.attack(this);

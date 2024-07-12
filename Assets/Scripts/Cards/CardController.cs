@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using TMPro;
-using Unity.Burst.Intrinsics;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-public class Card: MonoBehaviour
+public class CardController: MonoBehaviour
 {
     [Header("Поля для данных карт")]
-    [SerializeField] public TMP_Text damage;
-    [SerializeField] public TMP_Text health;
     [SerializeField] public TMP_Text title;
 
-    [SerializeField] SpriteRenderer spriter;
+    [SerializeField] SpriteRenderer image;
     [SerializeField] public Light2D lighting;
     [SerializeField] Light2D signalLight;
 
@@ -22,11 +16,13 @@ public class Card: MonoBehaviour
 
     [SerializeField] private BasicCard basicCard;
     public BasicCard GetBasicCard { get { return basicCard; } }
+    [SerializeField] CardStats stats;
+    public Stat GetStat(string name) => stats.GetStat(name);
     Camera cam;
     
-    public static Card otherCard { get; private set; }
-    private static Card selected;
-    public static Card Selected 
+    public static CardController otherCard { get; private set; }
+    private static CardController selected;
+    public static CardController Selected 
     { 
         set 
         { 
@@ -36,7 +32,7 @@ public class Card: MonoBehaviour
             }
             else
             {
-                if (!value.GetBasicCard.CheckAction()) return;
+                if (!value.GetBasicCard.CheckAction(value)) return;
                 selected?.turnOfLight();
 
                 SoundPlayer.Play(value.SelectSound);
@@ -64,19 +60,19 @@ public class Card: MonoBehaviour
     public void SetCard(BasicCard newCard)
     {
         basicCard = newCard;
-        basicCard.initialize();
-        GetBasicCard.GetAction().Card = this;
-        GetBasicCard.TryGetHealth()?.Initialize(this, GetComponent<Animator>());
+        basicCard.initialize(this);
+        stats = new(basicCard.GetBasicStats(this));
+
 
         TurnBasedGameplay.OnEndTurn.AddListener(isEnemyTurn =>
         {
             if (CompareTag("enemyCard")) return;
-            if (!isEnemyTurn) twinckle(GetBasicCard.CheckAction());
+            if (!isEnemyTurn) twinckle(GetBasicCard.CheckAction(this));
             else twinckle(false);
         });
 
         title.text = basicCard.Title.ToString();
-        spriter.sprite = basicCard.GetAvatar;
+        image.sprite = basicCard.GetAvatar;
     }
     private void hover()
     {
@@ -93,7 +89,7 @@ public class Card: MonoBehaviour
         if (Selected != this)
         {
             turnOfLight();
-            if (isCasted && TurnBasedGameplay.myTurn) twinckle(basicCard.CheckAction());
+            if (isCasted && TurnBasedGameplay.myTurn) twinckle(basicCard.CheckAction(this));
         }
     }
     public void turnOfLight() 
@@ -109,14 +105,14 @@ public class Card: MonoBehaviour
         // все карты
         if (isCasted)
         {
-            CardUI.OnOpenCard(basicCard);
-            if (selected != null) if (GetBasicCard.OnClick()) return;
+            CardUI.OnOpenCard.Invoke(this);
+            if (selected != null) if (GetBasicCard.OnClick(this)) return;
         }
 
         if (gameObject.CompareTag("enemyCard")) return;
         // только карты игрока
 
-        CardUI.OnOpenCard(basicCard);
+        CardUI.OnOpenCard.Invoke(this);
 
         if (isCasted)
         {
@@ -149,7 +145,7 @@ public class Card: MonoBehaviour
         if(field==null||(!field.CheckCount()&&!GetBasicCard.isIngoringFieldCapacity)) backToHand();
         else
         {
-            if (basicCard.cast())
+            if (basicCard.cast(this))
             {
                 cast();
             }
@@ -181,18 +177,18 @@ public class Card: MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("field")) field = collision.GetComponent<Field>();
-        if (collision.TryGetComponent<Card>(out Card card)) if(card.isCasted) otherCard = card;
+        if (collision.TryGetComponent<CardController>(out CardController card)) if(card.isCasted) otherCard = card;
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("field")) field = null;
-        if (collision.TryGetComponent<Card>(out Card card)) if (card==otherCard) otherCard = null;
+        if (collision.TryGetComponent<CardController>(out CardController card)) if (card==otherCard) otherCard = null;
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
 
         if (collision.CompareTag("field")) field = collision.GetComponent<Field>();
-        if (collision.TryGetComponent<Card>(out Card card)) if (card.isCasted) otherCard = card;
+        if (collision.TryGetComponent<CardController>(out CardController card)) if (card.isCasted) otherCard = card;
     }
 
     IEnumerator SmoothSizeChange(Vector3 targetScale, bool grow = false)
