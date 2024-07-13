@@ -24,7 +24,7 @@ public class Attack: Action, IHaveStat
         card.GetStat("steps").Value--;
         card.StartCoroutine(attackAnimation(0.5f, card, target));
         CardController.Selected = null;
-        SoundPlayer.Play(AttackSound);
+        SoundPlayer.Play.Invoke(AttackSound);
     }
 
     IEnumerator attackAnimation(float smoothTime,CardController card, CardController target)
@@ -62,10 +62,11 @@ public class Attack: Action, IHaveStat
     {
         TurnBasedGameplay.OnEndTurn.AddListener(isEnemy => reloadSteps(card));
         Stat stat = new();
-        stat.Name = "damage";
+        stat.Name = Effect.BuffedStats.damage.ToString();
         stat.field = card.transform.Find("attack").GetComponentInChildren<TMP_Text>();
         stat.Value = damage;
         stat.maxValue = damage;
+        stat.canBuff = true;
         return stat;
     }
 }

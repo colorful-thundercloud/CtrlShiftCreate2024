@@ -10,7 +10,7 @@ public class CardUI : MonoBehaviour
 {
     [SerializeField] private Image image;
     [SerializeField] TMP_Text title, damage, hp, description;
-    public static UnityEvent<CardController> OnOpenCard;
+    public static UnityEvent<CardController> OnOpenCard = new();
     Coroutine hideUI;
     private void Start()
     {
@@ -23,8 +23,8 @@ public class CardUI : MonoBehaviour
         if (hideUI != null) StopCoroutine(hideUI);
         image.sprite = card.GetBasicCard.GetAvatar;
         title.text = card.GetBasicCard.Title;
-        damage.text = card.GetStat("damage").maxValue.ToString();
-        hp.text = card.GetStat("hp").maxValue.ToString();
+        damage.text = card.GetStat("damage")?.maxValue.ToString();
+        hp.text = card.GetStat("hp")?.maxValue.ToString();
         description.text = card.GetBasicCard.Description;
         gameObject.SetActive(true);
         hideUI = StartCoroutine(deactivate(4f));

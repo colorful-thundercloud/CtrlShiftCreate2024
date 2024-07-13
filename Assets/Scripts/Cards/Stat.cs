@@ -10,6 +10,7 @@ public class Stat
     [NonSerialized] public UnityEvent OnChange = new(); 
     public string Name;
     public int maxValue;
+    public bool canBuff = false;
     [SerializeField] int value;
     public int Value
     {

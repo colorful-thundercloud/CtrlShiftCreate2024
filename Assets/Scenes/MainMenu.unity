@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1073,7 +1072,6 @@ GameObject:
   - component: {fileID: 66948895}
   - component: {fileID: 66948898}
   - component: {fileID: 66948899}
-  - component: {fileID: 66948900}
   - component: {fileID: 66948901}
   m_Layer: 5
   m_Name: cartDeckButton
@@ -1279,19 +1277,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hidenSran:
   - {fileID: 1749856298}
---- !u!114 &66948900
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 66948893}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c40a6c51d3d87a41838467ae2926a79, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Mixer: {fileID: 0}
 --- !u!82 &66948901
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3610,6 +3595,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Mixer: {fileID: 24300002, guid: 2fb83e18ba855664daf4e17e13c10b4b, type: 2}
+  soundSlider: {fileID: 788127728}
+  musicSlider: {fileID: 1989005866}
 --- !u!4 &357069869
 Transform:
   m_ObjectHideFlags: 0
@@ -6168,12 +6155,12 @@ MonoBehaviour:
   m_RequiresColorTexture: 0
   m_Version: 2
   m_TaaSettings:
-    quality: 3
-    frameInfluence: 0.1
-    jitterScale: 1
-    mipBias: 0
-    varianceClampScale: 0.9
-    contrastAdaptiveSharpening: 0
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
 --- !u!1 &537737987 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2044227114700308559, guid: 1cf0b9780eb2ac44dac08860c1b6b430, type: 3}
@@ -8838,7 +8825,7 @@ GameObject:
   - component: {fileID: 788127727}
   - component: {fileID: 788127728}
   m_Layer: 5
-  m_Name: soundSlider
+  m_Name: SoundsVolume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10996,7 +10983,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1022030143}
   - component: {fileID: 1022030144}
-  - component: {fileID: 1022030145}
   m_Layer: 0
   m_Name: musickController
   m_TagString: Untagged
@@ -11115,18 +11101,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1022030145
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1022030142}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72e35c064be019a4db70c544ea3595f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1026406754
 GameObject:
   m_ObjectHideFlags: 0
@@ -12404,7 +12378,6 @@ GameObject:
   - component: {fileID: 1143834094}
   - component: {fileID: 1143834095}
   - component: {fileID: 1143834097}
-  - component: {fileID: 1143834096}
   m_Layer: 5
   m_Name: startButton
   m_TagString: Untagged
@@ -12609,19 +12582,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hidenSran:
   - {fileID: 1116156958}
---- !u!114 &1143834096
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1143834089}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c40a6c51d3d87a41838467ae2926a79, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Mixer: {fileID: 0}
 --- !u!82 &1143834097
 AudioSource:
   m_ObjectHideFlags: 0
@@ -13531,7 +13491,6 @@ GameObject:
   - component: {fileID: 1295014651}
   - component: {fileID: 1295014654}
   - component: {fileID: 1295014655}
-  - component: {fileID: 1295014656}
   - component: {fileID: 1295014657}
   m_Layer: 5
   m_Name: settingButton
@@ -13737,19 +13696,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hidenSran:
   - {fileID: 1321185492}
---- !u!114 &1295014656
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1295014649}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c40a6c51d3d87a41838467ae2926a79, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Mixer: {fileID: 0}
 --- !u!82 &1295014657
 AudioSource:
   m_ObjectHideFlags: 0
@@ -19150,7 +19096,7 @@ GameObject:
   - component: {fileID: 1989005865}
   - component: {fileID: 1989005866}
   m_Layer: 5
-  m_Name: MusickSlider
+  m_Name: MusicVolume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

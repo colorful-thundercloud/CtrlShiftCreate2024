@@ -7,11 +7,16 @@ using UnityEngine;
 [Serializable]
 public class Effect : Action
 {
+    public enum BuffedStats
+    {
+        damage,
+        hp
+    }
     /// <summary>
     /// Определяет баффаемый параметр
     /// </summary>
     [Header("Определяет баффаемый параметр")]
-    [SerializeField] string buffedStatName;
+    [SerializeField] BuffedStats buffedStat;
     /// <summary>
     /// На сколько умножается выбранный параметр
     /// </summary>
@@ -36,9 +41,9 @@ public class Effect : Action
     }
     public override void Directed(CardController card, CardController target)
     {
-        Stat victim = target.GetStat(buffedStatName);
+        Stat victim = target.GetStat(buffedStat.ToString());
         if (victim == null) return;
-        SoundPlayer.Play(buffSound);
+        SoundPlayer.Play.Invoke(buffSound);
         victim.Value *= multiplier;
         victim.Value += value;
     }

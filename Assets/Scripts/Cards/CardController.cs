@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Rendering.Universal;
 
 public class CardController: MonoBehaviour
@@ -35,7 +36,7 @@ public class CardController: MonoBehaviour
                 if (!value.GetBasicCard.CheckAction(value)) return;
                 selected?.turnOfLight();
 
-                SoundPlayer.Play(value.SelectSound);
+                SoundPlayer.Play.Invoke(value.SelectSound);
                 value.lighting.color = Color.green;
                 value.StartCoroutine(SmoothLight.smoothLight(value.lighting, 0.25f));
                 value.twinckle(false);
@@ -82,10 +83,12 @@ public class CardController: MonoBehaviour
     }
     private void OnMouseEnter()
     {
+        if (EventSystem.current.IsPointerOverGameObject()) return;
         if (Selected != this || Selected == null) hover();
     }
     private void OnMouseExit()
     {
+        if (EventSystem.current.IsPointerOverGameObject()) return;
         if (Selected != this)
         {
             turnOfLight();
@@ -99,6 +102,7 @@ public class CardController: MonoBehaviour
     }
     private void OnMouseDown()
     {
+        if (EventSystem.current.IsPointerOverGameObject()) return;
         if (runningFunc != null) StopCoroutine(runningFunc);
         if (TurnBasedGameplay.myTurn) runningFunc = StartCoroutine(SmoothSizeChange(new Vector3(1, 1, 1)));
 
@@ -127,7 +131,7 @@ public class CardController: MonoBehaviour
     {
         isCasting = false;
         isCasted = true;
-        SoundPlayer.Play(CastSound);
+        SoundPlayer.Play.Invoke(CastSound);
         Field.OnCast?.Invoke(this);
         transform.localScale = Vector3.one;
         foreach (Transform t in transform) t.gameObject.SetActive(true);
@@ -154,13 +158,14 @@ public class CardController: MonoBehaviour
     }
     private void OnMouseDrag()
     {
+        if (EventSystem.current.IsPointerOverGameObject()) return;
         if (CompareTag("enemyCard")) return;
         if (!isCasted && TurnBasedGameplay.myTurn)
         {
             if (!isCasting)
             {
                 isCasting = true;
-                SoundPlayer.Play(SelectSound);
+                SoundPlayer.Play.Invoke(SelectSound);
             }
         }
     }

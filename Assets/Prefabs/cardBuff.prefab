@@ -603,12 +603,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: {fileID: 6647206139642400751}
-  spriter: {fileID: 3467776107165606816}
+  image: {fileID: 3467776107165606816}
   lighting: {fileID: 6153824088226617279}
   signalLight: {fileID: 0}
   CastSound: {fileID: 8300000, guid: 24cf2b51b1e38b544b5dcbe567876773, type: 3}
   SelectSound: {fileID: 8300000, guid: e78dbf2a90ab3d04985563e6ba53b558, type: 3}
   basicCard: {fileID: 0}
+  stats:
+    stats: []
   isCasted: 0
 --- !u!1 &2757901168193473734
 GameObject:

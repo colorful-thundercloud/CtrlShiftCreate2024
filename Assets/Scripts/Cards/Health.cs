@@ -23,10 +23,11 @@ public class Health: IHaveStat
                 card.StartCoroutine(death(card, card.GetComponent<Animator>()));
         }
         Stat stat = new();
-        stat.Name = "hp";
+        stat.Name = Effect.BuffedStats.hp.ToString();
         stat.field = card.transform.Find("hp").GetComponentInChildren<TMP_Text>();
         stat.Value = MaxHP;
         stat.maxValue = MaxHP;
+        stat.canBuff = true;
         stat.OnChange.AddListener(OnHealthChange);
         return stat;
     }
@@ -35,7 +36,7 @@ public class Health: IHaveStat
     {
         //play animation
         anim.SetTrigger("deathTrigger");
-        SoundPlayer.Play(DeathSound);
+        SoundPlayer.Play.Invoke(DeathSound);
         yield return new WaitForSeconds(1f);
         Field.OnCardBeat.Invoke(card);
     }
