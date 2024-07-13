@@ -11,9 +11,20 @@ public class Users : MonoBehaviour
     [SerializeField] Light2D lighting;
 
     [SerializeField] Health hp;
+    [SerializeField] CardStats stats;
+    Animator anim;
     private void Start()
     {
-        //hp = new();
+        stats = new(GetBasicStats());
+        hp.OnDeath.AddListener(Death);
+    }
+    public List<Stat> GetBasicStats()
+    {
+        List<Stat> stats = new();
+
+        stats.Add(hp.GetStat(this));
+
+        return stats;
     }
     private bool checkAttack()
     {
@@ -36,9 +47,14 @@ public class Users : MonoBehaviour
     private void OnMouseDown()
     {
         if (CardController.Selected == null) return;
-        if(checkAttack())
+        Attack(CardController.Selected);
+    }
+    public void Attack(CardController attacker)
+    {
+        if (checkAttack())
         {
-            //Card.Selected.attack(this);
+            attacker.GetBasicCard.GetAction()
+                .Directed(attacker, transform, stats);
         }
     }
     public Health GetHealth { get { return hp; } }

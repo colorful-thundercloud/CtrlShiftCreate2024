@@ -17,7 +17,7 @@ public class UnitCard : BasicCard
         if (!CardController.Selected.GetBasicCard.GetAction()
             .CheckAlies(CardController.Selected,card)) return false;
         CardController.Selected.GetBasicCard.GetAction()
-            .Directed(CardController.Selected, card);    
+            .Directed(CardController.Selected, card.transform, card.GetStats);    
         return true;
     }
     public override bool cast(CardController card) { return true; }
@@ -26,7 +26,7 @@ public class UnitCard : BasicCard
     {
         List<Stat> stats = base.GetBasicStats(card);
 
-        stats.Add(hp.GetStat(card));
+        stats.Add(hp.GetStat(card, card));
         stats.Add(action.GetStat(card));
 
         return stats;

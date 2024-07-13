@@ -6,7 +6,7 @@ using UnityEngine;
 [Serializable]
 public class CardStats
 {
-    [SerializeField] List<Stat> stats;
+    [SerializeField] public List<Stat> stats;
     public CardStats(List<Stat> stats)
     {
         this.stats = stats;

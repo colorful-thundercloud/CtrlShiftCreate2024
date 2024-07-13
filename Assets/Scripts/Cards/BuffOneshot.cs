@@ -18,7 +18,7 @@ public class BuffOneshot : BasicCard
     public override bool cast(CardController card)
     {
         if (CardController.otherCard == null) return false;
-        action.Directed(card, CardController.otherCard);
+        action.Directed(card, CardController.otherCard.transform, CardController.otherCard.GetStats);
         return true;
     }
 }

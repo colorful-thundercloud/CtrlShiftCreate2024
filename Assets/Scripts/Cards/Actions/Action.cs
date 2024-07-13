@@ -30,7 +30,7 @@ public abstract class Action
     /// <summary>
     /// Направленная на другую карту способность, активируется вторым кликом по карте-цели
     /// </summary>
-    public virtual void Directed(CardController card, CardController target) 
+    public virtual void Directed(CardController card, Transform targetTransform, CardStats targetStats)
     {
 
     }

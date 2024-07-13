@@ -19,18 +19,18 @@ public class Attack: Action, IHaveStat
         return card.GetStat("steps").Value > 0;
     }
 
-    public override void Directed(CardController card, CardController target)
+    public override void Directed(CardController card, Transform targetTransform, CardStats targetStats)
     {
         card.GetStat("steps").Value--;
-        card.StartCoroutine(attackAnimation(0.5f, card, target));
+        card.StartCoroutine(attackAnimation(0.5f, card, targetTransform.transform, targetStats.GetStat("hp")));
         CardController.Selected = null;
         SoundPlayer.Play.Invoke(AttackSound);
     }
 
-    IEnumerator attackAnimation(float smoothTime,CardController card, CardController target)
+    IEnumerator attackAnimation(float smoothTime, CardController card, Transform target, Stat hp)
     {
         Vector3 startPosition = card.transform.position;
-        Vector3 direction = target.transform.position;
+        Vector3 direction = target.position;
 
         card.GetComponent<SpriteRenderer>().sortingOrder++;
         foreach (Transform t in card.transform)
@@ -43,7 +43,7 @@ public class Attack: Action, IHaveStat
             yield return new WaitForFixedUpdate();
         }
 
-        target.GetStat("hp").Value -= card.GetStat("damage").Value;
+        hp.Value -= card.GetStat("damage").Value;
 
         direction = startPosition;
         while (card.transform.position != direction)

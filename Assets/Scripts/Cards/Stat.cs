@@ -7,7 +7,7 @@ using UnityEngine.Events;
 public class Stat
 {
     [NonSerialized] public TMP_Text field;
-    [NonSerialized] public UnityEvent OnChange = new(); 
+    [NonSerialized] public UnityEvent<int> OnChange = new(); 
     public string Name;
     public int maxValue;
     public bool canBuff = false;
@@ -18,7 +18,7 @@ public class Stat
         set
         {
             this.value = value;
-            OnChange.Invoke();
+            OnChange.Invoke(value);
             if (field != null) field.text = this.value.ToString();
         }
     }

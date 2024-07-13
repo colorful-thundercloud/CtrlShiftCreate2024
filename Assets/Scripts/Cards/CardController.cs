@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using TMPro;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering.Universal;
@@ -18,6 +19,7 @@ public class CardController: MonoBehaviour
     [SerializeField] private BasicCard basicCard;
     public BasicCard GetBasicCard { get { return basicCard; } }
     [SerializeField] CardStats stats;
+    public CardStats GetStats => stats;
     public Stat GetStat(string name) => stats.GetStat(name);
     Camera cam;
     

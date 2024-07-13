@@ -650,8 +650,10 @@ MonoBehaviour:
   defeatWindow: {fileID: 6615235663157918523}
   lighting: {fileID: 168682090}
   hp:
-    MaxHP: 0
-    DeathSound: {fileID: 0}
+    MaxHP: 9
+    DeathSound: {fileID: 8300000, guid: 6c7a9802f0f492f459572d0942a03efb, type: 3}
+  stats:
+    stats: []
 --- !u!212 &308797504
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -719,7 +721,7 @@ Transform:
   m_Children:
   - {fileID: 168682091}
   - {fileID: 946206505}
-  - {fileID: 4595764133230015018}
+  - {fileID: 673374475}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &401788617
@@ -983,6 +985,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &673374474
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 673374475}
+  m_Layer: 6
+  m_Name: hp
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &673374475
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 673374474}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4595764133230015018}
+  m_Father: {fileID: 308797505}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &946206504
 GameObject:
   m_ObjectHideFlags: 0
@@ -1214,7 +1248,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1999154786}
+  m_Father: {fileID: 1963088628}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1552,6 +1586,38 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1963088627
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1963088628}
+  m_Layer: 6
+  m_Name: hp
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1963088628
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1963088627}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1208992306}
+  m_Father: {fileID: 1999154786}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1999154782
 GameObject:
@@ -2184,10 +2250,12 @@ MonoBehaviour:
   field: {fileID: 1523470344}
   winWindow: {fileID: 2019098523272512511}
   defeatWindow: {fileID: 6615235663157918523}
-  lighting: {fileID: 0}
+  lighting: {fileID: 7455960687680050965}
   hp:
-    MaxHP: 0
-    DeathSound: {fileID: 0}
+    MaxHP: 9
+    DeathSound: {fileID: 8300000, guid: 6c7a9802f0f492f459572d0942a03efb, type: 3}
+  stats:
+    stats: []
 --- !u!212 &1999154785
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2254,7 +2322,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5559113862496346366}
-  - {fileID: 1208992306}
+  - {fileID: 1963088628}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2116132363
@@ -8839,7 +8907,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 308797505}
+  m_Father: {fileID: 673374475}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

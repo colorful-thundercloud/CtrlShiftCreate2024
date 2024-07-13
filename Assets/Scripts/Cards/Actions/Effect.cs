@@ -37,11 +37,11 @@ public class Effect : Action
     public override void Undirected(CardController card)
     {
         List<CardController> targets = GetAllTargets(card);
-        foreach (CardController target in targets) Directed(card, target);
+        foreach (CardController target in targets) Directed(card, target.transform, target.GetStats);
     }
-    public override void Directed(CardController card, CardController target)
+    public override void Directed(CardController card, Transform targetTransform, CardStats targetStats)
     {
-        Stat victim = target.GetStat(buffedStat.ToString());
+        Stat victim = targetStats.GetStat(buffedStat.ToString());
         if (victim == null) return;
         SoundPlayer.Play.Invoke(buffSound);
         victim.Value *= multiplier;
