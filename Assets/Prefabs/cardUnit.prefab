@@ -864,7 +864,7 @@ MonoBehaviour:
   lighting: {fileID: 1564628615307975834}
   signalLight: {fileID: 7073640693868358652}
   CastSound: {fileID: 8300000, guid: 24cf2b51b1e38b544b5dcbe567876773, type: 3}
-  SelectSound: {fileID: 8300000, guid: e78dbf2a90ab3d04985563e6ba53b558, type: 3}
+  SelectSound: {fileID: 8300000, guid: 097e4161e4bf9fd4b9692e78e3963a2a, type: 3}
   basicCard: {fileID: 0}
   stats:
     stats: []

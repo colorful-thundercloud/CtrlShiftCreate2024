@@ -106,7 +106,7 @@ public class CardController: MonoBehaviour
     {
         if (EventSystem.current.IsPointerOverGameObject()) return;
         if (runningFunc != null) StopCoroutine(runningFunc);
-        if (TurnBasedGameplay.myTurn) runningFunc = StartCoroutine(SmoothSizeChange(new Vector3(1, 1, 1)));
+        if (TurnBasedGameplay.myTurn) runningFunc = StartCoroutine(Mover.SmoothSizeChange(new Vector3(1, 1, 1), transform,0.1f));
 
         // все карты
         if (isCasted)
@@ -136,13 +136,17 @@ public class CardController: MonoBehaviour
         SoundPlayer.Play.Invoke(CastSound);
         Field.OnCast?.Invoke(this);
         transform.localScale = Vector3.one;
+    }
+    public void Show()
+    {
+        SoundPlayer.Play.Invoke(SelectSound);
         foreach (Transform t in transform) t.gameObject.SetActive(true);
     }
     void backToHand()
     {
         isCasting = false;
         if (runningFunc != null) StopCoroutine(runningFunc);
-        runningFunc = StartCoroutine(SmoothSizeChange(startScale, true));
+        runningFunc = StartCoroutine(Mover.SmoothSizeChange(startScale,transform, 0.1f));
         transform.position = startPosition;
     }
     public void OnMouseUp()
@@ -176,7 +180,7 @@ public class CardController: MonoBehaviour
         if (isCasting)
         {
             Vector3 pos = cam.ScreenToWorldPoint(Input.mousePosition);
-            pos.z = transform.position.z;
+            pos.z = 0;
             transform.position = pos;
         }
     }
@@ -198,18 +202,6 @@ public class CardController: MonoBehaviour
         if (collision.TryGetComponent<CardController>(out CardController card)) if (card.isCasted) otherCard = card;
     }
 
-    IEnumerator SmoothSizeChange(Vector3 targetScale, bool grow = false)
-    {
-        if (TurnBasedGameplay.myTurn)
-        {
-            if (grow && transform.localScale.x < targetScale.x) transform.localScale += new Vector3(0.05f, 0.05f, 0);
-            else if (!grow && transform.localScale.x > targetScale.x) transform.localScale -= new Vector3(0.05f, 0.05f, 0);
-            else yield break;
-
-            yield return new WaitForSeconds(0.005f);
-            runningFunc = StartCoroutine(SmoothSizeChange(targetScale, grow));
-        }
-    }
     Coroutine twink;
     public void twinckle(bool isEnabled)
     {

@@ -22,40 +22,25 @@ public class Attack: Action, IHaveStat
     public override void Directed(CardController card, Transform targetTransform, CardStats targetStats)
     {
         card.GetStat("steps").Value--;
-        card.StartCoroutine(attackAnimation(0.5f, card, targetTransform.transform, targetStats.GetStat("hp")));
+        card.StartCoroutine(attackAnimation(0.25f, card, targetTransform.transform, targetStats.GetStat(Effect.BuffedStats.hp.ToString())));
         CardController.Selected = null;
         SoundPlayer.Play.Invoke(AttackSound);
     }
 
     IEnumerator attackAnimation(float smoothTime, CardController card, Transform target, Stat hp)
     {
-        Vector3 startPosition = card.transform.position;
-        Vector3 direction = target.position;
+        Vector2 startPosition = card.transform.position;
+        Vector2 direction = target.position;
 
-        card.GetComponent<SpriteRenderer>().sortingOrder++;
-        foreach (Transform t in card.transform)
-            if (t.TryGetComponent<SpriteRenderer>(out SpriteRenderer spriteRenderer)) 
-                spriteRenderer.sortingOrder++;
+        card.transform.position = new Vector3(card.transform.position.x, card.transform.position.y, 3);
 
-        while (card.transform.position != direction)
-        {
-            card.transform.position = Vector3.MoveTowards(card.transform.position, direction, smoothTime);
-            yield return new WaitForFixedUpdate();
-        }
+        yield return card.StartCoroutine(Mover.MoveCard(card, direction, smoothTime));
 
         hp.Value -= card.GetStat("damage").Value;
 
-        direction = startPosition;
-        while (card.transform.position != direction)
-        {
-            card.transform.position = Vector3.MoveTowards(card.transform.position, startPosition, smoothTime);
-            yield return new WaitForFixedUpdate();
-        }
+        yield return card.StartCoroutine(Mover.MoveCard(card, startPosition, smoothTime));
 
-        card.GetComponent<SpriteRenderer>().sortingOrder--;
-        foreach (Transform t in card.transform)
-            if (t.TryGetComponent<SpriteRenderer>(out SpriteRenderer spriteRenderer)) 
-                spriteRenderer.sortingOrder--;
+        card.transform.position = new Vector3(card.transform.position.x, card.transform.position.y, 4);
     }
 
     public override Stat GetStat(CardController card)

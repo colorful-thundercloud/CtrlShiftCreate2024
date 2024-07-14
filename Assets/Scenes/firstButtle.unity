@@ -566,6 +566,7 @@ GameObject:
   - component: {fileID: 308797503}
   - component: {fileID: 308797502}
   - component: {fileID: 308797501}
+  - component: {fileID: 308797506}
   m_Layer: 6
   m_Name: Enemy
   m_TagString: enemyCard
@@ -588,6 +589,8 @@ MonoBehaviour:
   CardSpeed: 0.1
   hand: {fileID: 1085298350}
   field: {fileID: 1523470344}
+  showWaitTime: 1
+  player: {fileID: 1999154784}
 --- !u!61 &308797502
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -724,6 +727,27 @@ Transform:
   - {fileID: 673374475}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &308797506
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 308797500}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 170801a0bad669f42bec3c9660be43b9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &401788617
 GameObject:
   m_ObjectHideFlags: 0
@@ -1437,7 +1461,7 @@ Transform:
   m_GameObject: {fileID: 1523470343}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 100}
+  m_LocalPosition: {x: 0, y: 1, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1631,6 +1655,7 @@ GameObject:
   - component: {fileID: 1999154785}
   - component: {fileID: 1999154784}
   - component: {fileID: 1999154783}
+  - component: {fileID: 1999154787}
   m_Layer: 6
   m_Name: Player
   m_TagString: myCard
@@ -2325,6 +2350,27 @@ Transform:
   - {fileID: 1963088628}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1999154787
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1999154782}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 170801a0bad669f42bec3c9660be43b9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2116132363
 GameObject:
   m_ObjectHideFlags: 0
@@ -2350,7 +2396,7 @@ Transform:
   m_GameObject: {fileID: 2116132363}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

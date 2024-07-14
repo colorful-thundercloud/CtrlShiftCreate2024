@@ -34,7 +34,7 @@ public class Health
         return stat;
     }
 
-    IEnumerator death(Animator anim, CardController card = null)
+    IEnumerator death(Animator anim, CardController card)
     {
         anim.SetTrigger("deathTrigger");
         SoundPlayer.Play.Invoke(DeathSound);

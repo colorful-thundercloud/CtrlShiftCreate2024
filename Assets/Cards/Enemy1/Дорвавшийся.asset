@@ -21,7 +21,7 @@ MonoBehaviour:
     toAllies: 0
     maxSteps: 1
     damage: 1
-    AttackSound: {fileID: 0}
+    AttackSound: {fileID: 8300000, guid: f270f2dd380d848429784d8818333c87, type: 3}
   hp:
     MaxHP: 1
-    DeathSound: {fileID: 0}
+    DeathSound: {fileID: 8300000, guid: 6c7a9802f0f492f459572d0942a03efb, type: 3}

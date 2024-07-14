@@ -26,7 +26,7 @@ public class Hand : MonoBehaviour
         {
             Vector3 pos = HandPosition.position;
             pos.x = distance * i;
-            pos.z = hand[i].transform.position.z;
+            pos.z = (hand[i].tag == "myCard")? 1f : 2f;
             hand[i].transform.position = pos;
         }
         if (hand.Count == 0) return;

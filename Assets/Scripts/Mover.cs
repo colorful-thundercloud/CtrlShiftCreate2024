@@ -1,0 +1,29 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public static class Mover
+{
+    public static IEnumerator SmoothSizeChange(Vector3 targetScale, Transform transform, float smoothTime)
+    {
+        float t = 0;
+        float scale;
+        float start = transform.localScale.x;
+        while (transform.localScale != targetScale)
+        {
+            scale = Mathf.Lerp(start, targetScale.x, t / smoothTime);
+            transform.localScale = new Vector3(scale, scale, targetScale.z);
+            t += Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
+            if (transform == null) yield break;
+        }
+    }
+    public static IEnumerator MoveCard(CardController card, Vector2 targetPosition, float speed)
+    {
+        while ((Vector2)card.transform.position != targetPosition)
+        {
+            card.transform.position = Vector2.MoveTowards((Vector2)card.transform.position, targetPosition, speed);
+            yield return new WaitForFixedUpdate();
+        }
+    }
+}

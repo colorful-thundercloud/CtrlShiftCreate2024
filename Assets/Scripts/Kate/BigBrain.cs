@@ -1,8 +1,12 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class BigBrain : MonoBehaviour
@@ -10,8 +14,10 @@ public class BigBrain : MonoBehaviour
     [SerializeField] float CardSpeed;
     [SerializeField] Hand hand;
     [SerializeField] Field field;
+    [SerializeField] float showWaitTime;
 
     List<CardController> myCardsOnBoard, playerCards, myCards;
+    [SerializeField] Users player;
 
     private void Start()
     {
@@ -21,11 +27,67 @@ public class BigBrain : MonoBehaviour
     {
         if (!isEnemy) return;
 
-        playerCards = Field.GetCards(false);
         myCards = hand.GetCards();
 
-        StartCoroutine(SpawnUnit(myCards));
+        StartCoroutine(turn());
+    }
+    IEnumerator turn()
+    {
+        yield return StartCoroutine(SpawnUnit(myCards));
 
+        myCards = hand.GetCards();
+
+        myCardsOnBoard = Field.GetCards(true);
+        playerCards = Field.GetCards(false);
+
+        List<CardController> buffCards = GetListCardType(myCards, typeof(BuffOneshot), false);
+        yield return StartCoroutine(SpawnBaffs(buffCards));
+
+        yield return new WaitForSeconds(0.5f);
+
+        yield return StartCoroutine(AttackPlayerCards());
+
+        TurnBasedGameplay.OnEndTurn.Invoke(false); // возврат хода игроку
+    }
+    IEnumerator SpawnBaffs(List<CardController> buffCards)
+    {
+        Coroutine size;
+        foreach (CardController card in buffCards)
+        {
+            card.Show();
+            size = StartCoroutine(Mover.SmoothSizeChange(new Vector3(2, 2, 2), card.transform, 0.5f));
+            yield return StartCoroutine(Mover.MoveCard(card, field.GetEnemyField.position, CardSpeed));
+            yield return new WaitForSeconds(showWaitTime);
+            CardController target;
+            if (card.GetBasicCard.GetAction().toAllies)
+                target = myCardsOnBoard[0];
+            else target = playerCards[0];
+            StopCoroutine(size);
+            size = StartCoroutine(Mover.SmoothSizeChange(new Vector3(1, 1, 1), card.transform, 0.25f));
+            yield return StartCoroutine(Mover.MoveCard(card, target.transform.position, CardSpeed));
+            card.GetBasicCard.GetAction().Directed(card, target.transform, target.GetStats);
+            card.cast();
+            //card.GetBasicCard.GetAction()
+            //    .Directed(card, transform, target.GetStats);
+        }
+    }
+    IEnumerator AttackPlayerCards()
+    {
+        List<CardController> aviableUnits = GetListCardType(myCardsOnBoard, typeof(UnitCard), true);
+        if (aviableUnits.Count == 0) yield break;
+        foreach(CardController card in aviableUnits)
+        {
+            playerCards = Field.GetCards(false);
+            if (playerCards.Count != 0)
+            {
+                card.GetBasicCard.GetAction()
+                    .Directed(card, playerCards[0].transform, playerCards[0].GetStats);
+            }
+            else player.Attack(card);
+
+            yield return new WaitForSeconds(1.25f);
+        }
+        yield return StartCoroutine(AttackPlayerCards());
     }
     IEnumerator SpawnUnit(List<CardController> cardsToSpawn)
     {
@@ -33,23 +95,23 @@ public class BigBrain : MonoBehaviour
         {
             if (!field.CheckCount(true)) break;
             if (typeof(UnitCard) != card.GetBasicCard.GetType()) continue;
-            if (card.GetBasicCard.cast(card)) yield return StartCoroutine(MoveCard(card, CardSpeed));
+            if (card.GetBasicCard.cast(card))
+            {
+                card.Show();
+                yield return StartCoroutine(Mover.MoveCard(card, field.GetEnemyField.position, CardSpeed));
+                card.cast();
+            }
 
             myCardsOnBoard = Field.GetCards(true);
         }
-        TurnBasedGameplay.OnEndTurn.Invoke(false); // возврат хода игроку
     }
-    IEnumerator MoveCard(CardController card, float speed)
+    List<CardController> GetListCardType(List<CardController> toSearch, Type type, bool aviable)
     {
-        Vector3 targetPosition = field.GetEnemyField.position;
-        targetPosition.z = card.transform.position.z;
-
-        while (card.transform.position != targetPosition)
-        {
-            card.transform.position = Vector3.MoveTowards(card.transform.position, targetPosition, speed);
-            yield return new WaitForFixedUpdate();
-        }
-        card.cast();
+        List<CardController> cards = new();
+        foreach(CardController card in toSearch)
+            if(type == card.GetBasicCard.GetType()&& aviable == card.GetBasicCard.CheckAction(card))
+                cards.Add(card);
+        return cards;
     }
     /*
     [SerializeField] Users Player;

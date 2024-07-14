@@ -42,7 +42,7 @@ public class Field : MonoBehaviour
             Vector3 pos = Vector3.zero;
             pos.y = isEnemy ? enemyField.position.y : myField.position.y;
             pos.x = distance * i;
-            pos.z = field[i].transform.position.z;
+            pos.z = 4;
             field[i].transform.position = pos;
         }
         if (field.Count == 0) return;

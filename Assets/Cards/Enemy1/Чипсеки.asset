@@ -19,7 +19,7 @@ MonoBehaviour:
   buff:
     toAllies: 1
     maxSteps: 0
-    type: 0
+    buffedStat: 1
     multiplier: 1
-    value: 0
-    buffSound: {fileID: 0}
+    value: 2
+    buffSound: {fileID: 8300000, guid: c9adadb3a830cd34b8984c8484283607, type: 3}
