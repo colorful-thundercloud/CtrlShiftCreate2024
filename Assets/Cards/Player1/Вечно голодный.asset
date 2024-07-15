@@ -18,7 +18,7 @@ MonoBehaviour:
     \u0436\u0443\u0451\u0442 \u043D\u0430 \u043F\u0430\u0440\u0430\u0445"
   attack:
     toAllies: 0
-    maxSteps: 1
+    maxSteps: 2
     damage: 1
     AttackSound: {fileID: 8300000, guid: f270f2dd380d848429784d8818333c87, type: 3}
   hp:

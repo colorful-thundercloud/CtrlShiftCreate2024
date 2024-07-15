@@ -14,7 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: "\u041A\u043E\u0442-\u0434\u0440\u0435\u043C\u043E\u0442"
   Avatar: {fileID: 21300000, guid: bad087c94af2a9747a51937ce5005546, type: 3}
-  type: 0
-  hp: 1
-  damage: 3
   description: "\u041A\u0443\u0440\u0441\u0430\u0447 \u043F\u043E\u0434\u043E\u0436\u0434\u0451\u0442..."
+  attack:
+    toAllies: 0
+    maxSteps: 1
+    damage: 2
+    AttackSound: {fileID: 8300000, guid: f270f2dd380d848429784d8818333c87, type: 3}
+  hp:
+    MaxHP: 2
+    DeathSound: {fileID: 8300000, guid: 6c7a9802f0f492f459572d0942a03efb, type: 3}

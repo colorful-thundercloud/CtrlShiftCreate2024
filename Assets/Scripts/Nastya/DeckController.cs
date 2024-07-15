@@ -11,13 +11,13 @@ public class DeckController : MonoBehaviour
     public List<BasicCard> beaten = new();
     int counter;
     BasicCard card;
-    void Start()
+    public void SetSet(CardSet set)
     {
+        cardSet = set; 
         foreach (BasicCard card in cardSet.cards)
             currentDeck.Add(card);
         ShuffleDeck();
     }
-
     void ShuffleDeck()
     {
         System.Random random = new();

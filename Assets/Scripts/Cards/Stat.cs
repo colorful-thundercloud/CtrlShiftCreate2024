@@ -19,7 +19,11 @@ public class Stat
         {
             this.value = value;
             OnChange.Invoke(value);
-            if (field != null) field.text = this.value.ToString();
+            if (field != null)
+            {
+                field.transform.parent.gameObject.SetActive(true);
+                field.text = this.value.ToString();
+            }
         }
     }
 }

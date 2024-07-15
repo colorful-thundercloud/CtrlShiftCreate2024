@@ -21,7 +21,7 @@ public class Hand : MonoBehaviour
             if (item == null) return;
             if(item.GetComponent<CardController>().isCasted) t.Add(item);
         }
-        foreach (GameObject item in t) hand.Remove(item);
+        foreach (GameObject item in t) RemoveCard(item);
         for (int i = 0; i < hand.Count; i++)
         {
             Vector3 pos = HandPosition.position;
@@ -44,21 +44,13 @@ public class Hand : MonoBehaviour
         {
             go = Instantiate(cardPrefab, HandPosition.position - new Vector3(0, 0, 0), Quaternion.identity);
 
-            if (enemy)
-            {
-                go.transform.localScale = new Vector3(0.4f, 0.4f, 1);
-                go.tag = "enemyCard";
-            }
-            else
-            {
-                go.transform.localScale = new Vector3(2f, 2f, 1);
-                go.tag = "myCard";
-            }
+            go.transform.localScale = (enemy) ? new Vector3(0.4f, 0.4f, 1) : new Vector3(2f, 2f, 1);
+            go.tag = (enemy) ? "enemyCard" : "myCard";
+
             go.GetComponent<CardController>().SetCard(card);
             hand.Add(go);
 
-            if (enemy)
-                foreach (Transform t in go.transform) t.gameObject.SetActive(false);
+            if (enemy) go.GetComponent<CardController>().Show(false);
 
             updateHand();
         }
@@ -84,8 +76,12 @@ public class Hand : MonoBehaviour
     }
     public void BeatCard(CardController card)
     {
-        hand.Remove(card.gameObject);
+        RemoveCard(card.gameObject);
         deckController.BeatCard(card.GetBasicCard);
         Destroy(card.gameObject);
+    }
+    public void clear()
+    {
+        while (hand.Count > 0) BeatCard(hand[0].GetComponent<CardController>());
     }
 }

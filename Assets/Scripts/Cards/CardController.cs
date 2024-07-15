@@ -137,10 +137,16 @@ public class CardController: MonoBehaviour
         Field.OnCast?.Invoke(this);
         transform.localScale = Vector3.one;
     }
-    public void Show()
+    public void Show(bool enabled)
     {
         SoundPlayer.Play.Invoke(SelectSound);
-        foreach (Transform t in transform) t.gameObject.SetActive(true);
+        Transform bg = transform.Find("BG");
+        Vector3 pos = bg.position;
+        pos.z += (enabled)? 0.5f : -0.5f;
+        bg.position = pos;
+        transform.Find("pin").gameObject.SetActive(enabled);
+        transform.Find("name").gameObject.SetActive(enabled);
+        transform.Find("attack").gameObject.SetActive(enabled);
     }
     void backToHand()
     {

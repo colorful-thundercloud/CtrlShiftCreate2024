@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
 public class Effect : Action
 {
+    Color color;
     public enum BuffedStats
     {
         damage,
@@ -46,5 +48,37 @@ public class Effect : Action
         SoundPlayer.Play.Invoke(buffSound);
         victim.Value *= multiplier;
         victim.Value += value;
+    }
+    public override Stat GetStat(CardController card)
+    {
+        color = (buffedStat == BuffedStats.damage) ? Color.red : new Color(0, 0.5f, 0, 1);
+        TurnBasedGameplay.OnEndTurn.AddListener(isEnemy => reloadSteps(card));/*
+
+        Transform buff = card.transform.Find("buff");
+        buff.gameObject.SetActive(true);
+        buff.GetComponent<SpriteRenderer>().color = (buffedStat == BuffedStats.damage) ? Color.red : Color.green;*/
+
+        Stat stat = new();
+        stat.Name = "multiplier";
+        stat.field = card.transform.Find("multiplier").GetComponentInChildren<TMP_Text>();
+        stat.field.color = color;
+        card.transform.Find("multiplier").GetComponentInChildren<SpriteRenderer>().color = color;
+        stat.Value = multiplier;
+        stat.maxValue = multiplier;
+        stat.canBuff = false;
+        return stat;
+    }
+    public Stat GetSecondStat(CardController card)
+    {
+        TurnBasedGameplay.OnEndTurn.AddListener(isEnemy => reloadSteps(card));
+        Stat stat = new();
+        stat.Name = "value";
+        stat.field = card.transform.Find("value").GetComponentInChildren<TMP_Text>();
+        stat.field.color = color;
+        card.transform.Find("value").GetComponentInChildren<SpriteRenderer>().color = color;
+        stat.Value = value;
+        stat.maxValue = value;
+        stat.canBuff = false;
+        return stat;
     }
 }

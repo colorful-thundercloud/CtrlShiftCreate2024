@@ -16,7 +16,7 @@ public class TurnBasedGameplay : MonoBehaviour
 
     void DrawCards()
     {
-        enemyEndMove();
+        endMoveBtn.interactable = true;
     }
 
     public void NextTurn(bool isEnemyTurn) => OnEndTurn.Invoke(isEnemyTurn);
@@ -27,40 +27,5 @@ public class TurnBasedGameplay : MonoBehaviour
         CardController.Selected = null;
         if(isEnemyTurn) enemyHand.DrawCards(true);
         else playerHand.DrawCards();
-    }
-
-    public void playerEndMove()
-    {
-        /*// начало хода врага
-        
-        foreach (Card card in playerHand.GetCards())
-            card.canDrag = false;
-
-        if (Field.GetCards(true).Count > 0)
-            foreach (Card card in Field.GetCards(true))
-                card.used = false;
-
-        if (Field.GetCards(false).Count > 0)
-            foreach (Card card in Field.GetCards(false))
-                card.used = true;
-        Card.Selected = null;
-        enemyHand.DrawCards(true);
-
-        bb.EnemyTurn();*/
-    }
-
-    public void enemyEndMove()
-    {
-        // начало хода игрока
-        endMoveBtn.interactable = true;
-        playerHand.DrawCards();
-
-        /*foreach (Card card in playerHand.GetCards())
-            card.canDrag = true;
-
-        if (Field.GetCards(false).Count > 0)
-            foreach (Card card in Field.GetCards(false))
-                card.used = false;*/
-
     }
 }

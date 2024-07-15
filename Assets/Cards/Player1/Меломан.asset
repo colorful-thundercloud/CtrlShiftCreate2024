@@ -20,7 +20,7 @@ MonoBehaviour:
   attack:
     toAllies: 0
     maxSteps: 1
-    damage: 1
+    damage: 2
     AttackSound: {fileID: 8300000, guid: f270f2dd380d848429784d8818333c87, type: 3}
   hp:
     MaxHP: 2

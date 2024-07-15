@@ -19,4 +19,13 @@ public class BuffOneshot : OneShot
         action.Directed(card, CardController.otherCard.transform, CardController.otherCard.GetStats);
         return true;
     }
+    public override List<Stat> GetBasicStats(CardController card)
+    {
+        List<Stat> stats = base.GetBasicStats(card);
+
+        stats.Add(buff.GetStat(card));
+        stats.Add(buff.GetSecondStat(card));
+
+        return stats;
+    }
 }

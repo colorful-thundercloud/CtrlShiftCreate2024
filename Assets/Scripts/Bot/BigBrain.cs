@@ -48,8 +48,8 @@ public class BigBrain : MonoBehaviour
         Coroutine size;
         foreach (CardController card in buffCards)
         {
-            card.Show();
-            size = StartCoroutine(Mover.SmoothSizeChange(new Vector3(2, 2, 2), card.transform, 0.5f));
+            card.Show(true);
+            size = StartCoroutine(Mover.SmoothSizeChange(new Vector3(2, 2, 2), card.transform, CardSpeed));
             yield return StartCoroutine(Mover.MoveCard(card, field.GetEnemyField.position, CardSpeed));
             yield return new WaitForSeconds(showWaitTime);
             CardController target;
@@ -57,7 +57,7 @@ public class BigBrain : MonoBehaviour
                 target = myCardsOnBoard[0];
             else target = playerCards[0];
             StopCoroutine(size);
-            size = StartCoroutine(Mover.SmoothSizeChange(new Vector3(1, 1, 1), card.transform, 0.25f));
+            size = StartCoroutine(Mover.SmoothSizeChange(new Vector3(1, 1, 1), card.transform, CardSpeed));
             yield return StartCoroutine(Mover.MoveCard(card, target.transform.position, CardSpeed));
             card.GetBasicCard.GetAction().Directed(card, target.transform, target.GetStats);
             card.cast();
@@ -91,7 +91,8 @@ public class BigBrain : MonoBehaviour
             if (typeof(UnitCard) != card.GetBasicCard.GetType()) continue;
             if (card.GetBasicCard.cast(card))
             {
-                card.Show();
+                card.Show(true);
+                StartCoroutine(Mover.SmoothSizeChange(new Vector3(1, 1, 1), card.transform, CardSpeed));
                 yield return StartCoroutine(Mover.MoveCard(card, field.GetEnemyField.position, CardSpeed));
                 card.cast();
             }

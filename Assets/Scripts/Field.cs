@@ -16,8 +16,7 @@ public class Field : MonoBehaviour
         if(isEnemy) return enemyCards.Count < maxCardCount;
         else return myCards.Count < maxCardCount;
     }
-    static List<GameObject> myCards = new List<GameObject>();
-    static List<GameObject> enemyCards = new List<GameObject>();
+    static List<GameObject> myCards, enemyCards;
     public static UnityEvent<CardController> OnCast = new();
     public static UnityEvent<CardController> OnCardBeat = new();
     private void Start()
@@ -25,6 +24,8 @@ public class Field : MonoBehaviour
         Time.timeScale = 1f;
         OnCast.AddListener(ctx => addCard(ctx, ctx.CompareTag("enemyCard")));
         OnCardBeat.AddListener(BeatCard);
+        myCards = new();
+        enemyCards = new();
     }
     public Transform GetEnemyField { get { return enemyField; } }
     public void addCard(CardController card, bool isEnemy)
@@ -56,14 +57,12 @@ public class Field : MonoBehaviour
             myCards.Remove(card.gameObject);
             updateField(false);
             myDeck.BeatCard(card.GetBasicCard);
-            myHand.RemoveCard(card.gameObject);
         }
         else
         {
             enemyCards.Remove(card.gameObject);
             updateField(true);
             enemyDeck.BeatCard(card.GetBasicCard);
-            enemyHand.RemoveCard(card.gameObject);
         }
         Destroy(card.gameObject);
     }
@@ -73,5 +72,10 @@ public class Field : MonoBehaviour
         if (isEnemy) cards = enemyCards.ConvertAll(n => n.GetComponent<CardController>());
         else cards = myCards.ConvertAll(n => n.GetComponent<CardController>());
         return cards;
+    }
+    public void Clear()
+    {
+        while(myCards.Count > 0) BeatCard(myCards[0].GetComponent<CardController>());
+        while(enemyCards.Count > 0) BeatCard(enemyCards[0].GetComponent<CardController>());
     }
 }

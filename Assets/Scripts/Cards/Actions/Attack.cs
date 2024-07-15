@@ -22,7 +22,7 @@ public class Attack: Action, IHaveStat
     public override void Directed(CardController card, Transform targetTransform, CardStats targetStats)
     {
         card.GetStat("steps").Value--;
-        card.StartCoroutine(attackAnimation(0.25f, card, targetTransform.transform, targetStats.GetStat(Effect.BuffedStats.hp.ToString())));
+        card.StartCoroutine(attackAnimation(0.2f, card, targetTransform.transform, targetStats.GetStat(Effect.BuffedStats.hp.ToString())));
         CardController.Selected = null;
         SoundPlayer.Play.Invoke(AttackSound);
     }

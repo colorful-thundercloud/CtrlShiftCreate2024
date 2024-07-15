@@ -19,7 +19,7 @@ MonoBehaviour:
     \u043C\u044F\u0441\u043E"
   buff:
     toAllies: 1
-    maxSteps: 2
+    maxSteps: 0
     buffedStat: 1
     multiplier: 2
     value: 0
