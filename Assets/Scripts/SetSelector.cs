@@ -15,6 +15,7 @@ public class SetSelector : MonoBehaviour
     }
     void SelectSet(CardSet set)
     {
+        Time.timeScale = 1;
         standartMenu.SetActive(true);
         playerDeck.SetSet(set);
         playerHand.DrawCards();

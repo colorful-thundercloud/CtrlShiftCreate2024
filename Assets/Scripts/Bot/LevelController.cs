@@ -24,5 +24,6 @@ public class LevelController : MonoBehaviour
         botIcon.sprite = bot.icon;
         botDeck.SetSet(bot.cardSet);
         MusicSource.clip = bot.music;
+        MusicSource.Play();
     }
 }

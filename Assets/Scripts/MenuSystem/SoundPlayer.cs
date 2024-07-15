@@ -28,6 +28,8 @@ public class SoundPlayer : MonoBehaviour
     }
     public void ChangeVolume(float volume)
     {
-        Mixer.audioMixer.SetFloat(mixerGroup, Mathf.Lerp(-80, 0, volume));
+        float t = Mathf.Lerp(-60, 0, volume);
+        if (t == -60) t = -80;
+        Mixer.audioMixer.SetFloat(mixerGroup, t);
     }
 }
