@@ -18,6 +18,11 @@ public class Users : MonoBehaviour
         stats = new(GetBasicStats());
         hp.OnDeath.AddListener(Death);
     }
+    public void NewStats(Health hp)
+    {
+        this.hp = hp;
+        stats = new(GetBasicStats());
+    }
     public List<Stat> GetBasicStats()
     {
         List<Stat> stats = new();

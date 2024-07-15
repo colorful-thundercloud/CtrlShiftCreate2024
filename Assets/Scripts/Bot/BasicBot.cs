@@ -6,6 +6,7 @@ using UnityEngine;
 public class BasicBot : ScriptableObject
 {
     public Sprite icon;
+    public Health hp;
     public CardSet cardSet;
     public AudioClip music;
 }

@@ -57,8 +57,8 @@ public class BigBrain : MonoBehaviour
                 target = myCardsOnBoard[0];
             else target = playerCards[0];
             StopCoroutine(size);
-            size = StartCoroutine(Mover.SmoothSizeChange(new Vector3(1, 1, 1), card.transform, CardSpeed));
-            yield return StartCoroutine(Mover.MoveCard(card, target.transform.position, CardSpeed));
+            StartCoroutine(Mover.MoveCard(card, target.transform.position, CardSpeed));
+            yield return StartCoroutine(Mover.SmoothSizeChange(new Vector3(1, 1, 1), card.transform, CardSpeed));
             card.GetBasicCard.GetAction().Directed(card, target.transform, target.GetStats);
             card.cast();
             //card.GetBasicCard.GetAction()

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
+using TMPro;
 using UnityEngine;
 
 public abstract class BasicCard : ScriptableObject
@@ -42,7 +43,9 @@ public abstract class BasicCard : ScriptableObject
 
         Stat stat = new();
         stat.Name = "steps";
+        stat.field = card.transform.Find("steps").GetComponentInChildren<TMP_Text>();
         stat.Value = 0;
+        stat.maxValue = action.maxSteps;
         stats.Add(stat);
 
         return stats;

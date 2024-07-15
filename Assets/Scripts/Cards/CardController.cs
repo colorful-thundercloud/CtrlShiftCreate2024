@@ -147,6 +147,7 @@ public class CardController: MonoBehaviour
         transform.Find("pin").gameObject.SetActive(enabled);
         transform.Find("name").gameObject.SetActive(enabled);
         transform.Find("attack").gameObject.SetActive(enabled);
+        transform.Find("steps").gameObject.SetActive(enabled);
     }
     void backToHand()
     {

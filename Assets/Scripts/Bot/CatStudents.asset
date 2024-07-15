@@ -13,5 +13,8 @@ MonoBehaviour:
   m_Name: CatStudents
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 127218c32d1d05241bade673ee6c0978, type: 3}
+  hp:
+    MaxHP: 9
+    DeathSound: {fileID: 8300000, guid: 6c7a9802f0f492f459572d0942a03efb, type: 3}
   cardSet: {fileID: 11400000, guid: 430cb56929e67554b8fd1f4fe367b18e, type: 2}
   music: {fileID: 8300000, guid: 83a739fc80767044fb9d259e235c5616, type: 3}
