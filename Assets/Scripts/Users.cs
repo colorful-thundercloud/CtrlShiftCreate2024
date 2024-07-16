@@ -13,15 +13,12 @@ public class Users : MonoBehaviour
     [SerializeField] Health hp;
     [SerializeField] CardStats stats;
     Animator anim;
-    private void Start()
-    {
-        stats = new(GetBasicStats());
-        hp.OnDeath.AddListener(Death);
-    }
+
     public void NewStats(Health hp)
     {
         this.hp = hp;
         stats = new(GetBasicStats());
+        hp.OnDeath.AddListener(Death);
     }
     public List<Stat> GetBasicStats()
     {
