@@ -45,7 +45,7 @@ public class Attack: Action, IHaveStat
 
     public override Stat GetStat(CardController card)
     {
-        TurnBasedGameplay.OnEndTurn.AddListener(isEnemy => reloadSteps(card));
+        TurnBasedGameplay.OnEndTurn.AddListener(isEnemy => reloadSteps(card,isEnemy));
         Stat stat = new();
         stat.Name = Effect.BuffedStats.damage.ToString();
         stat.field = card.transform.Find("attack").GetComponentInChildren<TMP_Text>();

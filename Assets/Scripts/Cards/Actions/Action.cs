@@ -19,9 +19,11 @@ public abstract class Action
     /// <summary>
     /// Восстановка ходов у способности
     /// </summary>
-    protected void reloadSteps(CardController card)
+    protected void reloadSteps(CardController card, bool isEnemy)
     {
-        if(card.isCasted) card.GetStat("steps").Value = maxSteps;
+        if (card == null) return;
+        if (isEnemy == card?.CompareTag("enemyCard"))
+            if (card.isCasted) card.GetStat("steps").Value = maxSteps;
     }
     /// <summary>
     /// Ненаправленная на карту способность

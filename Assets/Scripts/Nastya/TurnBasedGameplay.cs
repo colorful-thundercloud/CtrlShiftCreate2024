@@ -10,7 +10,7 @@ public class TurnBasedGameplay : MonoBehaviour
     public static bool myTurn = true;
     void Awake()
     {
-        Invoke("DrawCards", 0.5f);
+        //Invoke("DrawCards", 0.5f);
         OnEndTurn.AddListener(onNextTurn);
     }
 

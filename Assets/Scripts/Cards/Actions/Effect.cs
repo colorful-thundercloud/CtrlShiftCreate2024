@@ -52,7 +52,7 @@ public class Effect : Action
     public override Stat GetStat(CardController card)
     {
         color = (buffedStat == BuffedStats.damage) ? Color.red : new Color(0, 0.5f, 0, 1);
-        TurnBasedGameplay.OnEndTurn.AddListener(isEnemy => reloadSteps(card));/*
+        TurnBasedGameplay.OnEndTurn.AddListener(isEnemy => reloadSteps(card,isEnemy));/*
 
         Transform buff = card.transform.Find("buff");
         buff.gameObject.SetActive(true);
@@ -70,7 +70,7 @@ public class Effect : Action
     }
     public Stat GetSecondStat(CardController card)
     {
-        TurnBasedGameplay.OnEndTurn.AddListener(isEnemy => reloadSteps(card));
+        TurnBasedGameplay.OnEndTurn.AddListener(isEnemy => reloadSteps(card, isEnemy));
         Stat stat = new();
         stat.Name = "value";
         stat.field = card.transform.Find("value").GetComponentInChildren<TMP_Text>();
