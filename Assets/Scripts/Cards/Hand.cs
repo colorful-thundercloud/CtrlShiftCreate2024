@@ -2,9 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
-using static UnityEditor.Progress;
-
 public class Hand : MonoBehaviour
 {
     [SerializeField] Vector3 CardSize = new Vector3(1, 1, 1);
