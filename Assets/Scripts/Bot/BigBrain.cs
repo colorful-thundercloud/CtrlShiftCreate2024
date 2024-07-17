@@ -27,9 +27,13 @@ public class BigBrain : MonoBehaviour
     }
     IEnumerator turn()
     {
-        yield return StartCoroutine(SpawnUnit(myCards));
+        yield return new WaitForSeconds(0.5f);
 
         myCards = hand.GetCards();
+
+        List<CardController> units = GetListCardType(myCards, typeof(UnitCard), false);
+        yield return StartCoroutine(SpawnUnit(units));
+
 
         myCardsOnBoard = Field.GetCards(true);
         playerCards = Field.GetCards(false);
@@ -48,9 +52,10 @@ public class BigBrain : MonoBehaviour
         Coroutine size;
         foreach (CardController card in buffCards)
         {
+            yield return new WaitForSeconds(0.15f);
             card.Show(true);
             size = StartCoroutine(Mover.SmoothSizeChange(field.CardSize*2f, card.transform, CardSpeed));
-            yield return StartCoroutine(Mover.MoveCard(card, field.GetEnemyField.position, CardSpeed));
+            yield return StartCoroutine(Mover.MoveCard(card, (Vector2)field.GetEnemyField.position, CardSpeed));
             yield return new WaitForSeconds(showWaitTime);
             CardController target;
             if (card.GetBasicCard.GetAction().toAllies)
@@ -88,12 +93,12 @@ public class BigBrain : MonoBehaviour
         foreach (CardController card in cardsToSpawn)
         {
             if (!field.CheckCount(true)) break;
-            if (typeof(UnitCard) != card.GetBasicCard.GetType()) continue;
+            yield return new WaitForSeconds(0.15f);
             if (card.GetBasicCard.cast(card))
             {
                 card.Show(true);
                 StartCoroutine(Mover.SmoothSizeChange(field.CardSize, card.transform, CardSpeed));
-                yield return StartCoroutine(Mover.MoveCard(card, field.GetEnemyField.position, CardSpeed));
+                yield return StartCoroutine(Mover.MoveCard(card, (Vector2)field.GetEnemyField.position, CardSpeed));
                 card.cast();
             }
 

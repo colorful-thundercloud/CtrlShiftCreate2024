@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.XR;
 
 public class Field : MonoBehaviour
 {
@@ -39,18 +40,20 @@ public class Field : MonoBehaviour
     {
         if(enemyField==null) return;
         List<GameObject> field = isEnemy ? enemyCards : myCards;
+
+        StopAllCoroutines();
+        if (field.Count == 0) return;
+        float center = ((field.Count - 1) * distance) / 2f;
         for (int i = 0; i < field.Count; i++)
         {
-            Vector3 pos = Vector3.zero;
+            Vector3 pos = field[i].transform.position;
             pos.y = isEnemy ? enemyField.position.y : myField.position.y;
-            pos.x = distance * i;
+            pos.x = (distance * i) - center;
             pos.z = 4;
-            field[i].transform.position = pos;
+
+            StartCoroutine(Mover.MoveCard(field[i].GetComponent<CardController>(), pos, 0.1f));
             field[i].transform.localScale = CardSize;
         }
-        if (field.Count == 0) return;
-        float center = field[field.Count - 1].transform.position.x / 2;
-        foreach (GameObject item in field) item.transform.Translate(-center, 0, 0);
     }
     public void BeatCard(CardController card)
     {

@@ -1,6 +1,9 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
+using static UnityEditor.Progress;
 
 public class Hand : MonoBehaviour
 {
@@ -16,6 +19,7 @@ public class Hand : MonoBehaviour
     }
     void updateHand()
     {
+        StopAllCoroutines();
         List<GameObject> t = new List<GameObject>();
         foreach( GameObject item in hand )
         {
@@ -23,20 +27,21 @@ public class Hand : MonoBehaviour
             if(item.GetComponent<CardController>().isCasted) t.Add(item);
         }
         foreach (GameObject item in t) RemoveCard(item);
+
+        if (hand.Count == 0) return;
+        float center = ((hand.Count - 1)* distance)/2f;
         for (int i = 0; i < hand.Count; i++)
         {
             Vector3 pos = HandPosition.position;
-            pos.x = distance * i;
+            pos.x = (distance * i) - center;
             pos.z = (hand[i].tag == "myCard")? 1f : 2f;
-            hand[i].transform.position = pos;
+            StartCoroutine(kostyl(hand[i].GetComponent<CardController>(), pos));
         }
-        if (hand.Count == 0) return;
-        float center = hand[hand.Count - 1].transform.position.x / 2;
-        foreach (GameObject item in hand)
-        {
-            item.transform.Translate(-center, 0, 0);
-            item.GetComponent<CardController>().SavePosition();
-        }
+    }
+    IEnumerator kostyl(CardController card, Vector3 pos)
+    {
+        yield return StartCoroutine(Mover.MoveCard(card, pos, 0.1f));
+        card.SavePosition();
     }
     void addCard(BasicCard card, bool enemy = false)
     {

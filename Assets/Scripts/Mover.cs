@@ -18,13 +18,13 @@ public static class Mover
             if (transform == null) yield break;
         }
     }
-    public static IEnumerator MoveCard(CardController card, Vector2 targetPosition, float time)
+    public static IEnumerator MoveCard(CardController card, Vector3 targetPosition, float time)
     {
         float t = 0;
-        Vector2 start = card.transform.position;
-        while ((Vector2)card.transform.position != targetPosition)
+        Vector3 start = card.transform.position;
+        while (card.transform.position != targetPosition)
         {
-            card.transform.position = Vector2.Lerp(start, targetPosition, t / time);
+            card.transform.position = Vector3.Lerp(start, targetPosition, t / time);
             t += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
