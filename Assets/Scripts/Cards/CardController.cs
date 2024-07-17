@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using TMPro;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering.Universal;
@@ -13,6 +12,7 @@ public class CardController: MonoBehaviour
     [SerializeField] SpriteRenderer image;
     [SerializeField] public Light2D lighting;
     [SerializeField] Light2D signalLight;
+    [SerializeField] Vector3 CardSize = new Vector3(1.5f, 1.5f, 1);
 
     [SerializeField] public AudioClip CastSound, SelectSound;
 
@@ -65,6 +65,7 @@ public class CardController: MonoBehaviour
         basicCard = newCard;
         basicCard.initialize(this);
         stats = new(basicCard.GetBasicStats(this));
+        if (CompareTag("myCard")) Show(true);
 
 
         TurnBasedGameplay.OnEndTurn.AddListener(isEnemyTurn =>
@@ -106,7 +107,6 @@ public class CardController: MonoBehaviour
     {
         if (EventSystem.current.IsPointerOverGameObject()) return;
         if (runningFunc != null) StopCoroutine(runningFunc);
-        if (TurnBasedGameplay.myTurn) runningFunc = StartCoroutine(Mover.SmoothSizeChange(new Vector3(1, 1, 1), transform,0.1f));
 
         // все карты
         if (isCasted)
@@ -118,6 +118,7 @@ public class CardController: MonoBehaviour
         if (gameObject.CompareTag("enemyCard")) return;
         // только карты игрока
 
+        if (TurnBasedGameplay.myTurn) runningFunc = StartCoroutine(Mover.SmoothSizeChange(CardSize, transform,0.1f));
         CardUI.OnOpenCard.Invoke(this);
 
         if (isCasted)
@@ -135,19 +136,14 @@ public class CardController: MonoBehaviour
         isCasted = true;
         SoundPlayer.Play.Invoke(CastSound);
         Field.OnCast?.Invoke(this);
-        transform.localScale = Vector3.one;
     }
     public void Show(bool enabled)
     {
         SoundPlayer.Play.Invoke(SelectSound);
-        Transform bg = transform.Find("BG");
-        Vector3 pos = bg.position;
-        pos.z += (enabled)? 0.5f : -0.5f;
-        bg.position = pos;
-        transform.Find("pin").gameObject.SetActive(enabled);
+        transform.Find("shirt").gameObject.SetActive(!enabled);
         transform.Find("name").gameObject.SetActive(enabled);
-        transform.Find("attack").gameObject.SetActive(enabled);
-        transform.Find("steps").gameObject.SetActive(enabled);
+        transform.Find("image").gameObject.SetActive(enabled);
+        stats.ShowAll(enabled);
     }
     void backToHand()
     {

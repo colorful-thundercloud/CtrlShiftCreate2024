@@ -11,21 +11,6 @@ public abstract class Action
     [Header("Действует ли способность на союзные карты")]
     public bool toAllies = false;
     /// <summary>
-    /// Максимальное количество активаций за ход
-    /// </summary>
-    [Header("Максимальное количество активаций за ход")]
-    public int maxSteps;
-
-    /// <summary>
-    /// Восстановка ходов у способности
-    /// </summary>
-    protected void reloadSteps(CardController card, bool isEnemy)
-    {
-        if (card == null) return;
-        if (isEnemy == card?.CompareTag("enemyCard"))
-            if (card.isCasted) card.GetStat("steps").Value = maxSteps;
-    }
-    /// <summary>
     /// Ненаправленная на карту способность
     /// </summary>
     public virtual void Undirected(CardController card) { }

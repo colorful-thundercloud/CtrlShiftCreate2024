@@ -18,4 +18,8 @@ public class CardStats
             if (stat.Name == name) result = stat;
         return result;
     }
+    public void ShowAll(bool enable)
+    {
+        foreach(var stat in stats) stat.Show(enable);
+    }
 }

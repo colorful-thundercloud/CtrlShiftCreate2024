@@ -32,9 +32,10 @@ public class Effect : Action
     [SerializeField] AudioClip buffSound;
     public override bool CheckAviability(CardController card)
     {
-        return card.GetStat("steps").Value > 0;
+        Stat steps = card.GetStat("steps");
+        if (steps != null) return steps.Value > 0;
+        else return true;
     }
-
 
     public override void Undirected(CardController card)
     {
@@ -52,17 +53,12 @@ public class Effect : Action
     public override Stat GetStat(CardController card)
     {
         color = (buffedStat == BuffedStats.damage) ? Color.red : new Color(0, 0.5f, 0, 1);
-        TurnBasedGameplay.OnEndTurn.AddListener(isEnemy => reloadSteps(card,isEnemy));/*
-
-        Transform buff = card.transform.Find("buff");
-        buff.gameObject.SetActive(true);
-        buff.GetComponent<SpriteRenderer>().color = (buffedStat == BuffedStats.damage) ? Color.red : Color.green;*/
 
         Stat stat = new();
         stat.Name = "multiplier";
         stat.field = card.transform.Find("multiplier").GetComponentInChildren<TMP_Text>();
         stat.field.color = color;
-        card.transform.Find("multiplier").GetComponentInChildren<SpriteRenderer>().color = color;
+        card.transform.Find("multiplier").Find("Square").GetComponent<SpriteRenderer>().color = color;
         stat.Value = multiplier;
         stat.maxValue = multiplier;
         stat.canBuff = false;
@@ -70,12 +66,11 @@ public class Effect : Action
     }
     public Stat GetSecondStat(CardController card)
     {
-        TurnBasedGameplay.OnEndTurn.AddListener(isEnemy => reloadSteps(card, isEnemy));
         Stat stat = new();
         stat.Name = "value";
         stat.field = card.transform.Find("value").GetComponentInChildren<TMP_Text>();
         stat.field.color = color;
-        card.transform.Find("value").GetComponentInChildren<SpriteRenderer>().color = color;
+        card.transform.Find("value").Find("Square").GetComponent<SpriteRenderer>().color = color;
         stat.Value = value;
         stat.maxValue = value;
         stat.canBuff = false;

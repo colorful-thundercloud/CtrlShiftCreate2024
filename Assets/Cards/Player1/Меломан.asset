@@ -17,9 +17,10 @@ MonoBehaviour:
   description: "\u0417\u0430\u043A\u0430\u043D\u0447\u0438\u0432\u0430\u043B \u043C\u0443\u0437\u044B\u043A\u0430\u043B\u043A\u0443
     \u043D\u0435 \u0434\u043B\u044F \u0442\u043E\u0433\u043E, \u0447\u0442\u043E\u0431\u044B
     \u0441\u043B\u0443\u0448\u0430\u0442\u044C \u0432\u0430\u0448 \u0442\u0440\u0435\u0448"
+  <Steps>k__BackingField:
+    maxSteps: 1
   attack:
     toAllies: 0
-    maxSteps: 1
     damage: 2
     AttackSound: {fileID: 8300000, guid: f270f2dd380d848429784d8818333c87, type: 3}
   hp:

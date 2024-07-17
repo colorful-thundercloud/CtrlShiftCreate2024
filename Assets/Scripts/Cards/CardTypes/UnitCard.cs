@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Карты/Атакующие/Обычный")]
-public class UnitCard : BasicCard
+public class UnitCard : BasicCard, IHaveSteps
 {
+    [field: SerializeField] public Steps Steps { get; set; }
     [SerializeField] Attack attack;
     [SerializeField] Health hp;
+
     public override void initialize(CardController card)
     {
         action = attack;
@@ -24,7 +26,11 @@ public class UnitCard : BasicCard
     
     public override List<Stat> GetBasicStats(CardController card)
     {
-        List<Stat> stats = base.GetBasicStats(card);
+        List<Stat> stats = new();
+
+        IHaveSteps stepsCard = this;
+        stats.Add(stepsCard.Steps.GetStat(card));
+        TurnBasedGameplay.OnEndTurn.AddListener(isEnemy => stepsCard.Steps.reloadSteps(card, isEnemy));
 
         stats.Add(hp.GetStat(card, card));
         stats.Add(action.GetStat(card));

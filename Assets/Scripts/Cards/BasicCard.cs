@@ -37,17 +37,5 @@ public abstract class BasicCard : ScriptableObject
     /// Сохранение данной карты при выборе
     /// </summary>
     public virtual void OnSelect() { }
-    public virtual List<Stat> GetBasicStats(CardController card)
-    {
-        List<Stat> stats = new List<Stat>();
-
-        Stat stat = new();
-        stat.Name = "steps";
-        stat.field = card.transform.Find("steps").GetComponentInChildren<TMP_Text>();
-        stat.Value = 0;
-        stat.maxValue = action.maxSteps;
-        stats.Add(stat);
-
-        return stats;
-    }
+    public abstract List<Stat> GetBasicStats(CardController card);
 }

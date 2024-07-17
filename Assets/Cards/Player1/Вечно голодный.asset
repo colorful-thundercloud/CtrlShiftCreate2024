@@ -16,9 +16,10 @@ MonoBehaviour:
   Avatar: {fileID: 21300000, guid: a6dae850ce3b0424bb8418a3c4a58503, type: 3}
   description: "\u041F\u043E\u0441\u0442\u043E\u044F\u043D\u043D\u043E \u0447\u0442\u043E-\u0442\u043E
     \u0436\u0443\u0451\u0442 \u043D\u0430 \u043F\u0430\u0440\u0430\u0445"
+  <Steps>k__BackingField:
+    maxSteps: 3
   attack:
     toAllies: 0
-    maxSteps: 2
     damage: 1
     AttackSound: {fileID: 8300000, guid: f270f2dd380d848429784d8818333c87, type: 3}
   hp:
