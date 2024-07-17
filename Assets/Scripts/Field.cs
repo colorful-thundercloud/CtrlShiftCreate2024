@@ -11,6 +11,7 @@ public class Field : MonoBehaviour
     [SerializeField] Transform myField, enemyField;
     [SerializeField] float distance;
     [SerializeField] int maxCardCount;
+    public Vector3 CardSize = new Vector3(1.5f, 1.5f, 1);
     public bool CheckCount(bool isEnemy = false)
     {
         if(isEnemy) return enemyCards.Count < maxCardCount;
@@ -45,6 +46,7 @@ public class Field : MonoBehaviour
             pos.x = distance * i;
             pos.z = 4;
             field[i].transform.position = pos;
+            field[i].transform.localScale = CardSize;
         }
         if (field.Count == 0) return;
         float center = field[field.Count - 1].transform.position.x / 2;

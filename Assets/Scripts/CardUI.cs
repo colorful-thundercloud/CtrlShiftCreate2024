@@ -35,8 +35,13 @@ public class CardUI : MonoBehaviour
     }
     void showStat(TMP_Text field, string name, CardController card)
     {
-        field.transform.parent.gameObject.SetActive(card.GetStat(name) != null);
-        field.text = card.GetStat(name)?.maxValue.ToString();
+        Stat stat = card.GetStat(name);
+        field.transform.parent.gameObject.SetActive(stat != null);
+        if(stat == null) return;
+        field.text = stat.maxValue.ToString();
+        field.color = stat.field.color;
+        Transform pick = field.transform.parent.Find("pick");
+        if (pick != null) pick.GetComponent<Image>().color = stat.field.color;
     }
     IEnumerator deactivate(float time)
     {

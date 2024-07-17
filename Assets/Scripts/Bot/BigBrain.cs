@@ -34,7 +34,7 @@ public class BigBrain : MonoBehaviour
         myCardsOnBoard = Field.GetCards(true);
         playerCards = Field.GetCards(false);
 
-        List<CardController> buffCards = GetListCardType(myCards, typeof(BuffOneshot), false);
+        List<CardController> buffCards = GetListCardType(myCards, typeof(BuffOneshot), true);
         yield return StartCoroutine(SpawnBaffs(buffCards));
 
         yield return new WaitForSeconds(0.5f);
@@ -49,7 +49,7 @@ public class BigBrain : MonoBehaviour
         foreach (CardController card in buffCards)
         {
             card.Show(true);
-            size = StartCoroutine(Mover.SmoothSizeChange(new Vector3(2, 2, 2), card.transform, CardSpeed));
+            size = StartCoroutine(Mover.SmoothSizeChange(field.CardSize*2f, card.transform, CardSpeed));
             yield return StartCoroutine(Mover.MoveCard(card, field.GetEnemyField.position, CardSpeed));
             yield return new WaitForSeconds(showWaitTime);
             CardController target;
@@ -58,7 +58,7 @@ public class BigBrain : MonoBehaviour
             else target = playerCards[0];
             StopCoroutine(size);
             StartCoroutine(Mover.MoveCard(card, target.transform.position, CardSpeed));
-            yield return StartCoroutine(Mover.SmoothSizeChange(new Vector3(1, 1, 1), card.transform, CardSpeed));
+            yield return StartCoroutine(Mover.SmoothSizeChange(field.CardSize, card.transform, CardSpeed));
             card.GetBasicCard.GetAction().Directed(card, target.transform, target.GetStats);
             card.cast();
             //card.GetBasicCard.GetAction()
@@ -92,7 +92,7 @@ public class BigBrain : MonoBehaviour
             if (card.GetBasicCard.cast(card))
             {
                 card.Show(true);
-                StartCoroutine(Mover.SmoothSizeChange(new Vector3(1, 1, 1), card.transform, CardSpeed));
+                StartCoroutine(Mover.SmoothSizeChange(field.CardSize, card.transform, CardSpeed));
                 yield return StartCoroutine(Mover.MoveCard(card, field.GetEnemyField.position, CardSpeed));
                 card.cast();
             }

@@ -18,12 +18,12 @@ public class Stat
         set
         {
             this.value = value;
+            if (field != null) field.text = this.value.ToString();
             OnChange.Invoke(value);
-            if (field != null)
-            {
-                field.transform.parent.gameObject.SetActive(true);
-                field.text = this.value.ToString();
-            }
         }
+    }
+    public void Show(bool enable)
+    {
+        if (field != null) field.transform.parent.gameObject.SetActive(enable);
     }
 }

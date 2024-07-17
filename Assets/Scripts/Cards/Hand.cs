@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Hand : MonoBehaviour
 {
+    [SerializeField] Vector3 CardSize = new Vector3(1, 1, 1);
     [SerializeField] DeckController deckController;
     List<GameObject> hand = new List<GameObject>();
     [SerializeField] Transform HandPosition;
@@ -42,9 +43,9 @@ public class Hand : MonoBehaviour
         GameObject go;
         if (card != null)
         {
-            go = Instantiate(cardPrefab, HandPosition.position - new Vector3(0, 0, 0), Quaternion.identity);
+            go = Instantiate(cardPrefab, HandPosition.position, Quaternion.identity);
 
-            go.transform.localScale = (enemy) ? new Vector3(0.4f, 0.4f, 1) : new Vector3(2f, 2f, 1);
+            go.transform.localScale = CardSize;
             go.tag = (enemy) ? "enemyCard" : "myCard";
 
             go.GetComponent<CardController>().SetCard(card);

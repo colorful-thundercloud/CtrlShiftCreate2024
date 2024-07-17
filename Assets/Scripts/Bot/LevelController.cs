@@ -12,9 +12,10 @@ public class LevelController : MonoBehaviour
     [SerializeField] DeckController botDeck;
     [SerializeField] AudioSource MusicSource;
     public static UnityEvent onNextLevel = new();
-    static int currentLevel = -1;
+    static int currentLevel;
     private void Start()
     {
+        currentLevel = -1;
         onNextLevel.AddListener(nextLevel);
     }
     void nextLevel()
