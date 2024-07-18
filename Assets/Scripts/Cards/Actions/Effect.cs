@@ -32,9 +32,11 @@ public class Effect : Action
     [SerializeField] AudioClip buffSound;
     public override bool CheckAviability(CardController card)
     {
+        bool aviable = true;
+        if (card.GetStat("Blocked") != null) aviable = card.GetStat("Blocked").Value == 0;
         Stat steps = card.GetStat("steps");
-        if (steps != null) return steps.Value > 0;
-        else return true;
+        if (steps != null && steps.Value == 0) aviable = false;
+        return aviable;
     }
 
     public override void Undirected(CardController card)

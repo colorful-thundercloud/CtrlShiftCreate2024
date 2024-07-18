@@ -22,4 +22,5 @@ public class CardStats
     {
         foreach(var stat in stats) stat.Show(enable);
     }
+    public void AddStat(Stat stat) => stats.Add(stat);
 }

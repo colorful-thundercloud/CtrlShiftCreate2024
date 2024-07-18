@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.Mathematics;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 [Serializable]
@@ -16,7 +17,10 @@ public class Attack: Action, IHaveStat
     [SerializeField] AudioClip AttackSound;
     public override bool CheckAviability(CardController card)
     {
-        return card.GetStat("steps").Value > 0;
+        bool aviable = true;
+        if (card.GetStat("Blocked") != null) aviable = card.GetStat("Blocked").Value == 0;
+        if (card.GetStat("steps").Value == 0) aviable = false;
+        return aviable;
     }
 
     public override void Directed(CardController card, Transform targetTransform, CardStats targetStats)
