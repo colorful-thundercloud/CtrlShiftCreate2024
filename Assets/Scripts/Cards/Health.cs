@@ -42,4 +42,9 @@ public class Health
         if (card != null) Field.OnCardBeat.Invoke(card);
         OnDeath.Invoke();
     }
+    public void Heal(CardStats stats)
+    {
+        Stat hp = stats.GetStat(Effect.BuffedStats.hp.ToString());
+        hp.Value = hp.maxValue;
+    }
 }

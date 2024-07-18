@@ -18,7 +18,9 @@ public class Users : MonoBehaviour
     {
         stats = new(GetBasicStats());
         hp.OnDeath.AddListener(Death);
+        LevelController.onNextLevel.AddListener(heal);
     }
+    void heal() => hp.Heal(stats);
     public void NewStats(Health hp)
     {
         this.hp = hp;

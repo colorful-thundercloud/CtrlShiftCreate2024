@@ -7,6 +7,7 @@ using UnityEngine;
 public class Block : Action
 {
     [SerializeField] int blockTime;
+    [SerializeField] AudioClip blockSound;
     public override bool CheckAviability(CardController card)
     {
         Stat steps = card.GetStat("steps");
@@ -15,6 +16,9 @@ public class Block : Action
     }
     public override void Directed(CardController card, Transform targetTransform, CardStats targetStats)
     {
+        SoundPlayer.Play.Invoke(blockSound);
+        Stat block = targetStats.GetStat("Blocked");
+        if (block != null && block.Value != 0) return;
         void decreeseTime(bool isEnemy)
         {
             Stat block = targetStats.GetStat("Blocked");
@@ -22,7 +26,7 @@ public class Block : Action
             block.Value--;
             if (block.Value == 0) TurnBasedGameplay.OnEndTurn.RemoveListener(decreeseTime);
         }
-        Stat stat = new();
+        Stat stat = (block != null)? block : new();
         stat.Name = "Blocked";
         stat.Value = blockTime;
         stat.maxValue = blockTime;

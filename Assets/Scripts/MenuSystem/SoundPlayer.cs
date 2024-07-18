@@ -22,7 +22,7 @@ public class SoundPlayer : MonoBehaviour
     void setCurentVolume(Slider slider)
     {
         float t; 
-        if(PlayerPrefs.HasKey(mixerGroup))
+        if(PlayerPrefs.HasKey(slider.name))
             t = PlayerPrefs.GetFloat(slider.name);
         else
         {
