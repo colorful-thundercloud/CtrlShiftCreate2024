@@ -21,9 +21,14 @@ public class SoundPlayer : MonoBehaviour
     public string MixerGroup { set { mixerGroup = value; } }
     void setCurentVolume(Slider slider)
     {
-        float t;
-        Mixer.audioMixer.GetFloat(slider.name, out t);
-        t = Mathf.InverseLerp(-80f, 0f, t);
+        float t; 
+        if(PlayerPrefs.HasKey(mixerGroup))
+            t = PlayerPrefs.GetFloat(slider.name);
+        else
+        {
+            Mixer.audioMixer.GetFloat(slider.name, out t);
+            t = Mathf.InverseLerp(-80f, 0f, t);
+        }
         slider.value = t;
     }
     public void ChangeVolume(float volume)
@@ -31,5 +36,6 @@ public class SoundPlayer : MonoBehaviour
         float t = Mathf.Lerp(-60, 0, volume);
         if (t == -60) t = -80;
         Mixer.audioMixer.SetFloat(mixerGroup, t);
+        PlayerPrefs.SetFloat(mixerGroup, volume);
     }
 }
