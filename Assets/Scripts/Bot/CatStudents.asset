@@ -18,3 +18,5 @@ MonoBehaviour:
     DeathSound: {fileID: 8300000, guid: 6c7a9802f0f492f459572d0942a03efb, type: 3}
   cardSet: {fileID: 11400000, guid: 430cb56929e67554b8fd1f4fe367b18e, type: 2}
   music: {fileID: 8300000, guid: 83a739fc80767044fb9d259e235c5616, type: 3}
+  BG: {fileID: 21300000, guid: ddc0e9b230a76124aac0107275b553ee, type: 3}
+  HandBG: {fileID: 21300000, guid: da6f78a17cf5b3340a8f44da3c6c2212, type: 3}

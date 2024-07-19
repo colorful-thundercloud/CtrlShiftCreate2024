@@ -8,7 +8,7 @@ public class EffectUnit : BasicCard, IHaveSteps
 {
     [field: SerializeField] public Steps Steps { get; set; }
     [SerializeField] Effect buff;
-    [SerializeField] bool directed = false;
+    [SerializeField] bool directed = true;
     [SerializeField] Health hp;
 
     public override void initialize(CardController card)
@@ -17,6 +17,7 @@ public class EffectUnit : BasicCard, IHaveSteps
     }
     public override bool OnClick(CardController card)
     {
+        if (card.GetStat("steps") != null) card.GetStat("steps").Value--;
         if (!CardController.Selected.GetBasicCard.GetAction()
             .CheckAlies(CardController.Selected, card)) return false;
         CardController.Selected.GetBasicCard.GetAction()
@@ -35,12 +36,15 @@ public class EffectUnit : BasicCard, IHaveSteps
 
         stats.Add(hp.GetStat(card, card));
         stats.Add(action.GetStat(card));
+        stats.Add(buff.GetSecondStat(card));
 
         return stats;
     }
     public override void OnSelect(CardController card)
     {
-        if (!directed) return;
+        if (directed) return;
+        if (!card.GetBasicCard.CheckAction(card)) return;
+        if (card.GetStat("steps") != null) card.GetStat("steps").Value--;
         CardController.Selected = null;
         action.Undirected(card);
     }

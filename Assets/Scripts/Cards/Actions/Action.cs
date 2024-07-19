@@ -38,7 +38,7 @@ public abstract class Action
         bool aviable = true;
         if (card.GetStat("Blocked") != null) aviable = card.GetStat("Blocked").Value == 0;
         Stat steps = card.GetStat("steps");
-        if (steps != null && steps.Value == 0) aviable = false;
+        if (steps != null && steps.Value <= 0) aviable = false;
         return aviable;
     }
     /// <summary>

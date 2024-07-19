@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
@@ -34,11 +33,11 @@ public class Effect : Action
     public override void Undirected(CardController card)
     {
         List<CardController> targets = GetAllTargets(card);
+        targets.Remove(card);
         foreach (CardController target in targets) Directed(card, target.transform, target.GetStats);
     }
     public override void Directed(CardController card, Transform targetTransform, CardStats targetStats)
     {
-        base.Directed(card, targetTransform, targetStats);
         Stat victim = targetStats.GetStat(buffedStat.ToString());
         if (victim == null) return;
         SoundPlayer.Play.Invoke(buffSound);

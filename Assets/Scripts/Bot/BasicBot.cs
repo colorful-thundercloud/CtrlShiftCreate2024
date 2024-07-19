@@ -9,4 +9,5 @@ public class BasicBot : ScriptableObject
     public Health hp;
     public CardSet cardSet;
     public AudioClip music;
+    public Sprite BG, HandBG;
 }
