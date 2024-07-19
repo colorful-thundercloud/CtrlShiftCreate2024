@@ -16,6 +16,7 @@ public class BuffOneshot : OneShot
     {
         if (CardController.otherCard == null) return false;
         if (!action.CheckAlies(card, CardController.otherCard)) return false;
+        if (CardController.otherCard.GetStat(buff.GetBuffedStat.ToString())==null) return false;
         action.Directed(card, CardController.otherCard.transform, CardController.otherCard.GetStats);
         return true;
     }

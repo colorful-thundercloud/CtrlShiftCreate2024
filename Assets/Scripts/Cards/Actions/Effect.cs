@@ -18,6 +18,7 @@ public class Effect : Action
     /// </summary>
     [Header("Определяет баффаемый параметр")]
     [SerializeField] BuffedStats buffedStat;
+    public BuffedStats GetBuffedStat => buffedStat; 
     /// <summary>
     /// На сколько умножается выбранный параметр
     /// </summary>
