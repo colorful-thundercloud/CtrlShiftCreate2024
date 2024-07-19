@@ -126,7 +126,7 @@ public class CardController: MonoBehaviour
             if (selected != this && TurnBasedGameplay.myTurn)
             {
                 Selected = this;
-                GetBasicCard.OnSelect();
+                GetBasicCard.OnSelect(this);
             }
         }
     }

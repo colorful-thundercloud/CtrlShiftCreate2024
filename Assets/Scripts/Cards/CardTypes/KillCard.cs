@@ -1,22 +1,20 @@
-using System.Collections;
+п»їusing System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Карты/Блок/Одноразовый")]
-public class BlockOneShot : OneShot
+[CreateAssetMenu(menuName = "РљР°СЂС‚С‹/РљР°Р·РЅСЊ")]
+public class KillCard : OneShot
 {
-    [SerializeField] Block block;
+    [SerializeField] Kill kill;
     public override void initialize(CardController card)
     {
         base.initialize(card);
-        action = block;
+        action = kill;
     }
 
     public override bool cast(CardController card)
     {
         if (CardController.otherCard == null) return false;
-        Stat block = CardController.otherCard.GetStat("Blocked");
-        if (block != null && block.Value != 0) return false;
         if (!action.CheckAlies(card, CardController.otherCard)) return false;
         action.Directed(card, CardController.otherCard.transform, CardController.otherCard.GetStats);
         return true;
@@ -24,7 +22,6 @@ public class BlockOneShot : OneShot
     public override List<Stat> GetBasicStats(CardController card)
     {
         List<Stat> stats = new();
-        stats.Add(block.GetStat(card));
         return stats;
     }
 }

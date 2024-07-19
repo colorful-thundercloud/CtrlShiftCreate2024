@@ -19,7 +19,7 @@ public abstract class Action
     /// </summary>
     public virtual void Directed(CardController card, Transform targetTransform, CardStats targetStats)
     {
-
+        if (card.GetStat("steps")!=null) card.GetStat("steps").Value--;
     }
     /// <summary>
     /// Проверяет может ли выбранная карта взаимодействовать с этой
@@ -33,7 +33,14 @@ public abstract class Action
     /// <summary>
     /// Проверка доступности способности
     /// </summary>
-    public abstract bool CheckAviability(CardController card);
+    public virtual bool CheckAviability(CardController card)
+    {
+        bool aviable = true;
+        if (card.GetStat("Blocked") != null) aviable = card.GetStat("Blocked").Value == 0;
+        Stat steps = card.GetStat("steps");
+        if (steps != null && steps.Value == 0) aviable = false;
+        return aviable;
+    }
     /// <summary>
     /// Получить из Field все карты на которые действует Action
     /// </summary>

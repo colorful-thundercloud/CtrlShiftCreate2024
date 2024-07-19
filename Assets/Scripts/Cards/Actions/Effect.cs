@@ -30,14 +30,6 @@ public class Effect : Action
     [Header("Сколько прибавляется к выбранному параметру")]
     [SerializeField] int value = 0;
     [SerializeField] AudioClip buffSound;
-    public override bool CheckAviability(CardController card)
-    {
-        bool aviable = true;
-        if (card.GetStat("Blocked") != null) aviable = card.GetStat("Blocked").Value == 0;
-        Stat steps = card.GetStat("steps");
-        if (steps != null && steps.Value == 0) aviable = false;
-        return aviable;
-    }
 
     public override void Undirected(CardController card)
     {
@@ -46,6 +38,7 @@ public class Effect : Action
     }
     public override void Directed(CardController card, Transform targetTransform, CardStats targetStats)
     {
+        base.Directed(card, targetTransform, targetStats);
         Stat victim = targetStats.GetStat(buffedStat.ToString());
         if (victim == null) return;
         SoundPlayer.Play.Invoke(buffSound);

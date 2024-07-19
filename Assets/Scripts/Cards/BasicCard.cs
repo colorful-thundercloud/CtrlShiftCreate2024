@@ -36,6 +36,6 @@ public abstract class BasicCard : ScriptableObject
     /// <summary>
     /// Сохранение данной карты при выборе
     /// </summary>
-    public virtual void OnSelect() { }
+    public virtual void OnSelect(CardController card) { }
     public abstract List<Stat> GetBasicStats(CardController card);
 }

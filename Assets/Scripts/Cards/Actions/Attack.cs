@@ -15,18 +15,10 @@ public class Attack: Action, IHaveStat
     [Header("Наносимый урон")]
     [SerializeField] int damage;
     [SerializeField] AudioClip AttackSound;
-    public override bool CheckAviability(CardController card)
-    {
-        bool aviable = true;
-        if (card.GetStat("Blocked") != null) aviable = card.GetStat("Blocked").Value == 0;
-        if (card.GetStat("steps").Value == 0) aviable = false;
-        return aviable;
-    }
-
     public override void Directed(CardController card, Transform targetTransform, CardStats targetStats)
     {
-        card.GetStat("steps").Value--;
-        card.StartCoroutine(attackAnimation(0.2f, card, targetTransform.transform, targetStats.GetStat(Effect.BuffedStats.hp.ToString())));
+        base.Directed(card, targetTransform, targetStats);
+        card.StartCoroutine(attackAnimation(0.2f, card, targetTransform.transform, targetStats.GetStat("hp")));
         CardController.Selected = null;
         SoundPlayer.Play.Invoke(AttackSound);
     }
@@ -50,7 +42,7 @@ public class Attack: Action, IHaveStat
     public override Stat GetStat(CardController card)
     {
         Stat stat = new();
-        stat.Name = Effect.BuffedStats.damage.ToString();
+        stat.Name = "damage";
         stat.field = card.transform.Find("attack").GetComponentInChildren<TMP_Text>();
         stat.Value = damage;
         stat.maxValue = damage;
