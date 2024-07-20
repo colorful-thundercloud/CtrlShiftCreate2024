@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
     public static UnityEvent<CardController> OnCardBeat = new();
     public static UnityEvent<bool> OnEndTurn = new();
     public static bool myTurn = true;
+    [HideInInspector]
+    public static bool endMoveBtnIsOff = false;
     void Awake()
     {
         //Invoke("DrawCards", 0.5f);
@@ -35,7 +37,11 @@ public class GameManager : MonoBehaviour
         myCards = new();
         enemyCards = new();
     }
-
+    private void Update()
+    {
+        if (endMoveBtnIsOff || !myTurn) endMoveBtn.interactable = false;
+        else endMoveBtn.interactable = true;
+    }
     void DrawCards()
     {
         endMoveBtn.interactable = true;
@@ -46,6 +52,7 @@ public class GameManager : MonoBehaviour
     {
         endMoveBtn.interactable = !isEnemyTurn;
         myTurn = !isEnemyTurn;
+        endMoveBtnIsOff = isEnemyTurn;
         CardController.Selected = null;
         if (isEnemyTurn) enemyHand.DrawCards(true);
         else myHand.DrawCards();
@@ -91,6 +98,7 @@ public class GameManager : MonoBehaviour
             enemyDeck.BeatCard(card.GetBasicCard);
         }
         Destroy(card.gameObject);
+        endMoveBtnIsOff = false;
     }
     public static List<CardController> GetCards(bool isEnemy)
     {
