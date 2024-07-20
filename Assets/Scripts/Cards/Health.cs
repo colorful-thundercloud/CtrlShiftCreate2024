@@ -39,7 +39,7 @@ public class Health
         anim.SetTrigger("deathTrigger");
         SoundPlayer.Play.Invoke(DeathSound);
         yield return new WaitForSeconds(1f);
-        if (card != null) Field.OnCardBeat.Invoke(card);
+        if (card != null) GameManager.OnCardBeat.Invoke(card);
         OnDeath.Invoke();
     }
     public void Heal(CardStats stats)

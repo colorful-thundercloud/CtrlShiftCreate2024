@@ -1,12 +1,11 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.XR;
+using UnityEngine.UI;
 
-public class Field : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
+    public Button endMoveBtn;
     [SerializeField] DeckController myDeck, enemyDeck;
     [SerializeField] Hand myHand, enemyHand;
     [SerializeField] Transform myField, enemyField;
@@ -15,12 +14,19 @@ public class Field : MonoBehaviour
     public Vector3 CardSize = new Vector3(1.5f, 1.5f, 1);
     public bool CheckCount(bool isEnemy = false)
     {
-        if(isEnemy) return enemyCards.Count < maxCardCount;
+        if (isEnemy) return enemyCards.Count < maxCardCount;
         else return myCards.Count < maxCardCount;
     }
     static List<GameObject> myCards, enemyCards;
     public static UnityEvent<CardController> OnCast = new();
     public static UnityEvent<CardController> OnCardBeat = new();
+    public static UnityEvent<bool> OnEndTurn = new();
+    public static bool myTurn = true;
+    void Awake()
+    {
+        //Invoke("DrawCards", 0.5f);
+        OnEndTurn.AddListener(onNextTurn);
+    }
     private void Start()
     {
         Time.timeScale = 1f;
@@ -28,6 +34,21 @@ public class Field : MonoBehaviour
         OnCardBeat.AddListener(BeatCard);
         myCards = new();
         enemyCards = new();
+    }
+
+    void DrawCards()
+    {
+        endMoveBtn.interactable = true;
+    }
+
+    public void NextTurn(bool isEnemyTurn) => OnEndTurn.Invoke(isEnemyTurn);
+    void onNextTurn(bool isEnemyTurn)
+    {
+        endMoveBtn.interactable = !isEnemyTurn;
+        myTurn = !isEnemyTurn;
+        CardController.Selected = null;
+        if (isEnemyTurn) enemyHand.DrawCards(true);
+        else myHand.DrawCards();
     }
     public Transform GetEnemyField { get { return enemyField; } }
     public void addCard(CardController card, bool isEnemy)
@@ -38,7 +59,7 @@ public class Field : MonoBehaviour
     }
     public void updateField(bool isEnemy)
     {
-        if(enemyField==null) return;
+        if (enemyField == null) return;
         List<GameObject> field = isEnemy ? enemyCards : myCards;
 
         StopAllCoroutines();
@@ -80,7 +101,7 @@ public class Field : MonoBehaviour
     }
     public void Clear()
     {
-        while(myCards.Count > 0) BeatCard(myCards[0].GetComponent<CardController>());
-        while(enemyCards.Count > 0) BeatCard(enemyCards[0].GetComponent<CardController>());
+        while (myCards.Count > 0) BeatCard(myCards[0].GetComponent<CardController>());
+        while (enemyCards.Count > 0) BeatCard(enemyCards[0].GetComponent<CardController>());
     }
 }

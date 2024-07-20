@@ -2550,6 +2550,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dff76c24452f57a40b4953dd074d508f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  endMoveBtn: {fileID: 1999006083696787375}
   myDeck: {fileID: 401788619}
   enemyDeck: {fileID: 1085298352}
   myHand: {fileID: 401788618}
@@ -7489,20 +7490,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 668536335}
-        m_TargetAssemblyTypeName: SoundPlayer, Assembly-CSharp
+      - m_Target: {fileID: 668536334}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
         m_MethodName: Play
-        m_Mode: 2
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 097e4161e4bf9fd4b9692e78e3963a2a, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1523470346}
-        m_TargetAssemblyTypeName: TurnBasedGameplay, Assembly-CSharp
+      - m_Target: {fileID: 1523470344}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: NextTurn
         m_Mode: 6
         m_Arguments:

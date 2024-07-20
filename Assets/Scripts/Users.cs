@@ -6,7 +6,7 @@ using UnityEngine.Rendering.Universal;
 
 public class Users : MonoBehaviour
 {
-    [SerializeField] Field field;
+    [SerializeField] GameManager field;
     [SerializeField] GameObject winWindow, defeatWindow;
     [SerializeField] Light2D lighting;
 
@@ -37,8 +37,8 @@ public class Users : MonoBehaviour
     }
     private bool checkAttack()
     {
-        if (gameObject.tag == "enemyCard") return Field.GetCards(true).Count == 0;
-        else return Field.GetCards(false).Count == 0;
+        if (gameObject.tag == "enemyCard") return GameManager.GetCards(true).Count == 0;
+        else return GameManager.GetCards(false).Count == 0;
     }
     private void OnMouseEnter()
     {

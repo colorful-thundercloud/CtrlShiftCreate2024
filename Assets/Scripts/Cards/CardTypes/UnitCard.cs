@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Карты/Атакующие/Обычный")]
+[CreateAssetMenu(menuName = "пїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅпїЅпїЅ")]
 public class UnitCard : BasicCard, IHaveSteps
 {
     [field: SerializeField] public Steps Steps { get; set; }
@@ -30,7 +30,7 @@ public class UnitCard : BasicCard, IHaveSteps
 
         IHaveSteps stepsCard = this;
         stats.Add(stepsCard.Steps.GetStat(card));
-        TurnBasedGameplay.OnEndTurn.AddListener(isEnemy => stepsCard.Steps.reloadSteps(card, isEnemy));
+        GameManager.OnEndTurn.AddListener(isEnemy => stepsCard.Steps.reloadSteps(card, isEnemy));
 
         stats.Add(hp.GetStat(card, card));
         stats.Add(action.GetStat(card));

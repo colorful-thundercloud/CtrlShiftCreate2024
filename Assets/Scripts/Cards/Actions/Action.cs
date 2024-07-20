@@ -46,8 +46,8 @@ public abstract class Action
     /// </summary>
     protected List<CardController> GetAllTargets(CardController card)
     {
-        if (toAllies) return Field.GetCards(card.CompareTag("enemyCard"));
-        else return Field.GetCards(card.CompareTag("myCard"));
+        if (toAllies) return GameManager.GetCards(card.CompareTag("enemyCard"));
+        else return GameManager.GetCards(card.CompareTag("myCard"));
     }
     public virtual Stat GetStat(CardController card) { return null; }
 }

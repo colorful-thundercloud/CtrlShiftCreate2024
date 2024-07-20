@@ -7,7 +7,7 @@ public class BigBrain : MonoBehaviour
 {
     [SerializeField] float CardSpeed;
     [SerializeField] Hand hand;
-    [SerializeField] Field field;
+    [SerializeField] GameManager field;
     [SerializeField] float showWaitTime;
 
     List<CardController> myCardsOnBoard, playerCards, myCards;
@@ -15,7 +15,7 @@ public class BigBrain : MonoBehaviour
 
     private void Start()
     {
-        TurnBasedGameplay.OnEndTurn.AddListener(onNewTurn);
+        GameManager.OnEndTurn.AddListener(onNewTurn);
     }
     void onNewTurn(bool isEnemy)
     {
@@ -35,8 +35,8 @@ public class BigBrain : MonoBehaviour
         yield return StartCoroutine(SpawnUnit(units));
 
 
-        myCardsOnBoard = Field.GetCards(true);
-        playerCards = Field.GetCards(false);
+        myCardsOnBoard = GameManager.GetCards(true);
+        playerCards = GameManager.GetCards(false);
 
         List<CardController> buffCards = GetListCardType(myCards, typeof(BuffOneshot), true);
         yield return StartCoroutine(SpawnBaffs(buffCards));
@@ -45,7 +45,7 @@ public class BigBrain : MonoBehaviour
 
         yield return StartCoroutine(AttackPlayerCards());
 
-        TurnBasedGameplay.OnEndTurn.Invoke(false); // возврат хода игроку
+        GameManager.OnEndTurn.Invoke(false); // возврат хода игроку
     }
     IEnumerator SpawnBaffs(List<CardController> buffCards)
     {
@@ -76,7 +76,7 @@ public class BigBrain : MonoBehaviour
         if (aviableUnits.Count == 0) yield break;
         foreach(CardController card in aviableUnits)
         {
-            playerCards = Field.GetCards(false);
+            playerCards = GameManager.GetCards(false);
             if (playerCards.Count != 0)
             {
                 card.GetBasicCard.GetAction()
@@ -102,7 +102,7 @@ public class BigBrain : MonoBehaviour
                 card.cast();
             }
 
-            myCardsOnBoard = Field.GetCards(true);
+            myCardsOnBoard = GameManager.GetCards(true);
         }
     }
     List<CardController> GetListCardType(List<CardController> toSearch, Type type, bool aviable)

@@ -28,10 +28,10 @@ public class SetSelector : MonoBehaviour
         LevelController.onNextLevel.Invoke();
 
         bool turn = Random.Range(0, 2) == 0;
-        turnText.text = (turn) ? "Ход противника" : "Твой ход";
+        turnText.text = (turn) ? "пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ" : "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ";
         SoundPlayer.Play.Invoke(moneySound);
         moneyAnim.SetTrigger((!turn) ? "MyLot" : "EnemyLot");
         yield return new WaitForSeconds(3f);
-        TurnBasedGameplay.OnEndTurn.Invoke(turn);
+        GameManager.OnEndTurn.Invoke(turn);
     }
 }

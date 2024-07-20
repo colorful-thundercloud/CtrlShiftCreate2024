@@ -12,7 +12,7 @@ public class Hand : MonoBehaviour
     [SerializeField] GameObject cardPrefab;
     private void Start()
     {
-        Field.OnCast.AddListener(ctx => updateHand());
+        GameManager.OnCast.AddListener(ctx => updateHand());
     }
     void updateHand()
     {

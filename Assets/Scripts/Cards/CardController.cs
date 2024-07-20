@@ -50,7 +50,7 @@ public class CardController: MonoBehaviour
 
     bool isCasting = false;
     public bool isCasted = false;
-    Field field = null;
+    GameManager field = null;
     Coroutine runningFunc;
     Vector3 startPosition, startScale;
     public void SavePosition()=> startPosition = transform.position;
@@ -68,7 +68,7 @@ public class CardController: MonoBehaviour
         if (CompareTag("myCard")) Show(true);
 
 
-        TurnBasedGameplay.OnEndTurn.AddListener(isEnemyTurn =>
+        GameManager.OnEndTurn.AddListener(isEnemyTurn =>
         {
             if (CompareTag("enemyCard")) return;
             if (!isEnemyTurn) twinckle(GetBasicCard.CheckAction(this));
@@ -95,7 +95,7 @@ public class CardController: MonoBehaviour
         if (Selected != this)
         {
             turnOfLight();
-            if (isCasted && TurnBasedGameplay.myTurn) twinckle(basicCard.CheckAction(this));
+            if (isCasted && GameManager.myTurn) twinckle(basicCard.CheckAction(this));
         }
     }
     public void turnOfLight() 
@@ -118,12 +118,12 @@ public class CardController: MonoBehaviour
         if (gameObject.CompareTag("enemyCard")) return;
         // только карты игрока
 
-        if (TurnBasedGameplay.myTurn) runningFunc = StartCoroutine(Mover.SmoothSizeChange(CardSize, transform,0.1f));
+        if (GameManager.myTurn) runningFunc = StartCoroutine(Mover.SmoothSizeChange(CardSize, transform,0.1f));
         CardUI.OnOpenCard.Invoke(this);
 
         if (isCasted)
         {
-            if (selected != this && TurnBasedGameplay.myTurn)
+            if (selected != this && GameManager.myTurn)
             {
                 Selected = this;
                 GetBasicCard.OnSelect(this);
@@ -135,7 +135,7 @@ public class CardController: MonoBehaviour
         isCasting = false;
         isCasted = true;
         SoundPlayer.Play.Invoke(CastSound);
-        Field.OnCast?.Invoke(this);
+        GameManager.OnCast?.Invoke(this);
     }
     public void Show(bool enabled)
     {
@@ -169,7 +169,7 @@ public class CardController: MonoBehaviour
     {
         if (EventSystem.current.IsPointerOverGameObject()) return;
         if (CompareTag("enemyCard")) return;
-        if (!isCasted && TurnBasedGameplay.myTurn)
+        if (!isCasted && GameManager.myTurn)
         {
             if (!isCasting)
             {
@@ -190,7 +190,7 @@ public class CardController: MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("field")) field = collision.GetComponent<Field>();
+        if (collision.CompareTag("field")) field = collision.GetComponent<GameManager>();
         if (collision.TryGetComponent<CardController>(out CardController card)) if(card.isCasted) otherCard = card;
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -201,7 +201,7 @@ public class CardController: MonoBehaviour
     private void OnTriggerStay2D(Collider2D collision)
     {
 
-        if (collision.CompareTag("field")) field = collision.GetComponent<Field>();
+        if (collision.CompareTag("field")) field = collision.GetComponent<GameManager>();
         if (collision.TryGetComponent<CardController>(out CardController card)) if (card.isCasted) otherCard = card;
     }
 

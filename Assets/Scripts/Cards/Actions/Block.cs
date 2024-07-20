@@ -16,7 +16,7 @@ public class Block : Action
             Stat block = targetStats.GetStat("Blocked");
             if (block == null) return;
             block.Value--;
-            if (block.Value == 0) TurnBasedGameplay.OnEndTurn.RemoveListener(decreeseTime);
+            if (block.Value == 0) GameManager.OnEndTurn.RemoveListener(decreeseTime);
         }
 
         Stat block = targetStats.GetStat("Blocked");
@@ -27,7 +27,7 @@ public class Block : Action
         targetStats.AddStat(stat);
 
         SoundPlayer.Play.Invoke(blockSound);
-        TurnBasedGameplay.OnEndTurn.AddListener(decreeseTime);
+        GameManager.OnEndTurn.AddListener(decreeseTime);
     }
     public override Stat GetStat(CardController card)
     {
