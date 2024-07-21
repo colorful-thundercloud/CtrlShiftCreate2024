@@ -25,7 +25,6 @@ public class CardUI : MonoBehaviour
 
         showStat(damage, "damage", card);
         showStat(hp, "hp", card);
-        showStat(multiplier, "multiplier", card);
         showStat(value, "value", card);
         showStat(steps, "steps", card);
 

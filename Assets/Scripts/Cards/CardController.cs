@@ -32,11 +32,13 @@ public class CardController: MonoBehaviour
             if (value == null)
             {
                 selected?.turnOfLight();
+                selected?.hover(false);
             }
             else
             {
                 if (!value.GetBasicCard.CheckAction(value)) return;
                 selected?.turnOfLight();
+                selected?.hover(false);
 
                 SoundPlayer.Play.Invoke(value.SelectSound);
                 value.lighting.color = Color.green;
@@ -47,13 +49,12 @@ public class CardController: MonoBehaviour
         }
         get { return selected; }
     }
-
-    bool isCasting = false;
-    public bool isCasted = false;
+    public bool isCasted = false, isCasting = false;
     GameManager field = null;
     Coroutine runningFunc;
     Vector3 startPosition, startScale;
     public void SavePosition()=> startPosition = transform.position;
+    public void SaveScale()=> startScale = transform.localScale;
     private void Start()
     {
         cam = Camera.main;
@@ -78,23 +79,29 @@ public class CardController: MonoBehaviour
         title.text = basicCard.Title.ToString();
         image.sprite = basicCard.GetAvatar;
     }
-    private void hover()
+    Coroutine hoverCoroutine;
+    public void hover(bool enabled)
     {
+        if (isCasting) return;
         twinckle(false);
-        lighting.color = (gameObject.tag == "enemyCard") ? Color.red : Color.blue;
-        StartCoroutine(SmoothLight.smoothLight(lighting, 0.25f));
+        //lighting.color = (gameObject.tag == "enemyCard") ? Color.red : Color.blue;
+        //StartCoroutine(SmoothLight.smoothLight(lighting, 0.25f));
+        //if(enabled) startScale = transform.localScale;
+        if (hoverCoroutine != null) StopCoroutine(hoverCoroutine);
+        hoverCoroutine = StartCoroutine(Mover.SmoothSizeChange((enabled) ? transform.localScale * 1.1f : startScale, transform, 0.1f));
     }
     private void OnMouseEnter()
     {
         if (EventSystem.current.IsPointerOverGameObject()) return;
-        if (Selected != this || Selected == null) hover();
+        if (Selected != this || Selected == null) hover(true);
     }
     private void OnMouseExit()
     {
         if (EventSystem.current.IsPointerOverGameObject()) return;
         if (Selected != this)
         {
-            turnOfLight();
+            //turnOfLight();
+            hover(false);
             if (isCasted && GameManager.myTurn) twinckle(basicCard.CheckAction(this));
         }
     }
@@ -118,7 +125,6 @@ public class CardController: MonoBehaviour
         if (gameObject.CompareTag("enemyCard")) return;
         // только карты игрока
 
-        if (GameManager.myTurn) runningFunc = StartCoroutine(Mover.SmoothSizeChange(CardSize, transform,0.1f));
         CardUI.OnOpenCard.Invoke(this);
 
         if (isCasted)
@@ -129,6 +135,7 @@ public class CardController: MonoBehaviour
                 GetBasicCard.OnSelect(this);
             }
         }
+        else if (GameManager.myTurn) runningFunc = StartCoroutine(Mover.SmoothSizeChange(CardSize, transform, 0.1f));
     }
     public void cast()
     {
@@ -154,6 +161,7 @@ public class CardController: MonoBehaviour
     }
     public void OnMouseUp()
     {
+        if (CompareTag("enemyCard")) return;
         if (isCasted) return;
         if(field==null||(!field.CheckCount()&&!GetBasicCard.isIngoringFieldCapacity)) backToHand();
         else
@@ -178,9 +186,9 @@ public class CardController: MonoBehaviour
             }
         }
     }
-    private void Update()
+    private void FixedUpdate()
     {
-        if (isCasting)
+        if (isCasting && CompareTag("myCard"))
         {
             Vector3 pos = cam.ScreenToWorldPoint(Input.mousePosition);
             pos.z = 0;

@@ -18,8 +18,7 @@ MonoBehaviour:
     \u043D\u0435 \u043D\u0430\u0439\u0434\u0443\u0442"
   buff:
     toAllies: 1
-    maxSteps: 0
     buffedStat: 0
-    multiplier: 2
-    value: 0
+    value: 4
     buffSound: {fileID: 8300000, guid: c9adadb3a830cd34b8984c8484283607, type: 3}
+    multiply: 0

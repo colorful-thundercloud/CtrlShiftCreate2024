@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -28,7 +28,7 @@ public class SetSelector : MonoBehaviour
         LevelController.onNextLevel.Invoke();
 
         bool turn = Random.Range(0, 2) == 0;
-        turnText.text = (turn) ? "��� ����������" : "���� ���";
+        turnText.text = (turn) ? "Ход противника" : "Твой ход";
         SoundPlayer.Play.Invoke(moneySound);
         moneyAnim.SetTrigger((!turn) ? "MyLot" : "EnemyLot");
         yield return new WaitForSeconds(3f);

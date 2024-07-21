@@ -81,6 +81,7 @@ public class GameManager : MonoBehaviour
 
             StartCoroutine(Mover.MoveCard(field[i].GetComponent<CardController>(), pos, 0.1f));
             field[i].transform.localScale = CardSize;
+            field[i].GetComponent<CardController>().SaveScale();
         }
     }
     public void BeatCard(CardController card)

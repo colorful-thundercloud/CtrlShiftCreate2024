@@ -17,7 +17,6 @@ public class EffectUnit : BasicCard, IHaveSteps
     }
     public override bool OnClick(CardController card)
     {
-        if (card.GetStat("steps") != null) card.GetStat("steps").Value--;
         if (!CardController.Selected.GetBasicCard.GetAction()
             .CheckAlies(CardController.Selected, card)) return false;
         CardController.Selected.GetBasicCard.GetAction()
@@ -36,7 +35,6 @@ public class EffectUnit : BasicCard, IHaveSteps
 
         stats.Add(hp.GetStat(card, card));
         stats.Add(action.GetStat(card));
-        stats.Add(buff.GetSecondStat(card));
 
         return stats;
     }

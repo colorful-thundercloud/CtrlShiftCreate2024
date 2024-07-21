@@ -18,18 +18,14 @@ public class Effect : Action
     /// </summary>
     [Header("Определяет баффаемый параметр")]
     [SerializeField] BuffedStats buffedStat;
-    public BuffedStats GetBuffedStat => buffedStat; 
-    /// <summary>
-    /// На сколько умножается выбранный параметр
-    /// </summary>
-    [Header("На сколько умножается выбранный параметр")]
-    [SerializeField] int multiplier = 1;
+    public BuffedStats GetBuffedStat => buffedStat;
     /// <summary>
     /// Сколько прибавляется к выбранному параметру
     /// </summary>
-    [Header("Сколько прибавляется к выбранному параметру")]
+    [Header("На сколько изменяется выбранный параметр")]
     [SerializeField] int value = 0;
     [SerializeField] AudioClip buffSound;
+    [SerializeField] bool multiply;
 
     public override void Undirected(CardController card)
     {
@@ -42,25 +38,12 @@ public class Effect : Action
         Stat victim = targetStats.GetStat(buffedStat.ToString());
         if (victim == null) return;
         SoundPlayer.Play.Invoke(buffSound);
-        victim.Value *= multiplier;
-        victim.Value += value;
+        victim.Value = (multiply) ? victim.Value * value : victim.Value + value;
     }
     public override Stat GetStat(CardController card)
     {
         color = (buffedStat == BuffedStats.damage) ? Color.red : new Color(0, 0.5f, 0, 1);
 
-        Stat stat = new();
-        stat.Name = "multiplier";
-        stat.field = card.transform.Find("multiplier").GetComponentInChildren<TMP_Text>();
-        stat.field.color = color;
-        card.transform.Find("multiplier").Find("Square").GetComponent<SpriteRenderer>().color = color;
-        stat.Value = multiplier;
-        stat.maxValue = multiplier;
-        stat.canBuff = false;
-        return stat;
-    }
-    public Stat GetSecondStat(CardController card)
-    {
         Stat stat = new();
         stat.Name = "value";
         stat.field = card.transform.Find("value").GetComponentInChildren<TMP_Text>();

@@ -25,7 +25,6 @@ public class BuffOneshot : OneShot
         List<Stat> stats = new();
 
         stats.Add(buff.GetStat(card));
-        stats.Add(buff.GetSecondStat(card));
 
         return stats;
     }

@@ -1672,7 +1672,6 @@ GameObject:
   - component: {fileID: 1523470345}
   - component: {fileID: 1523470347}
   - component: {fileID: 1523470344}
-  - component: {fileID: 1523470346}
   m_Layer: 0
   m_Name: Field
   m_TagString: field
@@ -1719,18 +1718,6 @@ Transform:
   - {fileID: 2116132364}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1523470346
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1523470343}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3dc440f8c704ac84aac6c397cc591953, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!61 &1523470347
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2870,8 +2857,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u0422\u0432\u043E\u0439 \u0445\u043E\u0434"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: fa121271f0c44d048914a8866d880914, type: 2}
-  m_sharedMaterial: {fileID: 1796711636273957547, guid: fa121271f0c44d048914a8866d880914, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ddd7520950212654c94d5e980d86f4cd, type: 2}
+  m_sharedMaterial: {fileID: -8905315036016935537, guid: ddd7520950212654c94d5e980d86f4cd, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2960,7 +2947,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 1796711636273957547, guid: fa121271f0c44d048914a8866d880914, type: 2}
+  - {fileID: -8905315036016935537, guid: ddd7520950212654c94d5e980d86f4cd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3364,6 +3351,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
       objectReference: {fileID: 668536335}
+    - target: {fileID: 7592709749506010998, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
+      propertyPath: multiplier
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 9114482283817389518, guid: 501f918ce97bfff46bcbdf399adf5aef, type: 3}
       propertyPath: m_Name
       value: Canvas
