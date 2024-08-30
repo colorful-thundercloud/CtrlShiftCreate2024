@@ -14,6 +14,8 @@ public void Host()
         JoinMathInput.interactable = false;
         HostBtn.interactable = false;
         ClientBtn.interactable = false;
+
+        //Client.localPlayer.HostGame();
     }
 
    public void Join()

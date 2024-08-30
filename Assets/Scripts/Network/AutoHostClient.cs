@@ -13,7 +13,6 @@ public class AutoHostClient : MonoBehaviour
         {
             Debug.Log("Client conected");
             networkManager.StartClient();
-
         }
         else
         {
