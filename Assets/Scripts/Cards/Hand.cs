@@ -10,6 +10,7 @@ public class Hand : MonoBehaviour
     [SerializeField] Transform HandPosition;
     [SerializeField] float distance;
     [SerializeField] GameObject cardPrefab;
+    [SerializeField] int MaxCardsInHand = 3;
     private void Start()
     {
         GameManager.OnCast.AddListener(ctx => updateHand());
@@ -34,10 +35,13 @@ public class Hand : MonoBehaviour
             pos.z = (hand[i].tag == "myCard")? 1f : 2f;
             StartCoroutine(kostyl(hand[i].GetComponent<CardController>(), pos));
         }
+
+        for (int i = 0; i < hand.Count; i++)
+            hand[i].GetComponent<CardController>().cardID = i;
     }
     IEnumerator kostyl(CardController card, Vector3 pos)
     {
-        yield return StartCoroutine(Mover.MoveCard(card, pos, 0.1f));
+        yield return StartCoroutine(Mover.MoveCard(card.transform, pos, 0.1f));
         card.SavePosition();
     }
     void addCard(BasicCard card, bool enemy = false)
@@ -58,13 +62,24 @@ public class Hand : MonoBehaviour
             updateHand();
         }
     }
-    public void DrawCards(bool enemy = false) 
+    public List<BasicCard> DrawCards(bool enemy = false) 
     {
-        if (deckController.currentDeck.Count == 0)
+        if (deckController.cardCount == 0)
             deckController.MoveBeatenToDeck();
-
-        for (int i = hand.Count; i < 3 ; i++)
-            addCard(deckController.DrawCard(), enemy);
+        List<BasicCard> cards = new();
+        for (int i = hand.Count; i < MaxCardsInHand; i++)
+            cards.Add(deckController.DrawCard());
+        return cards;
+    }
+    public void AddCards(string[] cards, bool enemy = false)
+    {
+        foreach(var card in cards)
+            addCard(deckController.DrawCard(card), enemy);
+    }
+    public void AddCards(List<BasicCard> cards, bool enemy = false)
+    {
+        foreach (var card in cards)
+            addCard(card, enemy);
     }
     public void RemoveCard(GameObject card)
     {

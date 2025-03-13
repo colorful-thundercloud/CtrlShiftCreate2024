@@ -37,10 +37,10 @@ public class Health
     IEnumerator death(Animator anim, CardController card)
     {
         anim.SetTrigger("deathTrigger");
-        GameManager.endMoveBtnIsOff = true;
+        //GameManager.endMoveBtnIsOff = true;
         SoundPlayer.Play.Invoke(DeathSound);
         yield return new WaitForSeconds(1f);
-        GameManager.endMoveBtnIsOff = true;
+        //GameManager.endMoveBtnIsOff = true;
         if (card != null) GameManager.OnCardBeat.Invoke(card);
         OnDeath.Invoke();
     }

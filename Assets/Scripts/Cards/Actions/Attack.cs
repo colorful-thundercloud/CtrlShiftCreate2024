@@ -16,7 +16,6 @@ public class Attack: Action, IHaveStat
     {
         base.Directed(card, targetTransform, targetStats);
         card.StartCoroutine(attackAnimation(0.2f, card, targetTransform.transform, targetStats.GetStat("hp")));
-        CardController.Selected = null;
         SoundPlayer.Play.Invoke(AttackSound);
     }
 
@@ -27,11 +26,11 @@ public class Attack: Action, IHaveStat
 
         card.transform.position = new Vector3(card.transform.position.x, card.transform.position.y, 3);
 
-        yield return card.StartCoroutine(Mover.MoveCard(card, direction, smoothTime));
+        yield return card.StartCoroutine(Mover.MoveCard(card.transform, direction, smoothTime));
 
         hp.Value -= card.GetStat("damage").Value;
 
-        yield return card.StartCoroutine(Mover.MoveCard(card, startPosition, smoothTime));
+        yield return card.StartCoroutine(Mover.MoveCard(card.transform, startPosition, smoothTime));
 
         card.transform.position = new Vector3(card.transform.position.x, card.transform.position.y, 4);
     }

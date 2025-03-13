@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 
 public abstract class BasicCard : ScriptableObject

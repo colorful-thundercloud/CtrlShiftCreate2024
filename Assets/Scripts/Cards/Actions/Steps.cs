@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 [Serializable]
@@ -17,10 +16,10 @@ public class Steps
     /// <summary>
     /// Восстановка ходов у способности
     /// </summary>
-    public void reloadSteps(CardController card, bool isEnemy)
+    public void reloadSteps(CardController card, bool myTurn)
     {
         if (card == null) return;
-        if (isEnemy == card?.CompareTag("enemyCard"))
+        if (myTurn != card?.CompareTag("enemyCard"))
             if (card.isCasted) card.GetStat("steps").Value = maxSteps;
     }
     public Stat GetStat(CardController card)

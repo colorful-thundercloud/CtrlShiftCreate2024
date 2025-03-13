@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Карты/Бафы/Юнит")]
@@ -31,7 +30,7 @@ public class EffectUnit : BasicCard, IHaveSteps
 
         IHaveSteps stepsCard = this;
         stats.Add(stepsCard.Steps.GetStat(card));
-        GameManager.OnEndTurn.AddListener(isEnemy => stepsCard.Steps.reloadSteps(card, isEnemy));
+        GameManager.OnEndTurn.AddListener(myTurn => stepsCard.Steps.reloadSteps(card, myTurn));
 
         stats.Add(hp.GetStat(card, card));
         stats.Add(action.GetStat(card));

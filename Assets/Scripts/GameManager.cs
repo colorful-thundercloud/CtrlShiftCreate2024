@@ -1,16 +1,32 @@
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Unity.Services.Lobbies;
+using Unity.Services.Lobbies.Models;
+using System.Collections;
+using TMPro;
+using System.Linq;
 
-public class GameManager : MonoBehaviour
+public class GameManager : NetworkBehaviour
 {
-    public Button endMoveBtn;
+    [SerializeField] Button endMoveBtn;
+    [SerializeField] EnemyController enemyController;
+
     [SerializeField] DeckController myDeck, enemyDeck;
     [SerializeField] Hand myHand, enemyHand;
     [SerializeField] Transform myField, enemyField;
+
     [SerializeField] float distance;
     [SerializeField] int maxCardCount;
+
+    [SerializeField] Animator moneyAnim;
+    [SerializeField] AudioClip moneySound;
+    [SerializeField] TMP_Text turnText;
+
+    List<TurnData> myTurns = new();
+
     public Vector3 CardSize = new Vector3(1.5f, 1.5f, 1);
     public bool CheckCount(bool isEnemy = false)
     {
@@ -18,44 +34,113 @@ public class GameManager : MonoBehaviour
         else return myCards.Count < maxCardCount;
     }
     static List<GameObject> myCards, enemyCards;
+
     public static UnityEvent<CardController> OnCast = new();
-    public static UnityEvent<CardController> OnCardBeat = new();
     public static UnityEvent<bool> OnEndTurn = new();
-    public static bool myTurn = true;
-    [HideInInspector]
-    public static bool endMoveBtnIsOff = false;
+    public static UnityEvent<CardController> OnCardBeat = new();
+    public static UnityEvent<TurnData> UpdateTurns = new(); 
+
+    public static bool myTurn { get; private set; }
+    private Lobby currentLobby;
     void Awake()
     {
-        //Invoke("DrawCards", 0.5f);
-        OnEndTurn.AddListener(onNextTurn);
+        UpdateTurns.AddListener(updateTurns);
+        OnCardBeat.AddListener(BeatCard);
+        OnCast.AddListener(ctx => addCard(ctx, ctx.CompareTag("enemyCard")));
+        OnEndTurn.AddListener(setTurn);
     }
-    private void Start()
+    private void updateTurns(TurnData turnData) => myTurns.Add(turnData);
+    public override void OnNetworkSpawn()
     {
         Time.timeScale = 1f;
-        OnCast.AddListener(ctx => addCard(ctx, ctx.CompareTag("enemyCard")));
-        OnCardBeat.AddListener(BeatCard);
         myCards = new();
         enemyCards = new();
-    }
-    private void Update()
-    {
-        if (endMoveBtnIsOff || !myTurn) endMoveBtn.interactable = false;
-        else endMoveBtn.interactable = true;
-    }
-    void DrawCards()
-    {
-        endMoveBtn.interactable = true;
+        if (!IsServer) ClientConnectedServerRpc();
     }
 
-    public void NextTurn(bool isEnemyTurn) => OnEndTurn.Invoke(isEnemyTurn);
-    void onNextTurn(bool isEnemyTurn)
+    [ServerRpc(RequireOwnership = false)]
+    private void ClientConnectedServerRpc() => firstTurnSet();
+    private async void firstTurnSet()
     {
-        endMoveBtn.interactable = !isEnemyTurn;
-        myTurn = !isEnemyTurn;
-        endMoveBtnIsOff = isEnemyTurn;
+        if (IsServer)
+        {
+            currentLobby = await LobbyService.Instance.GetLobbyAsync(LobbyOrchestrator.CurrentLobbyId);
+            Constants.FirstTurn turnType = (Constants.FirstTurn)int.Parse(currentLobby.Data[Constants.FirstTurnKey].Value);
+            bool turn = (turnType == Constants.FirstTurn.Random) ? Random.Range(0, 2) == 0 : turnType == Constants.FirstTurn.Host;
+            StartCoroutine(lot(turn));
+            turnClientRpc(!turn);
+        }
+    }
+    [ClientRpc]
+    private void turnClientRpc(bool turn)
+    {
+        if (IsServer) return;
+        StartCoroutine(lot(turn));
+    }
+    private IEnumerator lot(bool turn)
+    {
+        turnText.text = turn ? "Твой ход" : "Ход противника";
+        SoundPlayer.Play.Invoke(moneySound);
+        moneyAnim.SetTrigger(turn ? "MyLot" : "EnemyLot");
+        yield return new WaitForSeconds(3f);
+        setTurn(turn);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void EndTurnServerRpc(bool turn, TurnData[] turns)
+    {
+        OnEndTurn.Invoke(false);
+        if (turns != null && turns.Count() != 0)
+            enemyController.MakeTurn(turns);
+        else OnEndTurn.Invoke(true);
+    }
+    [ClientRpc]
+    private void EndTurnClientRpc(bool turn, TurnData[] turns)
+    {
+        if (IsServer) return;
+
+        OnEndTurn.Invoke(false);
+        if (turns != null && turns.Count() != 0)
+            enemyController.MakeTurn(turns);
+        else OnEndTurn.Invoke(true);
+    }
+    public void NextTurn()
+    {
+        string[] names = myTurns.Select(turn=>turn.CardName).ToArray();
+        Debug.Log($"Turn count = {myTurns.Count}: {string.Join("; ", names)}");
+        if(IsServer) EndTurnClientRpc(true, myTurns.ToArray());
+        else EndTurnServerRpc(true, myTurns.ToArray());
         CardController.Selected = null;
-        if (isEnemyTurn) enemyHand.DrawCards(true);
-        else myHand.DrawCards();
+        setTurn(false);
+    }
+    private void setTurn(bool turn)
+    {
+        myTurns.Clear();
+
+        if (turn)
+        {
+            List<BasicCard> cards = myHand.DrawCards();
+            if (cards.Count != 0)
+            {
+                string cardIds = string.Join(";", cards.Select(card => card.Title).ToArray());
+                myHand.AddCards(cards);
+                if (IsServer) DrawEnemyClientRpc(cardIds);
+                else DrawEnemyServerRpc(cardIds);
+            }
+        }
+        endMoveBtn.interactable = turn;
+        myTurn = turn;
+    }
+    [ServerRpc(RequireOwnership = false)]
+    private void DrawEnemyServerRpc(string cardIds)
+    {
+        enemyHand.AddCards(cardIds.Split(";"), true);
+    }
+    [ClientRpc]
+    private void DrawEnemyClientRpc(string cardIds)
+    {
+        if (IsServer) return;
+        enemyHand.AddCards(cardIds.Split(";"), true);
     }
     public Transform GetEnemyField { get { return enemyField; } }
     public void addCard(CardController card, bool isEnemy)
@@ -66,7 +151,7 @@ public class GameManager : MonoBehaviour
     }
     public void updateField(bool isEnemy)
     {
-        if (enemyField == null) return;
+        //if (enemyField == null) return;
         List<GameObject> field = isEnemy ? enemyCards : myCards;
 
         StopAllCoroutines();
@@ -79,9 +164,11 @@ public class GameManager : MonoBehaviour
             pos.x = (distance * i) - center;
             pos.z = 4;
 
-            StartCoroutine(Mover.MoveCard(field[i].GetComponent<CardController>(), pos, 0.1f));
+            StartCoroutine(Mover.MoveCard(field[i].transform, pos, 0.1f));
             field[i].transform.localScale = CardSize;
-            field[i].GetComponent<CardController>().SaveScale();
+            var card = field[i].GetComponent<CardController>();
+            card.SaveScale();
+            card.cardID = i;
         }
     }
     public void BeatCard(CardController card)
@@ -99,7 +186,6 @@ public class GameManager : MonoBehaviour
             enemyDeck.BeatCard(card.GetBasicCard);
         }
         Destroy(card.gameObject);
-        endMoveBtnIsOff = false;
     }
     public static List<CardController> GetCards(bool isEnemy)
     {
@@ -108,9 +194,9 @@ public class GameManager : MonoBehaviour
         else cards = myCards.ConvertAll(n => n.GetComponent<CardController>());
         return cards;
     }
-    public void Clear()
+    /*public void Clear()
     {
         while (myCards.Count > 0) BeatCard(myCards[0].GetComponent<CardController>());
         while (enemyCards.Count > 0) BeatCard(enemyCards[0].GetComponent<CardController>());
-    }
+    }*/
 }

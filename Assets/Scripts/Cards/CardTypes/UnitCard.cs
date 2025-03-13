@@ -1,9 +1,8 @@
-using Cinemachine.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "пїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅпїЅпїЅ")]
+[CreateAssetMenu(menuName = "Карты/Юниты/Базовый")]
 public class UnitCard : BasicCard, IHaveSteps
 {
     [field: SerializeField] public Steps Steps { get; set; }
@@ -30,7 +29,7 @@ public class UnitCard : BasicCard, IHaveSteps
 
         IHaveSteps stepsCard = this;
         stats.Add(stepsCard.Steps.GetStat(card));
-        GameManager.OnEndTurn.AddListener(isEnemy => stepsCard.Steps.reloadSteps(card, isEnemy));
+        GameManager.OnEndTurn.AddListener(myTurn => stepsCard.Steps.reloadSteps(card, myTurn));
 
         stats.Add(hp.GetStat(card, card));
         stats.Add(action.GetStat(card));

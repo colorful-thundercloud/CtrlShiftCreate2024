@@ -5,7 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class mainMenuController : MonoBehaviour
 {
-    public GameObject[] hidenSran;
+    [SerializeField] Transform Cards;
+    Camera cam;
+    Coroutine coroutine;
+    private void Start()
+    {
+        cam = Camera.main;
+    }
     public void Exit()
     {
         Application.Quit();
@@ -14,15 +20,20 @@ public class mainMenuController : MonoBehaviour
     {
         SceneManager.LoadScene(sceneNumber);
     }
-    public void OnMouseEnter()
+    public void ToggleWindow(Transform content)
     {
-        
-        for (int i = 0; i < hidenSran.Length; i++) 
-            hidenSran[i].SetActive(true);
+        if(coroutine!= null) StopCoroutine(coroutine);
+        coroutine = StartCoroutine(activator(content));
     }
-    public void OnMouseExit()
+    IEnumerator activator(Transform content)
     {
-        for (int i = 0; i < hidenSran.Length; i++) 
-            hidenSran[i].SetActive(false);
+        bool enabled = !content.gameObject.activeSelf;
+        Cards.gameObject.SetActive(!enabled);
+        content.gameObject.SetActive(enabled);
+        if(!enabled) Cards.GetComponent<Animator>().enabled = true;
+        Vector3 pos = (enabled) ? cam.WorldToScreenPoint(Vector3.zero) : cam.WorldToScreenPoint(Vector3.down * 10);
+        yield return StartCoroutine(Mover.MoveCard(content, pos, 0.5f));
+        if(!enabled) content.gameObject.SetActive(false);
     }
+    public void OnChangeNick(string value) => PlayerPrefs.SetString("Nick", value);
 }

@@ -7,15 +7,17 @@ public class SoundPlayer : MonoBehaviour
 {
     [SerializeField] private AudioMixerGroup Mixer;
     public static UnityEvent<AudioClip> Play = new();
+    public static UnityEvent<float> ChangePitch = new();
     private AudioSource source;
     [SerializeField] Slider soundSlider, musicSlider;
     void play(AudioClip clip) => source.PlayOneShot(clip);
-    void Start()
+    void Awake()
     {
         source = GetComponent<AudioSource>();
         Play.AddListener(play);
         setCurentVolume(soundSlider);
         setCurentVolume(musicSlider);
+        ChangePitch.AddListener(SetPitch);
     }
     private string mixerGroup;
     public string MixerGroup { set { mixerGroup = value; } }
@@ -37,5 +39,13 @@ public class SoundPlayer : MonoBehaviour
         if (t == -60) t = -80;
         Mixer.audioMixer.SetFloat(mixerGroup, t);
         PlayerPrefs.SetFloat(mixerGroup, volume);
+    }
+    public void SetPitch(float pitch = 0)
+    {
+        source.pitch = pitch;
+    }
+    public void RandomPitch()
+    {
+        source.pitch = Random.Range(0.9f, 2f);
     }
 }

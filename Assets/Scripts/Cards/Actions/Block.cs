@@ -11,7 +11,7 @@ public class Block : Action
     public override void Directed(CardController card, Transform targetTransform, CardStats targetStats)
     {
         base.Directed(card, targetTransform, targetStats);  
-        void decreeseTime(bool isEnemy)
+        void decreeseTime(bool myTurn)
         {
             Stat block = targetStats.GetStat("Blocked");
             if (block == null) return;
