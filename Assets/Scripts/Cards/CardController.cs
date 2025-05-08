@@ -10,8 +10,7 @@ public class CardController: MonoBehaviour
     [SerializeField] public TMP_Text title;
 
     [SerializeField] SpriteRenderer image;
-    [SerializeField] public Light2D lighting;
-    [SerializeField] Light2D signalLight;
+    [SerializeField] SpriteRenderer outliner;
     [SerializeField] Vector3 CardSize = new Vector3(1.5f, 1.5f, 1);
 
     [SerializeField] public AudioClip CastSound, SelectSound;
@@ -32,19 +31,17 @@ public class CardController: MonoBehaviour
         { 
             if (value == null)
             {
-                selected?.turnOfLight();
+                selected?.outline(false, Color.white);
                 selected?.hover(false);
             }
             else
             {
                 if (!value.GetBasicCard.CheckAction(value)) return;
-                selected?.turnOfLight();
+                selected?.outline(false, Color.white);
                 selected?.hover(false);
 
                 SoundPlayer.Play.Invoke(value.SelectSound);
-                value.lighting.color = Color.green;
-                value.StartCoroutine(SmoothLight.smoothLight(value.lighting, 0.25f));
-                value.twinckle(false);
+                value.outline(true, Color.white, false);
             }
             selected = value;
         }
@@ -73,21 +70,19 @@ public class CardController: MonoBehaviour
         GameManager.OnEndTurn.AddListener(myTurn =>
         {
             if (CompareTag("enemyCard")) return;
-            if (myTurn) twinckle(GetBasicCard.CheckAction(this));
-            else twinckle(false);
+            if (!isCasted) return;
+            if (myTurn) outline(GetBasicCard.CheckAction(this), Color.yellow, true);
+            else outline(false, Color.white);
         });
 
         title.text = basicCard.Title.ToString();
         image.sprite = basicCard.GetAvatar;
     }
     Coroutine hoverCoroutine;
-    public void hover(bool enabled)
+    void hover(bool enabled)
     {
         if (isCasting) return;
-        twinckle(false);
-        //lighting.color = (gameObject.tag == "enemyCard") ? Color.red : Color.blue;
-        //StartCoroutine(SmoothLight.smoothLight(lighting, 0.25f));
-        //if(enabled) startScale = transform.localScale;
+        outline(false, Color.white);
         if (hoverCoroutine != null) StopCoroutine(hoverCoroutine);
         hoverCoroutine = StartCoroutine(Mover.SmoothSizeChange((enabled) ? transform.localScale * 1.1f : startScale, transform, 0.1f));
     }
@@ -101,15 +96,9 @@ public class CardController: MonoBehaviour
         if (EventSystem.current.IsPointerOverGameObject()) return;
         if (Selected != this)
         {
-            //turnOfLight();
             hover(false);
-            if (isCasted && GameManager.myTurn) twinckle(basicCard.CheckAction(this));
+            if (isCasted && GameManager.myTurn) outline(basicCard.CheckAction(this), Color.yellow, true);
         }
-    }
-    public void turnOfLight() 
-    {
-        if (lighting == null) return;
-        StartCoroutine(SmoothLight.smoothLight(lighting, 0.25f,false));
     }
     private void OnMouseDown()
     {
@@ -225,22 +214,10 @@ public class CardController: MonoBehaviour
         if (collision.CompareTag("field")) field = collision.GetComponent<GameManager>();
         if (collision.TryGetComponent<CardController>(out CardController card)) if (card.isCasted) otherCard = card;
     }
-
-    Coroutine twink;
-    public void twinckle(bool isEnabled)
+    void outline(bool isEnabled, Color color, bool twink = false)
     {
-        if (this == null) return;
-        if (gameObject.tag == "enemyCard") return;
-        if (isEnabled)
-        {
-            Debug.Log("TwinkleOn");
-            if(twink!=null) StopCoroutine(twink);
-            twink = StartCoroutine(SmoothLight.twinckle(signalLight, 0.75f));
-        }
-        else if(twink!=null)
-        {
-            StopCoroutine(twink);
-            signalLight.falloffIntensity = 1f;
-        }
+        outliner.enabled = isEnabled;
+        outliner.material.SetColor("_Color", color);
+        outliner.material.SetInt("_Twinkle", twink ? 1 : 0);
     }
 }

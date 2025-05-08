@@ -15,30 +15,33 @@ public class SoundPlayer : MonoBehaviour
     {
         source = GetComponent<AudioSource>();
         Play.AddListener(play);
+        ChangePitch.AddListener(SetPitch);
+    }
+    private void Start()
+    {
         setCurentVolume(soundSlider);
         setCurentVolume(musicSlider);
-        ChangePitch.AddListener(SetPitch);
     }
     private string mixerGroup;
     public string MixerGroup { set { mixerGroup = value; } }
     void setCurentVolume(Slider slider)
     {
-        float t; 
-        if(PlayerPrefs.HasKey(slider.name))
-            t = PlayerPrefs.GetFloat(slider.name);
-        else
+        float t;
+        if (PlayerPrefs.HasKey(slider.name))
         {
-            Mixer.audioMixer.GetFloat(slider.name, out t);
-            t = Mathf.InverseLerp(-80f, 0f, t);
+            t = PlayerPrefs.GetFloat(slider.name);
+            Mixer.audioMixer.SetFloat(slider.name, t);
         }
+        else Mixer.audioMixer.GetFloat(slider.name, out t);
+        t = Mathf.InverseLerp(-80f, 0f, t);
         slider.value = t;
     }
     public void ChangeVolume(float volume)
     {
-        float t = Mathf.Lerp(-60, 0, volume);
-        if (t == -60) t = -80;
+        float t = Mathf.Lerp(-40, 0, volume);
+        if (t == -40) t = -80;
         Mixer.audioMixer.SetFloat(mixerGroup, t);
-        PlayerPrefs.SetFloat(mixerGroup, volume);
+        PlayerPrefs.SetFloat(mixerGroup, t);
     }
     public void SetPitch(float pitch = 0)
     {

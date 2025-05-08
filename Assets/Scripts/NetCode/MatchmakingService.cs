@@ -61,7 +61,8 @@ public static class MatchmakingService {
             Data = new Dictionary<string, DataObject> {
                 { Constants.JoinKey, new DataObject(DataObject.VisibilityOptions.Member, joinCode) },
                 { Constants.PasswordKey, new DataObject(DataObject.VisibilityOptions.Public, data.Password, DataObject.IndexOptions.S1) },
-                { Constants.FirstTurnKey, new DataObject(DataObject.VisibilityOptions.Public, ((int)data.FirstTurn).ToString(), DataObject.IndexOptions.S2) }
+                { Constants.FirstTurnKey, new DataObject(DataObject.VisibilityOptions.Public, ((int)data.FirstTurn).ToString(), DataObject.IndexOptions.S2) },
+                { Constants.TimerKey, new DataObject(DataObject.VisibilityOptions.Public, data.Timer.ToString(), DataObject.IndexOptions.S3) }
             }
         };
 

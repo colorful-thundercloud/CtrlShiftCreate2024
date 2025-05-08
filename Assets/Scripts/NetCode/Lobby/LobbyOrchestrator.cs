@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.Netcode;
+using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.Events;
@@ -21,7 +23,6 @@ public class LobbyOrchestrator : NetworkBehaviour {
 
     private void Start() {
         if (PlayerPrefs.HasKey("Nick")) _playerName.text = PlayerPrefs.GetString("Nick");
-        //_mainLobbyScreen.gameObject.SetActive(true);
         _createScreen.gameObject.SetActive(false);
         _roomScreen.gameObject.SetActive(false);
 
@@ -213,11 +214,22 @@ public class LobbyOrchestrator : NetworkBehaviour {
     
     private async void OnGameStart(string lobbyId) {
         await MatchmakingService.LockLobby();
-        PlayersInCurrentLobby = _playersInLobby;
-        CurrentLobbyId = lobbyId;
+
+        Lobby currentLobby = await LobbyService.Instance.GetLobbyAsync(lobbyId);
+        Constants.FirstTurn turnType = (Constants.FirstTurn)int.Parse(currentLobby.Data[Constants.FirstTurnKey].Value);
+        bool turn = (turnType == Constants.FirstTurn.Random) ? UnityEngine.Random.Range(0, 2) == 0 : turnType == Constants.FirstTurn.Host;
+        bool timer = bool.Parse(currentLobby.Data[Constants.TimerKey].Value);
+
+        StartGameClientRpc(_playersInLobby.Values.ToArray(), lobbyId, turn, timer);
         NetworkManager.Singleton.SceneManager.LoadScene("ONLINE", LoadSceneMode.Single);
     }
-    public static string CurrentLobbyId { get; private set; }
-    public static Dictionary<ulong, PlayerData> PlayersInCurrentLobby { get; private set; }
+    [ClientRpc]
+    private void StartGameClientRpc(PlayerData[] players, string currentLobbyId, bool turn, bool timer)
+    {
+        PlayersInCurrentLobby = players.ToList();
+        Timer.LobbySettings = timer;
+        GameManager.StartGame((IsServer) ? turn : !turn);
+    }
+    public static List<PlayerData> PlayersInCurrentLobby { get; private set; }
     #endregion
 }

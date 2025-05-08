@@ -1,11 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
-public class LevelController : MonoBehaviour
+public class LevelController : NetworkBehaviour
 {
+    [SerializeField] TMP_Text playerNameField, enemyNameField;
     [SerializeField] Users botUser;
     [SerializeField] SpriteRenderer botIcon, BG, HandBG;
     [SerializeField] List<BasicBot> bots;
@@ -16,7 +21,9 @@ public class LevelController : MonoBehaviour
     private void Start()
     {
         currentLevel = -1;
-        onNextLevel.AddListener(nextLevel);
+        //onNextLevel.AddListener(nextLevel);
+        playerNameField.text = LobbyOrchestrator.PlayersInCurrentLobby[IsServer ? 0 : 1].Name;
+        enemyNameField.text = LobbyOrchestrator.PlayersInCurrentLobby[IsServer ? 1 : 0].Name;
     }
     void nextLevel()
     {

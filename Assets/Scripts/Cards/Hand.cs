@@ -10,7 +10,6 @@ public class Hand : MonoBehaviour
     [SerializeField] Transform HandPosition;
     [SerializeField] float distance;
     [SerializeField] GameObject cardPrefab;
-    [SerializeField] int MaxCardsInHand = 3;
     private void Start()
     {
         GameManager.OnCast.AddListener(ctx => updateHand());
@@ -30,6 +29,7 @@ public class Hand : MonoBehaviour
         float center = ((hand.Count - 1)* distance)/2f;
         for (int i = 0; i < hand.Count; i++)
         {
+            hand[i].transform.SetParent(transform);
             Vector3 pos = HandPosition.position;
             pos.x = (distance * i) - center;
             pos.z = (hand[i].tag == "myCard")? 1f : 2f;
@@ -67,7 +67,7 @@ public class Hand : MonoBehaviour
         if (deckController.cardCount == 0)
             deckController.MoveBeatenToDeck();
         List<BasicCard> cards = new();
-        for (int i = hand.Count; i < MaxCardsInHand; i++)
+        for (int i = hand.Count; i < Constants.MaxCardsInHand; i++)
             cards.Add(deckController.DrawCard());
         return cards;
     }

@@ -20,7 +20,7 @@ public class RoomScreen : MonoBehaviour {
     [SerializeField] private GameObject _startButton;
     [SerializeField] private Image _readyButton;
     [SerializeField] private Sprite _readyIcon, _notReadyIcon;
-    private bool isReady = false;
+    private bool isReady = false, allReady = false;
     private string lobbyId;
 
     private readonly List<LobbyPlayerPanel> _playerPanels = new();
@@ -68,13 +68,13 @@ public class RoomScreen : MonoBehaviour {
                 _playerPanels.Add(panel);
             }
         }
-
-        _startButton.SetActive(NetworkManager.Singleton.IsHost && players.All(p => p.Value.IsReady) && players.Count == 2);
+        allReady = players.All(p => p.Value.IsReady);
+        _startButton.SetActive(NetworkManager.Singleton.IsHost && allReady && players.Count == 2);
     }
 
     private void OnCurrentLobbyRefreshed(Lobby lobby) {
         lobbyId = lobby.Id;
-        _waitingText.text = $"Ждём второго игрока";
+        _waitingText.text = (lobby.Players.Count < 2) ? $"Ждём второго игрока" : (allReady) ? "Ждём начала игры" : "Ждём пока все будут готовы";
         string password = lobby.Data[Constants.PasswordKey].Value;
         _passwordField.gameObject.SetActive(password != "");
         _passwordField.text = $"Пароль: {password}";

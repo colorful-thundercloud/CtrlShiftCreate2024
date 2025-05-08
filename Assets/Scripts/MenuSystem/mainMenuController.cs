@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class mainMenuController : MonoBehaviour
 {
-    [SerializeField] Transform Cards;
     Camera cam;
     Coroutine coroutine;
     private void Start()
@@ -16,24 +17,21 @@ public class mainMenuController : MonoBehaviour
     {
         Application.Quit();
     }
-    public void sceneController(int sceneNumber)
+    public async void MainMenu()
     {
-        SceneManager.LoadScene(sceneNumber);
+        await SceneManager.LoadSceneAsync(0);
+        NetworkManager.Singleton.Shutdown();
+        await MatchmakingService.LeaveLobby();
+    }
+    public void MoveCamera(float x)
+    {
+        if(coroutine!= null) StopCoroutine(coroutine);
+        coroutine = StartCoroutine(Mover.MoveCard(cam.transform, new Vector3(x, 0, -10), 0.6f));
     }
     public void ToggleWindow(Transform content)
     {
-        if(coroutine!= null) StopCoroutine(coroutine);
-        coroutine = StartCoroutine(activator(content));
-    }
-    IEnumerator activator(Transform content)
-    {
         bool enabled = !content.gameObject.activeSelf;
-        Cards.gameObject.SetActive(!enabled);
         content.gameObject.SetActive(enabled);
-        if(!enabled) Cards.GetComponent<Animator>().enabled = true;
-        Vector3 pos = (enabled) ? cam.WorldToScreenPoint(Vector3.zero) : cam.WorldToScreenPoint(Vector3.down * 10);
-        yield return StartCoroutine(Mover.MoveCard(content, pos, 0.5f));
-        if(!enabled) content.gameObject.SetActive(false);
     }
     public void OnChangeNick(string value) => PlayerPrefs.SetString("Nick", value);
 }

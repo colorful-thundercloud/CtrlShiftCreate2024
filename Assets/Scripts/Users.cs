@@ -1,18 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Rendering.Universal;
 
-public class Users : MonoBehaviour
+public class Users : MonoBehaviour,IPointerDownHandler
 {
     [SerializeField] GameManager field;
-    [SerializeField] GameObject winWindow, defeatWindow;
-    [SerializeField] Light2D lighting;
+    //[SerializeField] Light2D lighting;
 
     [SerializeField] Health hp;
     [SerializeField] CardStats stats;
-    Animator anim;
+    //Animator anim;
 
     private void Start()
     {
@@ -44,24 +45,20 @@ public class Users : MonoBehaviour
     {
         if (CardController.Selected == null) return;
         if (gameObject.tag == "myCard") return;
-        lighting.color = Color.red;
-        StartCoroutine(SmoothLight.smoothLight(lighting, 0.25f));
+        //lighting.color = Color.red;
+        //StartCoroutine(SmoothLight.smoothLight(lighting, 0.25f));
     }
     private void OnMouseExit()
     {
         if (CardController.Selected == null) return;
         if (gameObject.tag == "myCard") return;
-        StartCoroutine(SmoothLight.smoothLight(lighting, 0.25f, false));
-    }
-    private void OnMouseDown()
-    {
-        if (CardController.Selected == null) return;
-        Attack(CardController.Selected);
+        //StartCoroutine(SmoothLight.smoothLight(lighting, 0.25f, false));
     }
     public void Attack(CardController attacker)
     {
         if (checkAttack())
         {
+            GameManager.UpdateTurns.Invoke(new TurnData(false, attacker.cardID, TurnData.CardAction.user, 0, attacker.GetBasicCard.Title));
             attacker.GetBasicCard.GetAction()
                 .Directed(attacker, transform, stats);
         }
@@ -69,8 +66,18 @@ public class Users : MonoBehaviour
     public Health GetHealth { get { return hp; } }
     void Death()
     {
-        Time.timeScale = 0;
-        if (gameObject.tag == "myCard") defeatWindow.gameObject.SetActive(true);
-        else winWindow.gameObject.SetActive(true);
+        if (gameObject.tag == "myCard")
+            GameManager.OnGameOver.Invoke(false);
+        else
+        {
+            field.NextTurn();
+            GameManager.OnGameOver.Invoke(true);
+        }
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (CardController.Selected == null) return;
+        Attack(CardController.Selected);
     }
 }

@@ -15,14 +15,16 @@ public class Attack: Action, IHaveStat
     public override void Directed(CardController card, Transform targetTransform, CardStats targetStats)
     {
         base.Directed(card, targetTransform, targetStats);
-        card.StartCoroutine(attackAnimation(0.2f, card, targetTransform.transform, targetStats.GetStat("hp")));
+        Debug.Log(targetTransform.parent.name);
+        card.StartCoroutine(attackAnimation(0.2f, card, 
+            (targetTransform.parent.name == "Canvas") ? Camera.main.ScreenToWorldPoint(targetTransform.position) : targetTransform.position, 
+            targetStats.GetStat("hp")));
         SoundPlayer.Play.Invoke(AttackSound);
     }
 
-    IEnumerator attackAnimation(float smoothTime, CardController card, Transform target, Stat hp)
+    IEnumerator attackAnimation(float smoothTime, CardController card, Vector2 direction, Stat hp)
     {
         Vector2 startPosition = card.transform.position;
-        Vector2 direction = target.position;
 
         card.transform.position = new Vector3(card.transform.position.x, card.transform.position.y, 3);
 

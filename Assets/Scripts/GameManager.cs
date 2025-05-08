@@ -3,81 +3,80 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using Unity.Services.Lobbies;
-using Unity.Services.Lobbies.Models;
 using System.Collections;
 using TMPro;
 using System.Linq;
 
 public class GameManager : NetworkBehaviour
 {
+    [SerializeField] Animator GameOverWindow;
     [SerializeField] Button endMoveBtn;
     [SerializeField] EnemyController enemyController;
+    [SerializeField] Timer timer;
 
     [SerializeField] DeckController myDeck, enemyDeck;
     [SerializeField] Hand myHand, enemyHand;
     [SerializeField] Transform myField, enemyField;
 
     [SerializeField] float distance;
-    [SerializeField] int maxCardCount;
 
     [SerializeField] Animator moneyAnim;
     [SerializeField] AudioClip moneySound;
     [SerializeField] TMP_Text turnText;
-
     List<TurnData> myTurns = new();
 
     public Vector3 CardSize = new Vector3(1.5f, 1.5f, 1);
-    public bool CheckCount(bool isEnemy = false)
-    {
-        if (isEnemy) return enemyCards.Count < maxCardCount;
-        else return myCards.Count < maxCardCount;
-    }
     static List<GameObject> myCards, enemyCards;
 
     public static UnityEvent<CardController> OnCast = new();
     public static UnityEvent<bool> OnEndTurn = new();
     public static UnityEvent<CardController> OnCardBeat = new();
-    public static UnityEvent<TurnData> UpdateTurns = new(); 
+    public static UnityEvent<TurnData> UpdateTurns = new();
+    public static UnityEvent<bool> OnGameOver = new();
 
     public static bool myTurn { get; private set; }
-    private Lobby currentLobby;
     void Awake()
     {
+        Time.timeScale = 1f;
         UpdateTurns.AddListener(updateTurns);
-        OnCardBeat.AddListener(BeatCard);
+        OnCardBeat.AddListener(beatCard);
         OnCast.AddListener(ctx => addCard(ctx, ctx.CompareTag("enemyCard")));
         OnEndTurn.AddListener(setTurn);
+        OnGameOver.AddListener(GameOver);
+    }
+    public static void StartGame(bool turn)
+    {
+        myTurn = turn;
+    }
+    public override void OnDestroy()
+    {
+        base.OnDestroy(); 
+        if (NetworkManager.Singleton != null)
+            NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnectCallback;
+    }
+    private void OnClientDisconnectCallback(ulong id)
+    {
+        OnGameOver.Invoke(true);
+    }
+    private void GameOver(bool isWin)
+    {
+        Debug.Log($"isWin = {isWin}");
+        if (GameOverWindow.gameObject.activeSelf) return;
+        GameOverWindow.gameObject.SetActive(true);
+        GameOverWindow.SetBool("IsWin", isWin);
     }
     private void updateTurns(TurnData turnData) => myTurns.Add(turnData);
     public override void OnNetworkSpawn()
     {
-        Time.timeScale = 1f;
         myCards = new();
         enemyCards = new();
-        if (!IsServer) ClientConnectedServerRpc();
-    }
 
-    [ServerRpc(RequireOwnership = false)]
-    private void ClientConnectedServerRpc() => firstTurnSet();
-    private async void firstTurnSet()
-    {
-        if (IsServer)
-        {
-            currentLobby = await LobbyService.Instance.GetLobbyAsync(LobbyOrchestrator.CurrentLobbyId);
-            Constants.FirstTurn turnType = (Constants.FirstTurn)int.Parse(currentLobby.Data[Constants.FirstTurnKey].Value);
-            bool turn = (turnType == Constants.FirstTurn.Random) ? Random.Range(0, 2) == 0 : turnType == Constants.FirstTurn.Host;
-            StartCoroutine(lot(turn));
-            turnClientRpc(!turn);
-        }
+        NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnectCallback;
+
+        StartCoroutine(Lot(myTurn));
     }
-    [ClientRpc]
-    private void turnClientRpc(bool turn)
-    {
-        if (IsServer) return;
-        StartCoroutine(lot(turn));
-    }
-    private IEnumerator lot(bool turn)
+    #region TurnBase
+    private IEnumerator Lot(bool turn)
     {
         turnText.text = turn ? "Твой ход" : "Ход противника";
         SoundPlayer.Play.Invoke(moneySound);
@@ -86,18 +85,12 @@ public class GameManager : NetworkBehaviour
         setTurn(turn);
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    private void EndTurnServerRpc(bool turn, TurnData[] turns)
+    [Rpc(SendTo.NotMe)]
+    private void EndTurnRpc(TurnData[] turns)
     {
-        OnEndTurn.Invoke(false);
-        if (turns != null && turns.Count() != 0)
-            enemyController.MakeTurn(turns);
-        else OnEndTurn.Invoke(true);
-    }
-    [ClientRpc]
-    private void EndTurnClientRpc(bool turn, TurnData[] turns)
-    {
-        if (IsServer) return;
+        string[] names = turns.Select(turn => $"{turn.CardName}: {turn.Action} to target ID: {turn.TargetId}").ToArray();
+        string turnDebug = $"Turns receive \n Turn count = {turns.Count()}:\n{string.Join("\n", names)}";
+        Debug.Log(turnDebug);
 
         OnEndTurn.Invoke(false);
         if (turns != null && turns.Count() != 0)
@@ -106,10 +99,14 @@ public class GameManager : NetworkBehaviour
     }
     public void NextTurn()
     {
-        string[] names = myTurns.Select(turn=>turn.CardName).ToArray();
-        Debug.Log($"Turn count = {myTurns.Count}: {string.Join("; ", names)}");
-        if(IsServer) EndTurnClientRpc(true, myTurns.ToArray());
-        else EndTurnServerRpc(true, myTurns.ToArray());
+        string[] names = myTurns.Select(turn=> $"{turn.CardName}: {turn.Action} to target ID: {turn.TargetId}").ToArray();
+        string turnDebug = $"Turns send rival \n Turn count = {myTurns.Count}:\n{string.Join("\n", names)}";
+        Debug.Log(turnDebug);
+
+        timer.Set(false);
+
+        EndTurnRpc(myTurns.ToArray());
+
         CardController.Selected = null;
         setTurn(false);
     }
@@ -119,39 +116,41 @@ public class GameManager : NetworkBehaviour
 
         if (turn)
         {
+            if (GameOverWindow.gameObject.activeSelf) return;
             List<BasicCard> cards = myHand.DrawCards();
             if (cards.Count != 0)
             {
                 string cardIds = string.Join(";", cards.Select(card => card.Title).ToArray());
                 myHand.AddCards(cards);
-                if (IsServer) DrawEnemyClientRpc(cardIds);
-                else DrawEnemyServerRpc(cardIds);
+                DrawEnemyRpc(cardIds);
             }
+            timer.Set(true);
         }
         endMoveBtn.interactable = turn;
         myTurn = turn;
     }
-    [ServerRpc(RequireOwnership = false)]
-    private void DrawEnemyServerRpc(string cardIds)
+    [Rpc(SendTo.NotMe)]
+    private void DrawEnemyRpc(string cardIds)
     {
         enemyHand.AddCards(cardIds.Split(";"), true);
     }
-    [ClientRpc]
-    private void DrawEnemyClientRpc(string cardIds)
+    #endregion
+    #region Field
+
+    public bool CheckCount(bool isEnemy = false)
     {
-        if (IsServer) return;
-        enemyHand.AddCards(cardIds.Split(";"), true);
+        if (isEnemy) return enemyCards.Count < Constants.MaxCardsInField;
+        else return myCards.Count < Constants.MaxCardsInField;
     }
     public Transform GetEnemyField { get { return enemyField; } }
-    public void addCard(CardController card, bool isEnemy)
+    private void addCard(CardController card, bool isEnemy)
     {
         if (isEnemy) enemyCards.Add(card.gameObject);
         else myCards.Add(card.gameObject);
         updateField(isEnemy);
     }
-    public void updateField(bool isEnemy)
+    private void updateField(bool isEnemy)
     {
-        //if (enemyField == null) return;
         List<GameObject> field = isEnemy ? enemyCards : myCards;
 
         StopAllCoroutines();
@@ -159,6 +158,7 @@ public class GameManager : NetworkBehaviour
         float center = ((field.Count - 1) * distance) / 2f;
         for (int i = 0; i < field.Count; i++)
         {
+            field[i].transform.SetParent(isEnemy ? enemyField : myField);
             Vector3 pos = field[i].transform.position;
             pos.y = isEnemy ? enemyField.position.y : myField.position.y;
             pos.x = (distance * i) - center;
@@ -171,7 +171,7 @@ public class GameManager : NetworkBehaviour
             card.cardID = i;
         }
     }
-    public void BeatCard(CardController card)
+    private void beatCard(CardController card)
     {
         if (card.gameObject.CompareTag("myCard"))
         {
@@ -194,9 +194,5 @@ public class GameManager : NetworkBehaviour
         else cards = myCards.ConvertAll(n => n.GetComponent<CardController>());
         return cards;
     }
-    /*public void Clear()
-    {
-        while (myCards.Count > 0) BeatCard(myCards[0].GetComponent<CardController>());
-        while (enemyCards.Count > 0) BeatCard(enemyCards[0].GetComponent<CardController>());
-    }*/
+    #endregion
 }
