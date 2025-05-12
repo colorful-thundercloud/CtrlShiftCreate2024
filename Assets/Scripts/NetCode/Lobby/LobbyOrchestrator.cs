@@ -82,12 +82,14 @@ public class LobbyOrchestrator : NetworkBehaviour {
     {
         public string Name;
         public bool IsReady;
-        public PlayerData(string name, bool isReady) { Name = name; IsReady = isReady; }
+        public int SetId;
+        public PlayerData(string name, bool isReady) { Name = name; IsReady = isReady; SetId = 0; }
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {
             serializer.SerializeValue(ref Name);
             serializer.SerializeValue(ref IsReady);
+            serializer.SerializeValue(ref SetId);
         }
     }
 
@@ -133,7 +135,6 @@ public class LobbyOrchestrator : NetworkBehaviour {
 
     private void PropagateToClients()
     {
-        Debug.Log($"count = {_playersInLobby.Count}");
         foreach (var player in _playersInLobby)
             UpdatePlayerClientRpc(player.Key, player.Value);
     }
@@ -182,6 +183,16 @@ public class LobbyOrchestrator : NetworkBehaviour {
     private void SetReadyServerRpc(ulong playerId) {
         var data = _playersInLobby[playerId];
         data.IsReady = !data.IsReady;
+        _playersInLobby[playerId] = data;
+        PropagateToClients();
+        UpdateInterface();
+    }
+    public void OnSetCardSetClicked(int id) => SetCardSetServerRpc(NetworkManager.Singleton.LocalClientId, id);
+    [ServerRpc(RequireOwnership = false)]
+    private void SetCardSetServerRpc(ulong playerId, int id) 
+    {
+        var data = _playersInLobby[playerId];
+        data.SetId = id;
         _playersInLobby[playerId] = data;
         PropagateToClients();
         UpdateInterface();

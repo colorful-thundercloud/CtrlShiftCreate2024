@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82c0e9d530f4ef845999186367b716df, type: 3}
+  m_Name: Students
+  m_EditorClassIdentifier: 
+  _name: "\u0421\u0442\u0443\u0434\u0435\u043D\u0442\u044B"
+  _icon: {fileID: 21300000, guid: 66905ef7d1a2b4c4092eaa5791ea10a1, type: 3}
+  _price: 0
+  _description: "\u0411\u0430\u0437\u043E\u0432\u044B\u0439 \u043D\u0430\u0431\u043E\u0440
+    \u043A\u0430\u0440\u0442"
+  _cards:
+  - {fileID: 11400000, guid: 83f2473d0abdc454fab49fba6a42827c, type: 2}
+  - {fileID: 11400000, guid: 80f8bcd622fd4794eb8e4bc05e35633c, type: 2}
+  - {fileID: 11400000, guid: 9c97b56db37fb60499b6c2a4f44357ca, type: 2}
+  - {fileID: 11400000, guid: a51cff8da88c74e4db09cf6ddb73c877, type: 2}
+  - {fileID: 11400000, guid: f0a8bb6528cb4df4db959747823f1098, type: 2}
+  - {fileID: 11400000, guid: f626071b5c04f34498555a533edbea4e, type: 2}
+  - {fileID: 11400000, guid: 7b57598af85c04745b27a18c6ddb43fc, type: 2}
+  - {fileID: 11400000, guid: 6a0b7592bd4b6c646bea624652b03573, type: 2}
+  - {fileID: 11400000, guid: 084620e5d08517b47ad0fda6a426c356, type: 2}
+  - {fileID: 11400000, guid: 11687a563c732934990b81af43b477a7, type: 2}
+  - {fileID: 11400000, guid: 79aa2018858b16f48a64f91828d74210, type: 2}
+  - {fileID: 11400000, guid: 2dcfc4f3da4ca9546bb8c72bd04eb02b, type: 2}
+  - {fileID: 11400000, guid: 6d233e7a59c53a647b40678c9bd3e2d2, type: 2}
+  - {fileID: 11400000, guid: 23cec6e357cf40c468031e96feed547e, type: 2}

@@ -34,4 +34,5 @@ public class mainMenuController : MonoBehaviour
         content.gameObject.SetActive(enabled);
     }
     public void OnChangeNick(string value) => PlayerPrefs.SetString("Nick", value);
+    public void Restart() => PlayerPrefs.DeleteAll();
 }

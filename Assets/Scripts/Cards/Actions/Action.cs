@@ -44,7 +44,7 @@ public abstract class Action
     /// <summary>
     /// Получить из Field все карты на которые действует Action
     /// </summary>
-    protected List<CardController> GetAllTargets(CardController card)
+    public List<CardController> GetAllTargets(CardController card)
     {
         if (toAllies) return GameManager.GetCards(card.CompareTag("enemyCard"));
         else return GameManager.GetCards(card.CompareTag("myCard"));

@@ -1,26 +1,21 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using Unity.Netcode;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-/// <summary>
-///     NetworkBehaviours cannot easily be parented, so the network logic will take place
-///     on the network scene object "NetworkLobby"
-/// </summary>
 public class RoomScreen : MonoBehaviour {
+    [SerializeField] private float _startingTime = 3;
     [SerializeField] private LobbyPlayerPanel _playerPanelPrefab;
     [SerializeField] private Transform _playerPanelParent;
     [SerializeField] private TMP_Text _waitingText, _passwordField, _firstTurn;
-    [SerializeField] private GameObject _startButton;
-    [SerializeField] private Image _readyButton;
-    [SerializeField] private Sprite _readyIcon, _notReadyIcon;
-    private bool isReady = false, allReady = false;
+    [SerializeField] private TMP_Dropdown SetChanger;
+    [SerializeField] private Toggle _readyButton;
+    private bool allReady = false;
     private string lobbyId;
 
     private readonly List<LobbyPlayerPanel> _playerPanels = new();
@@ -28,12 +23,20 @@ public class RoomScreen : MonoBehaviour {
     public static UnityEvent<string> StartPressed = new(); 
 
     private void OnEnable() {
+        _readyButton.isOn = false;
+
+        List<CardSet> sets = Resources.LoadAll<CardSet>("Sets").ToList();
+        sets.Sort((x, y) => x.Price.CompareTo(y.Price));
+        SetChanger.options = sets.Select(set => new TMP_Dropdown.OptionData { text = set.Name, image = set.Icon }).ToList();
+
+        List<string> MySets = PlayerPrefs.HasKey("MySets") ? PlayerPrefs.GetString("MySets").Split(", ").ToList() : new();
+        SetChanger.gameObject.GetComponent<CustomDropdown>().enabledOptions = MySets.Select(MySet => sets.FindIndex(set => set.name == MySet)).ToList();
+
         foreach (Transform child in _playerPanelParent) Destroy(child.gameObject);
         _playerPanels.Clear();
 
         LobbyOrchestrator.LobbyPlayersUpdated.AddListener(NetworkLobbyPlayersUpdated);
         MatchmakingService.CurrentLobbyRefreshed.AddListener(OnCurrentLobbyRefreshed);
-        _startButton.SetActive(false);
     }
 
     private void OnDisable() {
@@ -46,7 +49,7 @@ public class RoomScreen : MonoBehaviour {
     public void OnLeaveLobby() {
         LobbyLeft?.Invoke();
     }
-
+    Coroutine starting;
     private void NetworkLobbyPlayersUpdated(Dictionary<ulong, LobbyOrchestrator.PlayerData> players) {
         var allActivePlayerIds = players.Keys;
 
@@ -69,7 +72,10 @@ public class RoomScreen : MonoBehaviour {
             }
         }
         allReady = players.All(p => p.Value.IsReady);
-        _startButton.SetActive(NetworkManager.Singleton.IsHost && allReady && players.Count == 2);
+
+        if (allReady && players.Count == 2)
+            starting = (starting == default) ? StartCoroutine(timer()) : default;
+        else if (starting != default) StopCoroutine(starting);
     }
 
     private void OnCurrentLobbyRefreshed(Lobby lobby) {
@@ -82,10 +88,11 @@ public class RoomScreen : MonoBehaviour {
     }
     public void OnReadyClicked()
     {
-        isReady = !isReady;
-        _readyButton.sprite = (isReady) ? _readyIcon : _notReadyIcon;
+        SetChanger.interactable = !_readyButton.isOn;
     }
-    public void OnStartClicked() {
+    IEnumerator timer()
+    {
+        yield return new WaitForSeconds(_startingTime);
         StartPressed?.Invoke(lobbyId);
     }
 }

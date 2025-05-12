@@ -12,7 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82c0e9d530f4ef845999186367b716df, type: 3}
   m_Name: AllCardTest
   m_EditorClassIdentifier: 
-  cards:
+  _name: "\u0412\u0441\u0435 \u043A\u0430\u0440\u0442\u044B"
+  _icon: {fileID: 21300000, guid: ff39996f2cb5ce64591d5e899e2742cb, type: 3}
+  _price: 1000
+  _description: "\u0421\u0435\u0442 \u0441\u043E\u0441\u0442\u043E\u044F\u0449\u0438\u0439
+    \u0438\u0437 \u0432\u0441\u0435\u0445 \u043A\u0430\u0440\u0442, \u043F\u0440\u0435\u0434\u043D\u0430\u0437\u043D\u0430\u0447\u0435\u043D
+    \u0434\u043B\u044F \u0442\u0435\u0441\u0442\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u044F"
+  _cards:
   - {fileID: 11400000, guid: 7a543b83f58a89a4996fa3d5e2076865, type: 2}
   - {fileID: 11400000, guid: 4897691247db9064b839e2470db68101, type: 2}
   - {fileID: 11400000, guid: 83f2473d0abdc454fab49fba6a42827c, type: 2}

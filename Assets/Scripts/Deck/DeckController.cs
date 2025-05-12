@@ -10,14 +10,10 @@ public class DeckController : MonoBehaviour
     List<BasicCard> currentDeck = new(), beaten = new();
     public int cardCount { get { return currentDeck.Count; } }
     BasicCard card;
-    private void Awake()
-    {
-        SetSet(cardSet);
-    }
     public void SetSet(CardSet set)
     {
         cardSet = set; 
-        foreach (BasicCard card in cardSet.cards)
+        foreach (BasicCard card in cardSet.Cards)
             currentDeck.Add(card);
         ShuffleDeck();
     }

@@ -44,6 +44,13 @@ public class GameManager : NetworkBehaviour
         OnEndTurn.AddListener(setTurn);
         OnGameOver.AddListener(GameOver);
     }
+    public CardSet GetCardSet(int playerID)
+    {
+        List<CardSet> sets = Resources.LoadAll<CardSet>("Sets").ToList();
+        sets.Sort((x, y) => x.Price.CompareTo(y.Price));
+        int id = LobbyOrchestrator.PlayersInCurrentLobby[playerID].SetId;
+        return sets[id];
+    }
     public static void StartGame(bool turn)
     {
         myTurn = turn;
@@ -68,6 +75,8 @@ public class GameManager : NetworkBehaviour
     private void updateTurns(TurnData turnData) => myTurns.Add(turnData);
     public override void OnNetworkSpawn()
     {
+        myDeck.SetSet(GetCardSet(IsServer ? 0 : 1));
+        enemyDeck.SetSet(GetCardSet(IsServer ? 1 : 0));
         myCards = new();
         enemyCards = new();
 
