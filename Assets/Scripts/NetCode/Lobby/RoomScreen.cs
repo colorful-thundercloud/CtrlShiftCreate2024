@@ -23,6 +23,7 @@ public class RoomScreen : MonoBehaviour {
     public static UnityEvent<string> StartPressed = new(); 
 
     private void OnEnable() {
+        Loading.OnStart.Invoke("");
         _readyButton.isOn = false;
 
         List<CardSet> sets = Resources.LoadAll<CardSet>("Sets").ToList();

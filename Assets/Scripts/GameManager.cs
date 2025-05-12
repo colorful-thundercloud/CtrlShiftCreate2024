@@ -9,6 +9,7 @@ using System.Linq;
 
 public class GameManager : NetworkBehaviour
 {
+    [SerializeField] bool online = true;
     [SerializeField] Animator GameOverWindow;
     [SerializeField] Button endMoveBtn;
     [SerializeField] EnemyController enemyController;
@@ -43,6 +44,12 @@ public class GameManager : NetworkBehaviour
         OnCast.AddListener(ctx => addCard(ctx, ctx.CompareTag("enemyCard")));
         OnEndTurn.AddListener(setTurn);
         OnGameOver.AddListener(GameOver);
+    }
+    private void Start()
+    {
+        if (online) return;
+
+
     }
     public CardSet GetCardSet(int playerID)
     {
@@ -176,8 +183,8 @@ public class GameManager : NetworkBehaviour
             StartCoroutine(Mover.MoveCard(field[i].transform, pos, 0.1f));
             field[i].transform.localScale = CardSize;
             var card = field[i].GetComponent<CardController>();
-            card.SaveScale();
             card.cardID = i;
+            card.SaveScale();
         }
     }
     private void beatCard(CardController card)

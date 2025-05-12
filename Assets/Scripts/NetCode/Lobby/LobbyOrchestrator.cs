@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using TMPro;
 using Unity.Netcode;
 using Unity.Services.Lobbies;
@@ -29,7 +30,7 @@ public class LobbyOrchestrator : NetworkBehaviour {
         CreateLobbyScreen.LobbyCreated.AddListener(CreateLobby);
         LobbyRoomPanel.LobbySelected.AddListener(OnLobbySelected);
         RoomScreen.LobbyLeft.AddListener(OnLobbyLeft);
-        RoomScreen.StartPressed.AddListener(OnGameStart);
+        RoomScreen.StartPressed.AddListener(test);
         
         NetworkObject.DestroyWithScene = true;
     }
@@ -214,7 +215,7 @@ public class LobbyOrchestrator : NetworkBehaviour {
         CreateLobbyScreen.LobbyCreated.RemoveListener(CreateLobby);
         LobbyRoomPanel.LobbySelected.RemoveListener(OnLobbySelected);
         RoomScreen.LobbyLeft.RemoveListener(OnLobbyLeft);
-        RoomScreen.StartPressed.RemoveListener(OnGameStart);
+        RoomScreen.StartPressed.RemoveListener(test);
         
         // We only care about this during lobby
         if (NetworkManager.Singleton != null) {
@@ -222,8 +223,9 @@ public class LobbyOrchestrator : NetworkBehaviour {
         }
       
     }
-    
-    private async void OnGameStart(string lobbyId) {
+
+    private async void test(string lobbyid) => await OnGameStart(lobbyid);
+    private async Task OnGameStart(string lobbyId) {
         await MatchmakingService.LockLobby();
 
         Lobby currentLobby = await LobbyService.Instance.GetLobbyAsync(lobbyId);
@@ -232,11 +234,14 @@ public class LobbyOrchestrator : NetworkBehaviour {
         bool timer = bool.Parse(currentLobby.Data[Constants.TimerKey].Value);
 
         StartGameClientRpc(_playersInLobby.Values.ToArray(), lobbyId, turn, timer);
+
+        await Task.Delay((int)(1f * 1000));
         NetworkManager.Singleton.SceneManager.LoadScene("ONLINE", LoadSceneMode.Single);
     }
     [ClientRpc]
     private void StartGameClientRpc(PlayerData[] players, string currentLobbyId, bool turn, bool timer)
     {
+        Loading.OnStart.Invoke("Запускаем игру");
         PlayersInCurrentLobby = players.ToList();
         Timer.LobbySettings = timer;
         GameManager.StartGame((IsServer) ? turn : !turn);

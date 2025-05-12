@@ -50,8 +50,8 @@ public class LobbyRoomPanel : MonoBehaviour {
     }
     private void join()
     {
+        Loading.OnStart.Invoke("Подключаемся");
         LobbySelected?.Invoke(Lobby);
-
     }
     private IEnumerator SetColor(Color color, float time)
     {

@@ -25,4 +25,4 @@ MonoBehaviour:
     AttackSound: {fileID: 8300000, guid: f270f2dd380d848429784d8818333c87, type: 3}
   hp:
     MaxHP: 5
-    DeathSound: {fileID: 8300000, guid: 6c7a9802f0f492f459572d0942a03efb, type: 3}
+    DeathSound: {fileID: 8300000, guid: d40555c54dcae614197fe2cc31ecaaba, type: 3}

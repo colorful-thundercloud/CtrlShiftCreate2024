@@ -22,7 +22,7 @@ public class Health
         void OnHealthChange(int newValue)
         {
             if (newValue <= 0)
-                mono.StartCoroutine(death(mono.GetComponent<Animator>(), card));
+                mono.StartCoroutine(death(mono.GetComponent<Animator>(), mono.GetComponentInChildren<ParticleSystem>(), card));
         }
         Stat stat = new();
         stat.Name = Effect.BuffedStats.hp.ToString();
@@ -34,9 +34,10 @@ public class Health
         return stat;
     }
 
-    IEnumerator death(Animator anim, CardController card)
+    IEnumerator death(Animator anim, ParticleSystem particles, CardController card)
     {
         if (anim != null) anim?.SetTrigger("deathTrigger");
+        if (particles != null) particles.Play();
         SoundPlayer.Play.Invoke(DeathSound);
         yield return new WaitForSeconds(1f);
         if (card != null) GameManager.OnCardBeat.Invoke(card);

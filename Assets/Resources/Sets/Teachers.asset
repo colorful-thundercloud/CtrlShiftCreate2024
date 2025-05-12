@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82c0e9d530f4ef845999186367b716df, type: 3}
   m_Name: Teachers
   m_EditorClassIdentifier: 
-  _name: "\u041F\u0440\u0435\u043F\u043E\u0434\u043E\u0432\u0430\u0442\u0435\u043B\u0438"
+  _name: "\u041F\u0440\u0435\u043F\u043E\u0434\u0430\u0432\u0430\u0442\u0435\u043B\u0438"
   _icon: {fileID: 21300000, guid: 8fd977dc1b6de7d439f0d6b506b8e91c, type: 3}
   _price: 10
   _description: "\u041F\u0440\u043E\u0434\u043E\u043B\u0436\u0435\u043D\u0438\u0435

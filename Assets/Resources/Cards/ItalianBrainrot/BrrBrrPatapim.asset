@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: "\u0411\u0440\u0440 \u0411\u0440\u0440 \u041F\u0430\u0442\u0430\u043F\u0438\u043C"
   Avatar: {fileID: 21300000, guid: d62168137ea4c524b87b2f052c31e320, type: 3}
-  description: "\u041B\u0435\u0447\u0438\u0442"
+  description: "\u041B\u0435\u0447\u0438\u0442 \u0432\u0441\u044E \u043A\u043E\u043C\u0430\u043D\u0434\u0443"
   <Steps>k__BackingField:
     maxSteps: 1
   buff:
@@ -26,4 +26,4 @@ MonoBehaviour:
   directed: 0
   hp:
     MaxHP: 3
-    DeathSound: {fileID: 8300000, guid: 6c7a9802f0f492f459572d0942a03efb, type: 3}
+    DeathSound: {fileID: 8300000, guid: d40555c54dcae614197fe2cc31ecaaba, type: 3}
