@@ -10,6 +10,7 @@ public class Hand : MonoBehaviour
     [SerializeField] Transform HandPosition;
     [SerializeField] float distance;
     [SerializeField] GameObject cardPrefab;
+    static int cardCounter = 0;
     private void Start()
     {
         GameManager.OnCast.AddListener(ctx => updateHand());
@@ -35,9 +36,6 @@ public class Hand : MonoBehaviour
             pos.z = (hand[i].tag == "myCard")? 1f : 2f;
             StartCoroutine(kostyl(hand[i].GetComponent<CardController>(), pos));
         }
-
-        for (int i = 0; i < hand.Count; i++)
-            hand[i].GetComponent<CardController>().cardID = i;
     }
     IEnumerator kostyl(CardController card, Vector3 pos)
     {
@@ -54,7 +52,8 @@ public class Hand : MonoBehaviour
             go.transform.localScale = CardSize;
             go.tag = (enemy) ? "enemyCard" : "myCard";
 
-            go.GetComponent<CardController>().SetCard(card);
+            go.GetComponent<CardController>().SetCard(card, cardCounter);
+            cardCounter++;
             hand.Add(go);
 
             if (enemy) go.GetComponent<CardController>().Show(false);

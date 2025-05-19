@@ -24,7 +24,7 @@ public class CardController: MonoBehaviour
     
     public static CardController otherCard { get; private set; }
     private static CardController selected;
-    public int cardID;
+    public int cardID;// { get; private set; }
     public static CardController Selected 
     { 
         set 
@@ -59,13 +59,13 @@ public class CardController: MonoBehaviour
         startScale = transform.localScale;
         startPosition = transform.position;
     }
-    public void SetCard(BasicCard newCard)
+    public void SetCard(BasicCard newCard, int id)
     {
+        cardID = id;
         basicCard = newCard;
         basicCard.initialize(this);
         stats = new(basicCard.GetBasicStats(this));
         if (CompareTag("myCard")) Show(true);
-
 
         GameManager.OnEndTurn.AddListener(myTurn =>
         {

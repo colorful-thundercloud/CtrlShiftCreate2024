@@ -23,7 +23,7 @@ public class EnemyController : MonoBehaviour
             myCards = hand.GetCards();
             myCardsOnBoard = GameManager.GetCards(true);
             playerCards = GameManager.GetCards(false);
-            CardController card = (turn.InHand) ? myCards[turn.CardId] : myCardsOnBoard[turn.CardId];
+            CardController card = (turn.InHand) ? myCards.Find(card=> card.cardID == turn.CardId) : myCardsOnBoard.Find(card => card.cardID == turn.CardId);
             if (turn.InHand) //cast
             {
                 bool test = card.GetBasicCard.GetType().IsSubclassOf(typeof(OneShot));

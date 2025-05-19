@@ -183,7 +183,6 @@ public class GameManager : NetworkBehaviour
             StartCoroutine(Mover.MoveCard(field[i].transform, pos, 0.1f));
             field[i].transform.localScale = CardSize;
             var card = field[i].GetComponent<CardController>();
-            card.cardID = i;
             card.SaveScale();
         }
     }
