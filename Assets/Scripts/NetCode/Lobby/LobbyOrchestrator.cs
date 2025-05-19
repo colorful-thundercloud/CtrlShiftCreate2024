@@ -30,7 +30,7 @@ public class LobbyOrchestrator : NetworkBehaviour {
         CreateLobbyScreen.LobbyCreated.AddListener(CreateLobby);
         LobbyRoomPanel.LobbySelected.AddListener(OnLobbySelected);
         RoomScreen.LobbyLeft.AddListener(OnLobbyLeft);
-        RoomScreen.StartPressed.AddListener(test);
+        RoomScreen.StartPressed.AddListener(startPressed);
         
         NetworkObject.DestroyWithScene = true;
     }
@@ -84,7 +84,7 @@ public class LobbyOrchestrator : NetworkBehaviour {
         public string Name;
         public bool IsReady;
         public int SetId;
-        public PlayerData(string name, bool isReady) { Name = name; IsReady = isReady; SetId = 0; }
+        public PlayerData(string name, bool isReady, int setId) { Name = name; IsReady = isReady; SetId = setId; }
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {
@@ -99,7 +99,7 @@ public class LobbyOrchestrator : NetworkBehaviour {
     public override void OnNetworkSpawn() {
         if (IsServer) {
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnectedCallback;
-            var player = new PlayerData(_playerName.text, false);
+            var player = new PlayerData(_playerName.text, false, 0);
             _playersInLobby.Add(NetworkManager.Singleton.LocalClientId, player);
             UpdateInterface();
         }
@@ -112,6 +112,7 @@ public class LobbyOrchestrator : NetworkBehaviour {
 
     //spawn in host
     private void OnClientConnectedCallback(ulong playerId) {
+        Debug.Log($"player connectec: {playerId}");
         if (!IsServer) return;
         Debug.Log("spawn in host");
         // Add locally
@@ -119,11 +120,10 @@ public class LobbyOrchestrator : NetworkBehaviour {
         if (!_playersInLobby.ContainsKey(playerId))
             GetDataClientRpc(playerId);
     }
-    [ClientRpc]
+    [Rpc(SendTo.NotMe)]
     private void GetDataClientRpc(ulong playerId)
     {
-        if (IsServer) return;
-        SendServerPlayerDataServerRpc(playerId, new PlayerData(_playerName.text, false));
+        SendServerPlayerDataServerRpc(playerId, new PlayerData(_playerName.text, false, 0));
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -215,7 +215,7 @@ public class LobbyOrchestrator : NetworkBehaviour {
         CreateLobbyScreen.LobbyCreated.RemoveListener(CreateLobby);
         LobbyRoomPanel.LobbySelected.RemoveListener(OnLobbySelected);
         RoomScreen.LobbyLeft.RemoveListener(OnLobbyLeft);
-        RoomScreen.StartPressed.RemoveListener(test);
+        RoomScreen.StartPressed.RemoveListener(startPressed);
         
         // We only care about this during lobby
         if (NetworkManager.Singleton != null) {
@@ -224,11 +224,12 @@ public class LobbyOrchestrator : NetworkBehaviour {
       
     }
 
-    private async void test(string lobbyid) => await OnGameStart(lobbyid);
-    private async Task OnGameStart(string lobbyId) {
-        await MatchmakingService.LockLobby();
-
+    private async void startPressed(string lobbyid) => await OnGameStart(lobbyid);
+    private async Task OnGameStart(string lobbyId)
+    {
+        NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnectedCallback;
         Lobby currentLobby = await LobbyService.Instance.GetLobbyAsync(lobbyId);
+
         Constants.FirstTurn turnType = (Constants.FirstTurn)int.Parse(currentLobby.Data[Constants.FirstTurnKey].Value);
         bool turn = (turnType == Constants.FirstTurn.Random) ? UnityEngine.Random.Range(0, 2) == 0 : turnType == Constants.FirstTurn.Host;
         bool timer = bool.Parse(currentLobby.Data[Constants.TimerKey].Value);
@@ -236,16 +237,20 @@ public class LobbyOrchestrator : NetworkBehaviour {
         StartGameClientRpc(_playersInLobby.Values.ToArray(), lobbyId, turn, timer);
 
         await Task.Delay((int)(1f * 1000));
+
+        await MatchmakingService.LockLobby();
         NetworkManager.Singleton.SceneManager.LoadScene("ONLINE", LoadSceneMode.Single);
     }
     [ClientRpc]
     private void StartGameClientRpc(PlayerData[] players, string currentLobbyId, bool turn, bool timer)
     {
+        _playersInLobby.Clear();
         Loading.OnStart.Invoke("Запускаем игру");
         PlayersInCurrentLobby = players.ToList();
         Timer.LobbySettings = timer;
-        GameManager.StartGame((IsServer) ? turn : !turn);
+        GameManager.startGame((IsServer) ? turn : !turn);
     }
+    public void Single(PlayerData enemy) => PlayersInCurrentLobby = new() { new(_playerName.text,true, 0), enemy };
     public static List<PlayerData> PlayersInCurrentLobby { get; private set; }
     #endregion
 }

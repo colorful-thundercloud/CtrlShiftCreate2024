@@ -58,10 +58,6 @@ public class GameManager : NetworkBehaviour
         int id = LobbyOrchestrator.PlayersInCurrentLobby[playerID].SetId;
         return sets[id];
     }
-    public static void StartGame(bool turn)
-    {
-        myTurn = turn;
-    }
     public override void OnDestroy()
     {
         base.OnDestroy(); 
@@ -89,16 +85,23 @@ public class GameManager : NetworkBehaviour
 
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnectCallback;
 
-        StartCoroutine(Lot(myTurn));
+        StartCoroutine(StartGame(myTurn));
+    }
+    public static void startGame(bool turn) => myTurn = turn;
+    private IEnumerator StartGame(bool turn)
+    {
+        yield return StartCoroutine(lot(turn));
+        setTurn(turn);
     }
     #region TurnBase
-    private IEnumerator Lot(bool turn)
+
+    public void Lot(bool myTurn) => StartCoroutine(lot(myTurn));
+    public IEnumerator lot(bool turn)
     {
         turnText.text = turn ? "Твой ход" : "Ход противника";
         SoundPlayer.Play.Invoke(moneySound);
         moneyAnim.SetTrigger(turn ? "MyLot" : "EnemyLot");
         yield return new WaitForSeconds(3f);
-        setTurn(turn);
     }
 
     [Rpc(SendTo.NotMe)]
@@ -108,7 +111,6 @@ public class GameManager : NetworkBehaviour
         string turnDebug = $"Turns receive \n Turn count = {turns.Count()}:\n{string.Join("\n", names)}";
         Debug.Log(turnDebug);
 
-        OnEndTurn.Invoke(false);
         if (turns != null && turns.Count() != 0)
             enemyController.MakeTurn(turns);
         else OnEndTurn.Invoke(true);
@@ -123,6 +125,7 @@ public class GameManager : NetworkBehaviour
 
         EndTurnRpc(myTurns.ToArray());
 
+        OnEndTurn.Invoke(false);
         CardController.Selected = null;
         setTurn(false);
     }

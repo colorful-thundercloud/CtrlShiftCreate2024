@@ -27,7 +27,7 @@ public class Steps
         Stat stat = new();
         stat.Name = "steps";
         stat.field = card.transform.Find("steps").GetComponentInChildren<TMP_Text>();
-        stat.Value = 0;
+        stat.Value = maxSteps;
         stat.maxValue = maxSteps;
         return stat;
     }

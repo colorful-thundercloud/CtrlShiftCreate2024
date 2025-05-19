@@ -34,10 +34,10 @@ public class Hand : MonoBehaviour
             Vector3 pos = HandPosition.position;
             pos.x = (distance * i) - center;
             pos.z = (hand[i].tag == "myCard")? 1f : 2f;
-            StartCoroutine(kostyl(hand[i].GetComponent<CardController>(), pos));
+            StartCoroutine(moveCardAndSave(hand[i].GetComponent<CardController>(), pos));
         }
     }
-    IEnumerator kostyl(CardController card, Vector3 pos)
+    IEnumerator moveCardAndSave(CardController card, Vector3 pos)
     {
         yield return StartCoroutine(Mover.MoveCard(card.transform, pos, 0.1f));
         card.SavePosition();
@@ -75,11 +75,14 @@ public class Hand : MonoBehaviour
         foreach(var card in cards)
             addCard(deckController.DrawCard(card), enemy);
     }
-    public void AddCards(List<BasicCard> cards, bool enemy = false)
+    public void AddCards(List<BasicCard> cards)
     {
+        bool enemy = gameObject.CompareTag("enemyCard");
         foreach (var card in cards)
             addCard(card, enemy);
     }
+    public void AddCards(BasicCard card) =>
+        addCard(card, gameObject.CompareTag("enemyCard"));
     public void RemoveCard(GameObject card)
     {
         hand.Remove(card);

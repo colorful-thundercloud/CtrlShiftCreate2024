@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.Netcode;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.Events;
@@ -74,6 +75,7 @@ public class RoomScreen : MonoBehaviour {
         }
         allReady = players.All(p => p.Value.IsReady);
 
+        if (!NetworkManager.Singleton.IsHost) return;
         if (allReady && players.Count == 2)
             starting = (starting == default) ? StartCoroutine(timer()) : default;
         else if (starting != default) StopCoroutine(starting);

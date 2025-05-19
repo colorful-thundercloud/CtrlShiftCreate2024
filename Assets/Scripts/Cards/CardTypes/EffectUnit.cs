@@ -22,7 +22,11 @@ public class EffectUnit : BasicCard, IHaveSteps
             .Directed(CardController.Selected, card.transform, card.GetStats);
         return true;
     }
-    public override bool cast(CardController card) { return true; }
+    public override bool cast(CardController card)
+    {
+        card.GetStat("steps").Value = 0;
+        return true;
+    }
 
     public override List<Stat> GetBasicStats(CardController card)
     {

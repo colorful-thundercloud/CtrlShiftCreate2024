@@ -2,17 +2,13 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Rendering.Universal;
 
 public class CardController: MonoBehaviour
 {
     [Header("Поля для данных карт")]
-    [SerializeField] public TMP_Text title;
-
-    [SerializeField] SpriteRenderer image;
-    [SerializeField] SpriteRenderer outliner;
-    [SerializeField] Vector3 CardSize = new Vector3(1.5f, 1.5f, 1);
-
+    [SerializeField] public TMP_Text Title;
+    [SerializeField] SpriteRenderer Icon, Outliner;
+    [SerializeField] Vector3 DragCardSize = new Vector3(1.5f, 1.5f, 1);
     [SerializeField] public AudioClip CastSound, SelectSound;
 
     [SerializeField] private BasicCard basicCard;
@@ -20,11 +16,10 @@ public class CardController: MonoBehaviour
     [SerializeField] CardStats stats;
     public CardStats GetStats => stats;
     public Stat GetStat(string name) => stats.GetStat(name);
-    Camera cam;
     
     public static CardController otherCard { get; private set; }
     private static CardController selected;
-    public int cardID;// { get; private set; }
+    public int cardID { get; private set; }
     public static CardController Selected 
     { 
         set 
@@ -55,7 +50,6 @@ public class CardController: MonoBehaviour
     public void SaveScale()=> startScale = transform.localScale;
     private void Start()
     {
-        cam = Camera.main;
         startScale = transform.localScale;
         startPosition = transform.position;
     }
@@ -75,8 +69,8 @@ public class CardController: MonoBehaviour
             else outline(false, Color.white);
         });
 
-        title.text = basicCard.Title.ToString();
-        image.sprite = basicCard.GetAvatar;
+        Title.text = basicCard.Title.ToString();
+        Icon.sprite = basicCard.GetAvatar;
     }
     Coroutine hoverCoroutine;
     void hover(bool enabled)
@@ -135,7 +129,7 @@ public class CardController: MonoBehaviour
                 GameManager.UpdateTurns.Invoke(new TurnData(false, cardID, TurnData.CardAction.undirected, 0,basicCard.Title));
             }
         }
-        else if (GameManager.myTurn) runningFunc = StartCoroutine(Mover.SmoothSizeChange(CardSize, transform, 0.1f));
+        else if (GameManager.myTurn) runningFunc = StartCoroutine(Mover.SmoothSizeChange(DragCardSize, transform, 0.1f));
     }
     public void cast()
     {
@@ -149,9 +143,9 @@ public class CardController: MonoBehaviour
     public void Show(bool enabled)
     {
         SoundPlayer.Play.Invoke(SelectSound);
-        transform.Find("shirt").gameObject.SetActive(!enabled);
-        transform.Find("name").gameObject.SetActive(enabled);
-        transform.Find("image").gameObject.SetActive(enabled);
+        transform.Find("Shirt").gameObject.SetActive(!enabled);
+        transform.Find("Name").gameObject.SetActive(enabled);
+        transform.Find("Icon").gameObject.SetActive(enabled);
         stats.ShowAll(enabled);
     }
     void backToHand()
@@ -192,32 +186,32 @@ public class CardController: MonoBehaviour
     {
         if (isCasting && CompareTag("myCard"))
         {
-            Vector3 pos = cam.ScreenToWorldPoint(Input.mousePosition);
-            pos.z = 0;
-            transform.position = pos;
+            transform.position = InputManager.ScreenToWorld(Input.mousePosition);
         }
     }
     
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("field")) field = collision.GetComponent<GameManager>();
-        if (collision.TryGetComponent<CardController>(out CardController card)) if(card.isCasted) otherCard = card;
+        if (collision.TryGetComponent(out CardController card)) 
+            if (card.isCasted && basicCard.GetAction().CheckAlies(this, card)) otherCard = card;
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("field")) field = null;
-        if (collision.TryGetComponent<CardController>(out CardController card)) if (card==otherCard) otherCard = null;
+        if (collision.TryGetComponent(out CardController card)) if (card==otherCard) otherCard = null;
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
 
         if (collision.CompareTag("field")) field = collision.GetComponent<GameManager>();
-        if (collision.TryGetComponent<CardController>(out CardController card)) if (card.isCasted) otherCard = card;
+        if (collision.TryGetComponent(out CardController card)) 
+            if (card.isCasted && basicCard.GetAction().CheckAlies(this, card)) otherCard = card;
     }
     void outline(bool isEnabled, Color color, bool twink = false)
     {
-        outliner.enabled = isEnabled;
-        outliner.material.SetColor("_Color", color);
-        outliner.material.SetInt("_Twinkle", twink ? 1 : 0);
+        Outliner.enabled = isEnabled;
+        Outliner.material.SetColor("_Color", color);
+        Outliner.material.SetInt("_Twinkle", twink ? 1 : 0);
     }
 }

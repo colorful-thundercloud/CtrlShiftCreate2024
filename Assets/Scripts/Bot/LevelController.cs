@@ -22,6 +22,10 @@ public class LevelController : NetworkBehaviour
     {
         currentLevel = -1;
         //onNextLevel.AddListener(nextLevel);
+    }
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
         playerNameField.text = LobbyOrchestrator.PlayersInCurrentLobby[IsServer ? 0 : 1].Name;
         enemyNameField.text = LobbyOrchestrator.PlayersInCurrentLobby[IsServer ? 1 : 0].Name;
     }

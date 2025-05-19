@@ -10,8 +10,13 @@ public class DeckController : MonoBehaviour
     List<BasicCard> currentDeck = new(), beaten = new();
     public int cardCount { get { return currentDeck.Count; } }
     BasicCard card;
+    private void Start()
+    {
+        if(cardSet!=default) SetSet(cardSet);
+    }
     public void SetSet(CardSet set)
     {
+        currentDeck.Clear();
         cardSet = set; 
         foreach (BasicCard card in cardSet.Cards)
             currentDeck.Add(card);

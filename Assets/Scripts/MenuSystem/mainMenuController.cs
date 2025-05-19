@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,6 +8,7 @@ using UnityEngine.UI;
 
 public class mainMenuController : MonoBehaviour
 {
+    [SerializeField] TMP_InputField playerName;
     Camera cam;
     Coroutine coroutine;
     private void Start()
@@ -35,4 +37,9 @@ public class mainMenuController : MonoBehaviour
     }
     public void OnChangeNick(string value) => PlayerPrefs.SetString("Nick", value);
     public void Restart() => PlayerPrefs.DeleteAll();
+    public void Tutorial()
+    {
+        GetComponent<LobbyOrchestrator>().Single(new("Tutorial", true, 0));
+        SceneManager.LoadSceneAsync("Tutorial");
+    }
 }

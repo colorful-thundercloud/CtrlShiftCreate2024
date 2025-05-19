@@ -48,7 +48,6 @@ public class Effect : Action
         stat.Name = "value";
         stat.field = card.transform.Find("value").GetComponentInChildren<TMP_Text>();
         stat.field.color = color;
-        card.transform.Find("value").Find("Square").GetComponent<SpriteRenderer>().color = color;
         stat.Value = value;
         stat.maxValue = value;
         stat.canBuff = false;
