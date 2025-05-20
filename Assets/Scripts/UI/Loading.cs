@@ -39,4 +39,5 @@ public class Loading : MonoBehaviour
         }
         if (!enabled && Fading != default) Fading.SetActive(false);
     }
+    public void SwapText(TMP_Text text) => textField = text;
 }
