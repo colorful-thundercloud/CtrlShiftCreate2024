@@ -24,7 +24,7 @@ public class Attack: Action, IHaveStat
 
     IEnumerator attackAnimation(float smoothTime, CardController card, Vector2 direction, Stat hp)
     {
-        Vector2 startPosition = card.transform.position;
+        Vector3 startPosition = card.transform.position;
 
         card.transform.position = new Vector3(card.transform.position.x, card.transform.position.y, 3);
 
@@ -34,7 +34,7 @@ public class Attack: Action, IHaveStat
 
         yield return card.StartCoroutine(Mover.MoveCard(card.transform, startPosition, smoothTime));
 
-        card.transform.position = new Vector3(card.transform.position.x, card.transform.position.y, 4);
+        card.transform.position = new Vector3(card.transform.position.x, card.transform.position.y, startPosition.z);
     }
 
     public override Stat GetStat(CardController card)

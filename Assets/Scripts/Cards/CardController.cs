@@ -186,7 +186,9 @@ public class CardController: MonoBehaviour
     {
         if (isCasting && CompareTag("myCard"))
         {
-            transform.position = InputManager.ScreenToWorld(Input.mousePosition);
+            Vector3 pos = InputManager.ScreenToWorld(Input.mousePosition);
+            pos.z = transform.position.z;
+            transform.position = pos;
         }
     }
     

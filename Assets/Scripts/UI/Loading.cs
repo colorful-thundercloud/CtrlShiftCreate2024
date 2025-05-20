@@ -7,7 +7,8 @@ using UnityEngine.UI;
 public class Loading : MonoBehaviour
 {
     [SerializeField] float FadingTime, FadedAlpha;
-    [SerializeField] Image fade;
+    [SerializeField] GameObject Fading;
+    [SerializeField] Material mat;
     [SerializeField] TMP_Text textField;
     public static UnityEvent<string> OnStart = new();
     Coroutine coroutine;
@@ -15,11 +16,12 @@ public class Loading : MonoBehaviour
     private void Awake()
     {
         OnStart.AddListener(Invoke);
+        mat.color = new(1, 1, 1, 0);
     }
     public void Invoke(string text = "")
     {
         bool enabled = text != "";
-        if (enabled) fade.gameObject.SetActive(true);
+        if (enabled && Fading != default) Fading.SetActive(true);
         if (coroutine!=default) StopCoroutine(coroutine);
         coroutine = StartCoroutine(fader(FadingTime, enabled));
         textField.text = text;
@@ -27,14 +29,14 @@ public class Loading : MonoBehaviour
     IEnumerator fader(float time, bool enabled)
     {
         float t = 0;
-        Color c = fade.color;
+        Color c = mat.color;
         while (t < time)
         {
             c.a = enabled ? Mathf.Lerp(0, FadedAlpha, t / time) : Mathf.Lerp(FadedAlpha, 0, t / time);
-            fade.color = c;
+            mat.color = c;
             t += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
-        if (!enabled) fade.gameObject.SetActive(false);
+        if (!enabled && Fading != default) Fading.SetActive(false);
     }
 }

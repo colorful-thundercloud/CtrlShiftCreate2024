@@ -32,8 +32,9 @@ public class Hand : MonoBehaviour
         {
             hand[i].transform.SetParent(transform);
             Vector3 pos = HandPosition.position;
+            float z = hand[i].transform.position.z;
             pos.x = (distance * i) - center;
-            pos.z = (hand[i].tag == "myCard")? 1f : 2f;
+            pos.z = (z != -20) ? ((hand[i].tag == "myCard") ? 1f : 2f) : z;
             StartCoroutine(moveCardAndSave(hand[i].GetComponent<CardController>(), pos));
         }
     }
@@ -61,6 +62,9 @@ public class Hand : MonoBehaviour
             updateHand();
         }
     }
+
+    public CardController FindCard(int id) =>
+        hand.Find(card => card.GetComponent<CardController>().cardID == id)?.GetComponent<CardController>();
     public List<BasicCard> DrawCards(bool enemy = false) 
     {
         if (deckController.cardCount == 0)

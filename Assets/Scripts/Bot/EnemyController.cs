@@ -84,6 +84,14 @@ public class EnemyController : MonoBehaviour
         card.cast();
     }
     ///////////////
+    public void UseCard(int id) => StartCoroutine(useCard(id));
+    IEnumerator useCard(int id)
+    {
+        yield return new WaitForSeconds(0.5f);
+        yield return StartCoroutine(SpawnUnit(hand.FindCard(id)));
+        GameManager.OnEndTurn.Invoke(true);
+    }
+    ///////////////
     IEnumerator turn()
     {
         yield return new WaitForSeconds(0.5f);

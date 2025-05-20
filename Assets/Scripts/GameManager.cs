@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using System.Collections;
 using TMPro;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class GameManager : NetworkBehaviour
 {
@@ -27,7 +28,7 @@ public class GameManager : NetworkBehaviour
     List<TurnData> myTurns = new();
 
     public Vector3 CardSize = new Vector3(1.5f, 1.5f, 1);
-    static List<GameObject> myCards, enemyCards;
+    static List<GameObject> myCards = new(), enemyCards = new();
 
     public static UnityEvent<CardController> OnCast = new();
     public static UnityEvent<bool> OnEndTurn = new();
@@ -131,6 +132,7 @@ public class GameManager : NetworkBehaviour
     }
     private void setTurn(bool turn)
     {
+        if (SceneManager.GetActiveScene().name == "Tutorial") return;
         myTurns.Clear();
 
         if (turn)
@@ -181,7 +183,7 @@ public class GameManager : NetworkBehaviour
             Vector3 pos = field[i].transform.position;
             pos.y = isEnemy ? enemyField.position.y : myField.position.y;
             pos.x = (distance * i) - center;
-            pos.z = 4;
+            pos.z = pos.z == -20 ? pos.z : 4;
 
             StartCoroutine(Mover.MoveCard(field[i].transform, pos, 0.1f));
             field[i].transform.localScale = CardSize;
@@ -204,6 +206,14 @@ public class GameManager : NetworkBehaviour
             enemyDeck.BeatCard(card.GetBasicCard);
         }
         Destroy(card.gameObject);
+    }
+    public CardController FindCard(int id)
+    {
+        CardController target = GetCards(true).Find(card => card.cardID == id);
+        if (target == default) target = GetCards(false).Find(card => card.cardID == id);
+        if (target == default) target = myHand.FindCard(id);
+        if (target == default) target = enemyHand.FindCard(id);
+        return target;
     }
     public static List<CardController> GetCards(bool isEnemy)
     {

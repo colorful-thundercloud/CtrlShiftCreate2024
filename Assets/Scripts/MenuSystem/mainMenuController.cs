@@ -8,6 +8,8 @@ using UnityEngine.UI;
 
 public class mainMenuController : MonoBehaviour
 {
+    [SerializeField] GameObject TutorialWindow;
+    [SerializeField] Animator cardAnim;
     [SerializeField] TMP_InputField playerName;
     Camera cam;
     Coroutine coroutine;
@@ -37,6 +39,11 @@ public class mainMenuController : MonoBehaviour
     }
     public void OnChangeNick(string value) => PlayerPrefs.SetString("Nick", value);
     public void Restart() => PlayerPrefs.DeleteAll();
+    public void CheckTutorial()
+    {
+        if (PlayerPrefs.HasKey("Tutorial")) cardAnim.SetTrigger("Play");
+        else TutorialWindow.SetActive(true);
+    }
     public void Tutorial()
     {
         GetComponent<LobbyOrchestrator>().Single(new("Tutorial", true, 0));
