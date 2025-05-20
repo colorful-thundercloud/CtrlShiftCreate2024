@@ -23,13 +23,8 @@ public class CardController: MonoBehaviour
     public static CardController Selected 
     { 
         set 
-        { 
-            if (value == null)
-            {
-                selected?.outline(false, Color.white);
-                selected?.hover(false);
-            }
-            else
+        {
+            if (value != default)
             {
                 if (!value.GetBasicCard.CheckAction(value)) return;
                 selected?.outline(false, Color.white);
@@ -37,6 +32,11 @@ public class CardController: MonoBehaviour
 
                 SoundPlayer.Play.Invoke(value.SelectSound);
                 value.outline(true, Color.white, false);
+            }
+            else if(selected != default)
+            {
+                selected?.outline(false, Color.white);
+                selected?.hover(false);
             }
             selected = value;
         }

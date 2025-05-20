@@ -13,6 +13,7 @@ public class Hand : MonoBehaviour
     static int cardCounter = 0;
     private void Start()
     {
+        cardCounter = 0;
         GameManager.OnCast.AddListener(ctx => updateHand());
     }
     void updateHand()

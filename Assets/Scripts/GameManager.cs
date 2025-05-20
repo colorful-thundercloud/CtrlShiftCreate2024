@@ -28,7 +28,7 @@ public class GameManager : NetworkBehaviour
     List<TurnData> myTurns = new();
 
     public Vector3 CardSize = new Vector3(1.5f, 1.5f, 1);
-    static List<GameObject> myCards = new(), enemyCards = new();
+    static List<GameObject> myCards, enemyCards;
 
     public static UnityEvent<CardController> OnCast = new();
     public static UnityEvent<bool> OnEndTurn = new();
@@ -39,6 +39,7 @@ public class GameManager : NetworkBehaviour
     public static bool myTurn { get; private set; }
     void Awake()
     {
+        myCards = new(); enemyCards = new();
         Time.timeScale = 1f;
         UpdateTurns.AddListener(updateTurns);
         OnCardBeat.AddListener(beatCard);
