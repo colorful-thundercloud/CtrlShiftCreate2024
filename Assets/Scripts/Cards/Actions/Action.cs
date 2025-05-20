@@ -10,6 +10,8 @@ public abstract class Action
     /// </summary>
     [Header("Действует ли способность на союзные карты")]
     public bool toAllies = false;
+
+    public bool directed = true;
     /// <summary>
     /// Ненаправленная на карту способность
     /// </summary>

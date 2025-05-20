@@ -2486,6 +2486,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1526441982389226004, guid: 60c1d7ba486dfb34eadebd8e1feb8921, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 668536335}
+    - target: {fileID: 1526441982389226004, guid: 60c1d7ba486dfb34eadebd8e1feb8921, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 668536335}
+    - target: {fileID: 1526441982389226004, guid: 60c1d7ba486dfb34eadebd8e1feb8921, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: set_MixerGroup
+      objectReference: {fileID: 0}
+    - target: {fileID: 1526441982389226004, guid: 60c1d7ba486dfb34eadebd8e1feb8921, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: ChangeVolume
+      objectReference: {fileID: 0}
     - target: {fileID: 2088270150996548912, guid: 60c1d7ba486dfb34eadebd8e1feb8921, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -2549,6 +2565,26 @@ PrefabInstance:
     - target: {fileID: 5708696597743243375, guid: 60c1d7ba486dfb34eadebd8e1feb8921, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6287879060019539225, guid: 60c1d7ba486dfb34eadebd8e1feb8921, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6287879060019539225, guid: 60c1d7ba486dfb34eadebd8e1feb8921, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 668536335}
+    - target: {fileID: 6287879060019539225, guid: 60c1d7ba486dfb34eadebd8e1feb8921, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 668536335}
+    - target: {fileID: 6287879060019539225, guid: 60c1d7ba486dfb34eadebd8e1feb8921, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: set_MixerGroup
+      objectReference: {fileID: 0}
+    - target: {fileID: 6287879060019539225, guid: 60c1d7ba486dfb34eadebd8e1feb8921, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: ChangeVolume
       objectReference: {fileID: 0}
     - target: {fileID: 7263977609849430268, guid: 60c1d7ba486dfb34eadebd8e1feb8921, type: 3}
       propertyPath: m_AnchorMax.x

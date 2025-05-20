@@ -15,7 +15,6 @@ public class Attack: Action, IHaveStat
     public override void Directed(CardController card, Transform targetTransform, CardStats targetStats)
     {
         base.Directed(card, targetTransform, targetStats);
-        Debug.Log(targetTransform.parent.name);
         card.StartCoroutine(attackAnimation(0.2f, card, 
             (targetTransform.parent.name == "Canvas") ? Camera.main.ScreenToWorldPoint(targetTransform.position) : targetTransform.position, 
             targetStats.GetStat("hp")));

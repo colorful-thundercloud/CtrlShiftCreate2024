@@ -250,7 +250,7 @@ public class LobbyOrchestrator : NetworkBehaviour {
         Timer.LobbySettings = timer;
         GameManager.startGame((IsServer) ? turn : !turn);
     }
-    public void Single(PlayerData enemy) => PlayersInCurrentLobby = new() { new(_playerName.text,true, 0), enemy };
+    public void Single(PlayerData enemy) => PlayersInCurrentLobby = new() { enemy, new(_playerName.text, true, 0) };
     public static List<PlayerData> PlayersInCurrentLobby { get; private set; }
     #endregion
 }

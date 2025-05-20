@@ -7,7 +7,6 @@ public class EffectUnit : BasicCard, IHaveSteps
 {
     [field: SerializeField] public Steps Steps { get; set; }
     [SerializeField] Effect buff;
-    [SerializeField] bool directed = true;
     [SerializeField] Health hp;
 
     public override void initialize(CardController card)
@@ -43,7 +42,7 @@ public class EffectUnit : BasicCard, IHaveSteps
     }
     public override void OnSelect(CardController card)
     {
-        if (directed) return;
+        if (action.directed) return;
         if (!card.GetBasicCard.CheckAction(card)) return;
         if (card.GetStat("steps") != null) card.GetStat("steps").Value--;
         CardController.Selected = null;

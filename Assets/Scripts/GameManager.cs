@@ -49,9 +49,11 @@ public class GameManager : NetworkBehaviour
     }
     private void Start()
     {
+        myDeck.SetSet(GetCardSet(IsServer ? 0 : 1));
+        enemyDeck.SetSet(GetCardSet(IsServer ? 1 : 0));
         if (online) return;
 
-
+        StartCoroutine(StartGame(myTurn));
     }
     public CardSet GetCardSet(int playerID)
     {
@@ -80,11 +82,6 @@ public class GameManager : NetworkBehaviour
     private void updateTurns(TurnData turnData) => myTurns.Add(turnData);
     public override void OnNetworkSpawn()
     {
-        myDeck.SetSet(GetCardSet(IsServer ? 0 : 1));
-        enemyDeck.SetSet(GetCardSet(IsServer ? 1 : 0));
-        myCards = new();
-        enemyCards = new();
-
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnectCallback;
 
         StartCoroutine(StartGame(myTurn));
@@ -109,9 +106,9 @@ public class GameManager : NetworkBehaviour
     [Rpc(SendTo.NotMe)]
     private void EndTurnRpc(TurnData[] turns)
     {
-        string[] names = turns.Select(turn => $"{turn.CardName}: {turn.Action} to target ID: {turn.TargetId}").ToArray();
-        string turnDebug = $"Turns receive \n Turn count = {turns.Count()}:\n{string.Join("\n", names)}";
-        Debug.Log(turnDebug);
+        //string[] names = turns.Select(turn => $"{turn.CardName}: {turn.Action} to target ID: {turn.TargetId}").ToArray();
+        //string turnDebug = $"Turns receive \n Turn count = {turns.Count()}:\n{string.Join("\n", names)}";
+        //Debug.Log(turnDebug);
 
         if (turns != null && turns.Count() != 0)
             enemyController.MakeTurn(turns);
@@ -119,9 +116,9 @@ public class GameManager : NetworkBehaviour
     }
     public void NextTurn()
     {
-        string[] names = myTurns.Select(turn=> $"{turn.CardName}: {turn.Action} to target ID: {turn.TargetId}").ToArray();
-        string turnDebug = $"Turns send rival \n Turn count = {myTurns.Count}:\n{string.Join("\n", names)}";
-        Debug.Log(turnDebug);
+        //string[] names = myTurns.Select(turn=> $"{turn.CardName}: {turn.Action} to target ID: {turn.TargetId}").ToArray();
+        //string turnDebug = $"Turns send rival \n Turn count = {myTurns.Count}:\n{string.Join("\n", names)}";
+        //Debug.Log(turnDebug);
 
         timer.Set(false);
 
@@ -129,7 +126,6 @@ public class GameManager : NetworkBehaviour
 
         OnEndTurn.Invoke(false);
         CardController.Selected = null;
-        setTurn(false);
     }
     private void setTurn(bool turn)
     {
@@ -147,6 +143,12 @@ public class GameManager : NetworkBehaviour
                 DrawEnemyRpc(cardIds);
             }
             timer.Set(true);
+        }
+        else if(!online)
+        {
+            foreach(var card in enemyHand.DrawCards())
+                enemyHand.AddCards(card);
+            enemyController.SingleAI();
         }
         endMoveBtn.interactable = turn;
         myTurn = turn;

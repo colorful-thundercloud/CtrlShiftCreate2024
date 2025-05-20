@@ -33,7 +33,7 @@ public class SoundPlayer : MonoBehaviour
             Mixer.audioMixer.SetFloat(slider.name, t);
         }
         else Mixer.audioMixer.GetFloat(slider.name, out t);
-        t = Mathf.InverseLerp(-80f, 0f, t);
+        t = Mathf.InverseLerp(-40f, 0f, t);
         slider.value = t;
     }
     public void ChangeVolume(float volume)

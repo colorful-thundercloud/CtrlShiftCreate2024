@@ -14,8 +14,8 @@ public class EnemyController : MonoBehaviour
     [SerializeField] Users player;
     Coroutine size;
 
-    public Coroutine MakeTurn(TurnData[] turns) => StartCoroutine(test(turns));
-    IEnumerator test(TurnData[] turns)
+    public Coroutine MakeTurn(TurnData[] turns) => StartCoroutine(multiplayerAI(turns));
+    IEnumerator multiplayerAI(TurnData[] turns)
     {
         foreach (var turn in turns)
         {
@@ -32,27 +32,13 @@ public class EnemyController : MonoBehaviour
             }
             else // use
             {
-                switch (turn.Action)
-                {
-                    case TurnData.CardAction.directed:
-                        card.GetBasicCard.GetAction()
-                            .Directed(card,
-                            playerCards.Find(card => card.cardID == turn.TargetId).transform,
-                            playerCards.Find(card => card.cardID == turn.TargetId).GetStats);
-                        break;
-                    case TurnData.CardAction.undirected:
-                        card.GetBasicCard.GetAction().Undirected(card);
-                        break;
-                    case TurnData.CardAction.user:
-                        player.Attack(card);
-                        break;
-                }
-
+                UseAction(card, turn);
                 yield return new WaitForSeconds(0.75f);
             }
         }
         GameManager.OnEndTurn.Invoke(true);
     }
+    #region CardUsing
     private IEnumerator SpawnUnit(CardController unit)
     {
         if (unit.GetBasicCard.cast(unit))
@@ -83,7 +69,72 @@ public class EnemyController : MonoBehaviour
         card.GetBasicCard.GetAction().Directed(card, target.transform, target.GetStats);
         card.cast();
     }
-    ///////////////
+    private void UseAction(CardController card, TurnData turn)
+    {
+        switch (turn.Action)
+        {
+            case TurnData.CardAction.directed:
+                card.GetBasicCard.GetAction()
+                    .Directed(card,
+                    playerCards.Find(card => card.cardID == turn.TargetId).transform,
+                    playerCards.Find(card => card.cardID == turn.TargetId).GetStats);
+                break;
+            case TurnData.CardAction.undirected:
+                card.GetBasicCard.GetAction().Undirected(card);
+                break;
+            case TurnData.CardAction.user:
+                player.Attack(card);
+                break;
+        }
+    }
+    /////////////// Multiple
+
+    IEnumerator SpawnUnits(List<CardController> cardsToSpawn)
+    {
+        foreach (CardController card in cardsToSpawn)
+        {
+            if (!field.CheckCount(true)) break;
+            yield return StartCoroutine(SpawnUnit(card));
+            myCardsOnBoard = GameManager.GetCards(true);
+            yield return new WaitForSeconds(0.25f);
+        }
+    }
+    IEnumerator SpawnBaffs(List<CardController> buffCards)
+    {
+        foreach (CardController card in buffCards)
+        {
+            int targetId = card.GetBasicCard.GetAction().toAllies? 
+                myCardsOnBoard[0].cardID : playerCards[0].cardID; /// ИИ всегда накладывает баф только на первую карту
+            yield return StartCoroutine(ApplyBuff(card, new(true, card.cardID, TurnData.CardAction.directed, targetId, card.Title.text)));
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+    IEnumerator UseActions()
+    {
+        myCardsOnBoard = GameManager.GetCards(true);
+        foreach (var card in myCardsOnBoard)
+        {
+            if (!card.GetBasicCard.CheckAction(card)) continue;
+            TurnData.CardAction action = card.GetBasicCard.GetAction().directed ? 
+                TurnData.CardAction.directed : TurnData.CardAction.undirected;
+            bool toAlies = card.GetBasicCard.GetAction().toAllies;
+            int targetId;
+            do
+            {
+                playerCards = GameManager.GetCards(false);
+                if (action == TurnData.CardAction.directed && playerCards.Count == 0)
+                    action = TurnData.CardAction.user;
+                targetId = action == TurnData.CardAction.user ? 0 : GetTargetId(toAlies);
+                TurnData data = new(false, card.cardID, action, targetId, card.Title.text);
+                UseAction(card, data);
+                yield return new WaitForSeconds(1.25f);
+            }
+            while (card.GetBasicCard.CheckAction(card));
+        }
+    }
+    ///
+    private int GetTargetId(bool toAlies) => 
+        toAlies ? myCardsOnBoard[0].cardID : playerCards[0].cardID;
     public void UseCard(int id) => StartCoroutine(useCard(id));
     IEnumerator useCard(int id)
     {
@@ -91,95 +142,36 @@ public class EnemyController : MonoBehaviour
         yield return StartCoroutine(SpawnUnit(hand.FindCard(id)));
         GameManager.OnEndTurn.Invoke(true);
     }
+    #endregion
     ///////////////
-    IEnumerator turn()
+    public void SingleAI() => StartCoroutine(singleAI());
+    IEnumerator singleAI()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
 
-        myCards = hand.GetCards();
+        //Cast units
+        yield return StartCoroutine(SpawnUnits(GetHandCards()));
 
-        List<CardController> units = GetListCardType(myCards, typeof(UnitCard), false);
-        yield return StartCoroutine(SpawnUnit(units));
-
-
+        //ApplyBafs
         myCardsOnBoard = GameManager.GetCards(true);
         playerCards = GameManager.GetCards(false);
+        yield return StartCoroutine(SpawnBaffs(GetHandCards(false)));
 
-        List<CardController> buffCards = GetListCardType(myCards, typeof(BuffOneshot), true);
-        yield return StartCoroutine(SpawnBaffs(buffCards));
-
+        //Use skills
         yield return new WaitForSeconds(0.5f);
+        yield return StartCoroutine(UseActions());
 
-        yield return StartCoroutine(AttackPlayerCards());
-
-        //GameManager.OnEndTurn.Invoke(false); // возврат хода игроку
+        GameManager.OnEndTurn.Invoke(true); // возврат хода игроку
     }
-    IEnumerator SpawnBaffs(List<CardController> buffCards)
-    {
-        Coroutine size;
-        foreach (CardController card in buffCards)
-        {
-            yield return new WaitForSeconds(0.15f);
-            card.isCasting = true;
-            card.Show(true);
-            size = StartCoroutine(Mover.SmoothSizeChange(field.CardSize*2f, card.transform, CardSpeed));
-            yield return StartCoroutine(Mover.MoveCard(card.transform, (Vector2)field.GetEnemyField.position, CardSpeed));
-            yield return new WaitForSeconds(showWaitTime);
-            CardController target;
-            if (card.GetBasicCard.GetAction().toAllies)
-                target = myCardsOnBoard[0];
-            else target = playerCards[0];
-            StopCoroutine(size);
-            StartCoroutine(Mover.MoveCard(card.transform, target.transform.position, CardSpeed));
-            yield return StartCoroutine(Mover.SmoothSizeChange(field.CardSize, card.transform, CardSpeed));
-            card.GetBasicCard.GetAction().Directed(card, target.transform, target.GetStats);
-            card.cast();
-            //card.GetBasicCard.GetAction()
-            //    .Directed(card, transform, target.GetStats);
-        }
-    }
-    IEnumerator AttackPlayerCards()
-    {
-        List<CardController> aviableUnits = GetListCardType(myCardsOnBoard, typeof(UnitCard), true);
-        if (aviableUnits.Count == 0) yield break;
-        foreach(CardController card in aviableUnits)
-        {
-            playerCards = GameManager.GetCards(false);
-            if (playerCards.Count != 0)
-            {
-                card.GetBasicCard.GetAction()
-                    .Directed(card, playerCards[0].transform, playerCards[0].GetStats);
-            }
-            else player.Attack(card);
-
-            yield return new WaitForSeconds(1.25f);
-        }
-        yield return StartCoroutine(AttackPlayerCards());
-    }
-    IEnumerator SpawnUnit(List<CardController> cardsToSpawn)
-    {
-        foreach (CardController card in cardsToSpawn)
-        {
-            if (!field.CheckCount(true)) break;
-            yield return new WaitForSeconds(0.15f);
-            if (card.GetBasicCard.cast(card))
-            {
-                card.isCasting = true;
-                card.Show(true);
-                StartCoroutine(Mover.SmoothSizeChange(field.CardSize, card.transform, CardSpeed));
-                yield return StartCoroutine(Mover.MoveCard(card.transform, (Vector2)field.GetEnemyField.position, CardSpeed));
-                card.cast();
-            }
-
-            myCardsOnBoard = GameManager.GetCards(true);
-        }
-    }
-    List<CardController> GetListCardType(List<CardController> toSearch, Type type, bool aviable)
+    List<CardController> GetHandCards(bool spawnable = true)
     {
         List<CardController> cards = new();
-        foreach(CardController card in toSearch)
-            if(type == card.GetBasicCard.GetType()&& aviable == card.GetBasicCard.CheckAction(card))
+        foreach (var card in hand.GetCards())
+        {
+            bool hp = card.GetStat(Effect.BuffedStats.hp.ToString()) != default;
+            if (hp && spawnable || !hp && !spawnable)
                 cards.Add(card);
+        }
         return cards;
     }
 }

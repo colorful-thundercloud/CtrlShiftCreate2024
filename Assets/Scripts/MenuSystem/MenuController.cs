@@ -4,9 +4,8 @@ using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
-public class mainMenuController : MonoBehaviour
+public class MenuController : MonoBehaviour
 {
     [SerializeField] GameObject TutorialWindow;
     [SerializeField] Animator cardAnim;
@@ -48,5 +47,11 @@ public class mainMenuController : MonoBehaviour
     {
         GetComponent<LobbyOrchestrator>().Single(new("Tutorial", true, 0));
         SceneManager.LoadSceneAsync("Tutorial");
+    }
+    public void Single()
+    {
+        GetComponent<LobbyOrchestrator>().Single(new("Bot", true, 0));
+        GameManager.startGame(Random.Range(0, 2) == 0);
+        SceneManager.LoadSceneAsync("Single");
     }
 }
