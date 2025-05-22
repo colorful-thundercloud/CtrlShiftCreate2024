@@ -18,6 +18,7 @@ public class Effect : Action
     /// </summary>
     [Header("Определяет баффаемый параметр")]
     [SerializeField] BuffedStats buffedStat;
+    [SerializeField] Sprite statIcon;
     public BuffedStats GetBuffedStat => buffedStat;
     /// <summary>
     /// Сколько прибавляется к выбранному параметру
@@ -29,12 +30,14 @@ public class Effect : Action
 
     public override void Undirected(CardController card)
     {
+        base.Undirected(card);
         List<CardController> targets = GetAllTargets(card);
         targets.Remove(card);
         foreach (CardController target in targets) Directed(card, target.transform, target.GetStats);
     }
     public override void Directed(CardController card, Transform targetTransform, CardStats targetStats)
     {
+        if(directed) base.Directed(card, targetTransform, targetStats);
         Stat victim = targetStats.GetStat(buffedStat.ToString());
         if (victim == null) return;
         SoundPlayer.Play.Invoke(buffSound);
@@ -44,6 +47,7 @@ public class Effect : Action
     {
         color = (buffedStat == BuffedStats.damage) ? Color.red : new Color(0, 0.5f, 0, 1);
 
+        card.transform.GetChild(3).GetComponent<SpriteRenderer>().sprite = statIcon;
         Stat stat = new();
         stat.Name = "value";
         stat.field = card.transform.Find("value").GetComponentInChildren<TMP_Text>();

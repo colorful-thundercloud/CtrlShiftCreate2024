@@ -18,7 +18,9 @@ MonoBehaviour:
     \u043A\u043E\u0444\u0435, \u0443\u0447\u0451\u0431\u0430, \u043A\u043E\u0442\u044B"
   buff:
     toAllies: 1
+    directed: 1
     buffedStat: 0
+    statIcon: {fileID: 21300000, guid: 2cfc67698dd2aed428b1344a2cff68c9, type: 3}
     value: 2
     buffSound: {fileID: 8300000, guid: c9adadb3a830cd34b8984c8484283607, type: 3}
     multiply: 0

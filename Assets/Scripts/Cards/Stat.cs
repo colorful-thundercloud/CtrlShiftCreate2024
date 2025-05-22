@@ -18,7 +18,7 @@ public class Stat
         set
         {
             this.value = value;
-            if (field != null) field.text = this.value.ToString();
+            if (field != null) field.text = $"{(Name == "value" ? "+" : "")}{this.value}";
             OnChange.Invoke(value);
         }
     }

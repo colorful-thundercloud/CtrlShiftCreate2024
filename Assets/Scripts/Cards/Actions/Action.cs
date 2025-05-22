@@ -15,7 +15,10 @@ public abstract class Action
     /// <summary>
     /// Ненаправленная на карту способность
     /// </summary>
-    public virtual void Undirected(CardController card) { }
+    public virtual void Undirected(CardController card)
+    {
+        if (card.GetStat("steps") != null) card.GetStat("steps").Value--;
+    }
     /// <summary>
     /// Направленная на другую карту способность, активируется вторым кликом по карте-цели
     /// </summary>

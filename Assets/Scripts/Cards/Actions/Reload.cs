@@ -16,12 +16,7 @@ public class Reload: Action
     }
     public override void Directed(CardController card, Transform targetTransform, CardStats targetStats)
     {
-        if (targetTransform.TryGetComponent(out CardController target))
-        {
-            if(target.GetBasicCard.GetType().GetInterfaces().Contains(typeof(IHaveSteps)))
-            {
-                ((IHaveSteps)target.GetBasicCard).Steps.reloadSteps(target, true);
-            }
-        }
+        Stat steps = targetStats.GetStat("steps");
+        if (steps != null) steps.Value = steps.maxValue;
     }
 }

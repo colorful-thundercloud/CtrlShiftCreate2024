@@ -103,12 +103,12 @@ public class CardController: MonoBehaviour
         if (isCasted)
         {
             CardUI.OnOpenCard.Invoke(this);
-            if (selected != null)
+            if (selected != default)
             {
                 if (GetBasicCard.OnClick(this))
                 {
                     GameManager.UpdateTurns.Invoke(new TurnData(false, Selected.cardID, TurnData.CardAction.directed, cardID,Selected.GetBasicCard.Title));
-                    Selected = null;
+                    Selected = default;
                     return;
                 }
             }
@@ -125,8 +125,8 @@ public class CardController: MonoBehaviour
             {
                 Selected = this;
                 GetBasicCard.OnSelect(this);
-
-                GameManager.UpdateTurns.Invoke(new TurnData(false, cardID, TurnData.CardAction.undirected, 0,basicCard.Title));
+                if (!basicCard.GetAction().directed)
+                    GameManager.UpdateTurns.Invoke(new TurnData(false, cardID, TurnData.CardAction.undirected, 0, basicCard.Title));
             }
         }
         else if (GameManager.myTurn) runningFunc = StartCoroutine(Mover.SmoothSizeChange(DragCardSize, transform, 0.1f));

@@ -58,15 +58,15 @@ public class EnemyController : MonoBehaviour
         yield return StartCoroutine(Mover.MoveCard(card.transform, (Vector2)field.GetEnemyField.position, CardSpeed));
         yield return new WaitForSeconds(showWaitTime);
 
-        CardController target;
-        if (card.GetBasicCard.GetAction().toAllies)
-            target = myCardsOnBoard.Find(t => t.cardID == data.TargetId);
-        else target = playerCards.Find(t => t.cardID == data.TargetId);
+        CardController target = (card.GetBasicCard.GetAction().toAllies? myCardsOnBoard: playerCards)
+            .Find(t => t.cardID == data.TargetId);
 
         StopCoroutine(size);
         StartCoroutine(Mover.MoveCard(card.transform, target.transform.position, CardSpeed));
         yield return StartCoroutine(Mover.SmoothSizeChange(field.CardSize, card.transform, CardSpeed));
-        card.GetBasicCard.GetAction().Directed(card, target.transform, target.GetStats);
+        if(card.GetBasicCard.GetAction().directed) /// edit
+            card.GetBasicCard.GetAction().Directed(card, target.transform, target.GetStats);
+        else card.GetBasicCard.GetAction().Undirected(card);
         card.cast();
     }
     private void UseAction(CardController card, TurnData turn)
@@ -103,8 +103,8 @@ public class EnemyController : MonoBehaviour
     {
         foreach (CardController card in buffCards)
         {
-            int targetId = card.GetBasicCard.GetAction().toAllies? 
-                myCardsOnBoard[0].cardID : playerCards[0].cardID; /// ИИ всегда накладывает баф только на первую карту
+            int targetId = GetTargetId(card.GetBasicCard.GetAction().toAllies, "steps");
+            /// ИИ всегда накладывает баф только на первую карту
             yield return StartCoroutine(ApplyBuff(card, new(true, card.cardID, TurnData.CardAction.directed, targetId, card.Title.text)));
             yield return new WaitForSeconds(0.5f);
         }
@@ -124,7 +124,7 @@ public class EnemyController : MonoBehaviour
                 playerCards = GameManager.GetCards(false);
                 if (action == TurnData.CardAction.directed && playerCards.Count == 0)
                     action = TurnData.CardAction.user;
-                targetId = action == TurnData.CardAction.user ? 0 : GetTargetId(toAlies);
+                targetId = action == TurnData.CardAction.user ? 0 : GetTargetId(toAlies, "steps");
                 TurnData data = new(false, card.cardID, action, targetId, card.Title.text);
                 UseAction(card, data);
                 yield return new WaitForSeconds(1.25f);
@@ -133,8 +133,8 @@ public class EnemyController : MonoBehaviour
         }
     }
     ///
-    private int GetTargetId(bool toAlies) => 
-        toAlies ? myCardsOnBoard[0].cardID : playerCards[0].cardID;
+    private int GetTargetId(bool toAlies, string statPriority) => 
+        FindMaxStatCard(toAlies ? myCardsOnBoard : playerCards, statPriority).cardID;
     public void UseCard(int id) => StartCoroutine(useCard(id));
     IEnumerator useCard(int id)
     {
@@ -173,5 +173,17 @@ public class EnemyController : MonoBehaviour
                 cards.Add(card);
         }
         return cards;
+    }
+    CardController FindMaxStatCard(List<CardController> toSearch, string stat)
+    {
+        CardController result = toSearch[0];
+        foreach (var card in toSearch)
+        {
+            if ((stat == "steps") ? 
+                result.GetStat(stat).maxValue < card.GetStat(stat).maxValue :
+                result.GetStat(stat).Value < card.GetStat(stat).Value)
+                result = card;
+        }
+        return result;
     }
 }

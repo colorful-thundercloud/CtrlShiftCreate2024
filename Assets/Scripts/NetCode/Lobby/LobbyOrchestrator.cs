@@ -48,6 +48,7 @@ public class LobbyOrchestrator : NetworkBehaviour {
         }
         catch (Exception e) {
             Debug.LogError(e);
+            Loading.OnStart.Invoke("");
         }
     }
 
@@ -234,12 +235,15 @@ public class LobbyOrchestrator : NetworkBehaviour {
         bool turn = (turnType == Constants.FirstTurn.Random) ? UnityEngine.Random.Range(0, 2) == 0 : turnType == Constants.FirstTurn.Host;
         bool timer = bool.Parse(currentLobby.Data[Constants.TimerKey].Value);
 
-        StartGameClientRpc(_playersInLobby.Values.ToArray(), lobbyId, turn, timer);
+        try
+        {
+            StartGameClientRpc(_playersInLobby.Values.ToArray(), lobbyId, turn, timer);
+            await Task.Delay((int)(1f * 1000));
 
-        await Task.Delay((int)(1f * 1000));
-
-        await MatchmakingService.LockLobby();
-        NetworkManager.Singleton.SceneManager.LoadScene("ONLINE", LoadSceneMode.Single);
+            await MatchmakingService.LockLobby();
+            NetworkManager.Singleton.SceneManager.LoadScene("ONLINE", LoadSceneMode.Single);
+        }
+        catch { await OnGameStart(lobbyId); }
     }
     [ClientRpc]
     private void StartGameClientRpc(PlayerData[] players, string currentLobbyId, bool turn, bool timer)

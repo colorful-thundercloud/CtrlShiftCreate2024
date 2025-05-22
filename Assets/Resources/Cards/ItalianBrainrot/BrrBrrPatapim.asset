@@ -19,11 +19,12 @@ MonoBehaviour:
     maxSteps: 1
   buff:
     toAllies: 1
+    directed: 0
     buffedStat: 1
+    statIcon: {fileID: 21300000, guid: f2de0ef00d828574babc93b2b8e78e71, type: 3}
     value: 1
     buffSound: {fileID: 8300000, guid: f3671b5445c84774194a7f3beb4e03f5, type: 3}
     multiply: 0
-  directed: 0
   hp:
     MaxHP: 3
     DeathSound: {fileID: 8300000, guid: d40555c54dcae614197fe2cc31ecaaba, type: 3}

@@ -44,7 +44,6 @@ public class EffectUnit : BasicCard, IHaveSteps
     {
         if (action.directed) return;
         if (!card.GetBasicCard.CheckAction(card)) return;
-        if (card.GetStat("steps") != null) card.GetStat("steps").Value--;
         CardController.Selected = null;
         action.Undirected(card);
     }

@@ -77,7 +77,8 @@ public class Users : MonoBehaviour,IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (CardController.Selected == null) return;
+        if (CardController.Selected == default) return;
         Attack(CardController.Selected);
+        CardController.Selected = default;
     }
 }
