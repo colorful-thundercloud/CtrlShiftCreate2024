@@ -39,6 +39,7 @@ public class RoomScreen : MonoBehaviour {
 
         LobbyOrchestrator.LobbyPlayersUpdated.AddListener(NetworkLobbyPlayersUpdated);
         MatchmakingService.CurrentLobbyRefreshed.AddListener(OnCurrentLobbyRefreshed);
+        SetChanger.value = 0;
     }
 
     private void OnDisable() {

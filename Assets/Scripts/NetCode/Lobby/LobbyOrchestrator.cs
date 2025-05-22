@@ -225,25 +225,28 @@ public class LobbyOrchestrator : NetworkBehaviour {
       
     }
 
-    private async void startPressed(string lobbyid) => await OnGameStart(lobbyid);
+    private async void startPressed(string lobbyid)
+    {
+        try
+        {
+            await OnGameStart(lobbyid);
+        }
+        catch { startPressed(lobbyid); }
+    }
     private async Task OnGameStart(string lobbyId)
     {
         NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnectedCallback;
-        Lobby currentLobby = await LobbyService.Instance.GetLobbyAsync(lobbyId);
-
+        Lobby currentLobby;
+        currentLobby = await LobbyService.Instance.GetLobbyAsync(lobbyId);
         Constants.FirstTurn turnType = (Constants.FirstTurn)int.Parse(currentLobby.Data[Constants.FirstTurnKey].Value);
         bool turn = (turnType == Constants.FirstTurn.Random) ? UnityEngine.Random.Range(0, 2) == 0 : turnType == Constants.FirstTurn.Host;
         bool timer = bool.Parse(currentLobby.Data[Constants.TimerKey].Value);
 
-        try
-        {
-            StartGameClientRpc(_playersInLobby.Values.ToArray(), lobbyId, turn, timer);
-            await Task.Delay((int)(1f * 1000));
+        StartGameClientRpc(_playersInLobby.Values.ToArray(), lobbyId, turn, timer);
+        await Task.Delay(1000);
 
-            await MatchmakingService.LockLobby();
-            NetworkManager.Singleton.SceneManager.LoadScene("ONLINE", LoadSceneMode.Single);
-        }
-        catch { await OnGameStart(lobbyId); }
+        await MatchmakingService.LockLobby();
+        NetworkManager.Singleton.SceneManager.LoadScene("ONLINE", LoadSceneMode.Single);
     }
     [ClientRpc]
     private void StartGameClientRpc(PlayerData[] players, string currentLobbyId, bool turn, bool timer)
