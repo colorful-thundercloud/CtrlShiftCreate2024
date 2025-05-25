@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 using UnityEngine.SceneManagement;
 
 public class MenuController : MonoBehaviour
@@ -10,11 +13,15 @@ public class MenuController : MonoBehaviour
     [SerializeField] GameObject TutorialWindow;
     [SerializeField] Animator cardAnim;
     [SerializeField] TMP_InputField playerName;
+    [SerializeField] TMP_Dropdown localeDropdown;
     Camera cam;
     Coroutine coroutine;
     private void Start()
     {
         cam = Camera.main;
+        if (PlayerPrefs.HasKey("Locale"))
+            ChangeLocale(PlayerPrefs.GetInt("Locale"));
+        StartCoroutine(LocaleDropdown());
     }
     public void Exit()
     {
@@ -54,4 +61,23 @@ public class MenuController : MonoBehaviour
         GameManager.startGame(Random.Range(0, 2) == 0);
         SceneManager.LoadSceneAsync("Single");
     }
+    bool localing = false;
+    public void ChangeLocale(int id) { if (!localing) StartCoroutine(SetLocale(id)); }
+    IEnumerator SetLocale(int id)
+    {
+        localing = true;
+        localeDropdown.value = id;
+        yield return LocalizationSettings.InitializationOperation;
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[id];
+        PlayerPrefs.SetInt("Locale", id);
+        localing = false;
+    }
+    IEnumerator LocaleDropdown()
+    {
+        yield return LocalizationSettings.InitializationOperation;
+        List<string> locales = LocalizationSettings.AvailableLocales.Locales.Select(locale => locale.name).ToList();
+        localeDropdown.options = locales.Select(locale => new TMP_Dropdown.OptionData { text = locale }).ToList();
+    }
+    public static string GetLocalizedString(string key) =>
+        new LocalizedString { TableReference = "LocalTable", TableEntryReference = key }.GetLocalizedString();
 }

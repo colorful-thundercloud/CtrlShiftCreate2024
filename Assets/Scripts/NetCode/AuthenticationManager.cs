@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
+
 public class AuthenticationManager : MonoBehaviour {
     [SerializeField] MenuController controller;
     [SerializeField] GameObject playerData;
@@ -18,7 +20,8 @@ public class AuthenticationManager : MonoBehaviour {
         }
         catch
         {
-            Loading.OnStart.Invoke("Нет подключения");
+            string notConection = LocalizationSettings.StringDatabase.GetTableEntry("LocaleTable", "NotConection").Entry.Value;
+            Loading.OnStart.Invoke(notConection);
         }
         await Task.Delay(500);
         Loading.OnStart.Invoke("");

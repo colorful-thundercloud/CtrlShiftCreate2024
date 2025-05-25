@@ -13,14 +13,27 @@ MonoBehaviour:
   m_Name: TralaleloTralala
   m_EditorClassIdentifier: 
   title: "\u0422\u0440\u0430\u043B\u0430\u043B\u0435\u043B\u043E \u0442\u0440\u0430\u043B\u0430\u043B\u0430"
+  localizedTitle:
+    m_TableReference:
+      m_TableCollectionName: GUID:15d7e6dc84c29404bbd1c641547f4af8
+    m_TableEntryReference:
+      m_KeyId: 1081804222464
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   Avatar: {fileID: 21300000, guid: 0703eb1c1b25aa44aacc154004607ae7, type: 3}
   description: 
   <Steps>k__BackingField:
     maxSteps: 1
   attack:
     toAllies: 0
+    directed: 1
     damage: 2
     AttackSound: {fileID: 8300000, guid: f270f2dd380d848429784d8818333c87, type: 3}
   hp:
     MaxHP: 2
     DeathSound: {fileID: 8300000, guid: d40555c54dcae614197fe2cc31ecaaba, type: 3}
+  references:
+    version: 2
+    RefIds: []

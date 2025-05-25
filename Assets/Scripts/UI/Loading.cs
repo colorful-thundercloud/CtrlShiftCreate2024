@@ -2,7 +2,6 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
 
 public class Loading : MonoBehaviour
 {
@@ -18,7 +17,9 @@ public class Loading : MonoBehaviour
         OnStart.AddListener(Invoke);
         mat.color = new(1, 1, 1, 0);
     }
-    public void Invoke(string text = "")
+    public void FromLocale(string key) =>
+        Invoke(MenuController.GetLocalizedString(key));
+    private void Invoke(string text = "")
     {
         bool enabled = text != "";
         if (enabled && Fading != default) Fading.SetActive(true);

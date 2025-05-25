@@ -21,7 +21,7 @@ public class LobbyRoomPanel : MonoBehaviour {
     public void UpdateDetails(Lobby lobby) {
         Lobby = lobby;
         _nameText.text = lobby.Name;
-        _firstTurn.text = $"Первый ход: {(Constants.FirstTurn)GetValue(Constants.FirstTurnKey)}";
+        _firstTurn.text = $"{(Constants.FirstTurn)GetValue(Constants.FirstTurnKey)}";
         isPrivate = lobby.Data[Constants.PasswordKey].Value != "";
         _lock.gameObject.SetActive(isPrivate);
 
@@ -50,7 +50,7 @@ public class LobbyRoomPanel : MonoBehaviour {
     }
     private void join()
     {
-        Loading.OnStart.Invoke("Подключаемся");
+        Loading.OnStart.Invoke(MenuController.GetLocalizedString("Connecting"));
         LobbySelected?.Invoke(Lobby);
     }
     private IEnumerator SetColor(Color color, float time)

@@ -13,6 +13,15 @@ MonoBehaviour:
   m_Name: LiriliLarila
   m_EditorClassIdentifier: 
   title: Lirili Larila
+  localizedTitle:
+    m_TableReference:
+      m_TableCollectionName: GUID:15d7e6dc84c29404bbd1c641547f4af8
+    m_TableEntryReference:
+      m_KeyId: 881274548224
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   Avatar: {fileID: 21300000, guid: 2808095fd9032aa46ab23ae88063db0d, type: 3}
   description: "\u041F\u0435\u0440\u0435\u0437\u0430\u0440\u044F\u0436\u0430\u0435\u0442
     \u0432\u0441\u0435 \u0441\u0432\u043E\u0438 \u043A\u0430\u0440\u0442\u044B"
@@ -20,3 +29,6 @@ MonoBehaviour:
     toAllies: 1
     directed: 0
     sound: {fileID: 8300000, guid: 21f4c616b965446459fd373c5002da36, type: 3}
+  references:
+    version: 2
+    RefIds: []

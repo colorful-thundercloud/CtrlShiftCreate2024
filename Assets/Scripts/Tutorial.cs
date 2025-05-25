@@ -1,17 +1,14 @@
 using System;
 using System.Collections;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 public class Tutorial : MonoBehaviour
 {
     [Serializable]
     public class Stage
     {
-        [TextArea(3,3)] public string _text;
         public UnityEvent _event;
         public float _delay;
     }
@@ -26,7 +23,7 @@ public class Tutorial : MonoBehaviour
         GameManager.OnCast.AddListener(onCast);
         GameManager.OnEndTurn.AddListener(onEndTurn);
         GameManager.UpdateTurns.AddListener(onSkill);
-        Loading.OnStart.Invoke("Cейчас будет выдан первый ход");
+        Loading.OnStart.Invoke(MenuController.GetLocalizedString("TutorialPrepare"));
     }
     Coroutine tutorial;
     public void HighlightCard(int id) => StartCoroutine(Highlight(id));
@@ -46,30 +43,30 @@ public class Tutorial : MonoBehaviour
     private void onClick(InputAction.CallbackContext ctx)
     {
         if (stage > 1 || tutorial != default) return;
-        tutorial = StartCoroutine(s0());
+        tutorial = StartCoroutine(nextStage());
     }
     private void onCast(CardController card)
     {
         if (card.cardID > 1 || tutorial != default) return;
-        tutorial = StartCoroutine(s0());
+        tutorial = StartCoroutine(nextStage());
     }
     private void onEndTurn(bool myTurn)
     {
         if (stage != 4 || tutorial != default) return;
-        tutorial = StartCoroutine(s0());
+        tutorial = StartCoroutine(nextStage());
     }
     private void onSkill(TurnData data)
     {
         if (tutorial != default) return;
         if(data.Action == TurnData.CardAction.directed || data.Action == TurnData.CardAction.user)
-            tutorial = StartCoroutine(s0());
+            tutorial = StartCoroutine(nextStage());
     }
-    IEnumerator s0()
+    IEnumerator nextStage()
     {
         Loading.OnStart.Invoke("");
         stages[stage]._event.Invoke();
         yield return new WaitForSeconds(stages[stage]._delay);
-        Loading.OnStart.Invoke(stages[stage]._text);
+        Loading.OnStart.Invoke(MenuController.GetLocalizedString($"Tutorial{stage}"));
         stage++;
         tutorial = default;
     }

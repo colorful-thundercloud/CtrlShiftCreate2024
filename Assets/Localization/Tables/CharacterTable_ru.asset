@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: CharacterTable_ru
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: ru
+  m_SharedData: {fileID: 11400000, guid: 15d7e6dc84c29404bbd1c641547f4af8, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 463752556544
+    m_Localized: "\u0411\u043E\u0431\u0440\u0438\u0442\u043E \u0431\u0430\u043D\u0434\u0438\u0442\u043E"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 585022468096
+    m_Localized: "\u0411\u043E\u043C\u0431\u0430\u0440\u0434\u0438\u0440\u043E \u043A\u0440\u043E\u043A\u043E\u0434\u0438\u043B\u043E"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 716765556736
+    m_Localized: "\u0411\u0440\u0440 \u0411\u0440\u0440 \u041F\u0430\u0442\u0430\u043F\u0438\u043C"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 881274548224
+    m_Localized: Lirili Larila
+    m_Metadata:
+      m_Items: []
+  - m_Id: 937021042688
+    m_Localized: "\u0428\u043F\u0438\u043E\u043D\u0438\u0440\u043E \u0433\u043E\u043B\u0443\u0431\u0438\u0440\u043E"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1081804222464
+    m_Localized: "\u0422\u0440\u0430\u043B\u0430\u043B\u0435\u043B\u043E \u0442\u0440\u0430\u043B\u0430\u043B\u0430"
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

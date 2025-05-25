@@ -12,7 +12,7 @@ public class LobbyPlayerPanel : MonoBehaviour {
     }
 
     public void SetReady(bool isReady) {
-        _statusText.text = (isReady) ? "Готов" : "Не готов";
+        _statusText.text = MenuController.GetLocalizedString((isReady) ? "Ready" : "NotReady");
         _statusText.color = (isReady) ? Color.green : Color.red;
     }
 }

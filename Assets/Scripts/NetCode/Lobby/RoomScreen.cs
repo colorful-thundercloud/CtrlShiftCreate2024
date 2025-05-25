@@ -84,11 +84,12 @@ public class RoomScreen : MonoBehaviour {
 
     private void OnCurrentLobbyRefreshed(Lobby lobby) {
         lobbyId = lobby.Id;
-        _waitingText.text = (lobby.Players.Count < 2) ? $"Ждём второго игрока" : (allReady) ? "Ждём начала игры" : "Ждём пока все будут готовы";
+        _waitingText.text = MenuController.GetLocalizedString(
+            (lobby.Players.Count < 2) ? "WaitingSecond" : (allReady) ? "WaitingStart" : "WaitingReady");
         string password = lobby.Data[Constants.PasswordKey].Value;
         _passwordField.gameObject.SetActive(password != "");
-        _passwordField.text = $"Пароль: {password}";
-        _firstTurn.text = $"Первый ход: {(Constants.FirstTurn)int.Parse(lobby.Data[Constants.FirstTurnKey].Value)}";
+        _passwordField.text = $"{MenuController.GetLocalizedString("Code")}: {password}";
+        _firstTurn.text = $"{(Constants.FirstTurn)int.Parse(lobby.Data[Constants.FirstTurnKey].Value)}";
     }
     public void OnReadyClicked()
     {

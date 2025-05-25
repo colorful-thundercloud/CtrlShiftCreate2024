@@ -252,7 +252,7 @@ public class LobbyOrchestrator : NetworkBehaviour {
     private void StartGameClientRpc(PlayerData[] players, string currentLobbyId, bool turn, bool timer)
     {
         _playersInLobby.Clear();
-        Loading.OnStart.Invoke("Запускаем игру");
+        Loading.OnStart.Invoke(MenuController.GetLocalizedString("StartingGame"));
         PlayersInCurrentLobby = players.ToList();
         Timer.LobbySettings = timer;
         GameManager.startGame((IsServer) ? turn : !turn);

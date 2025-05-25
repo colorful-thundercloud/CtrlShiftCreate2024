@@ -4,10 +4,12 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Localization;
 
 public abstract class BasicCard : ScriptableObject
 {
     [SerializeField] string title;
+    [SerializeField] LocalizedString localizedTitle;
     public bool isIngoringFieldCapacity { get; protected set; }
     public string Title { get { return title; } }
     [SerializeField] Sprite Avatar;

@@ -97,7 +97,7 @@ public class GameManager : NetworkBehaviour
     public void Lot(bool myTurn) => StartCoroutine(lot(myTurn));
     public IEnumerator lot(bool turn)
     {
-        turnText.text = turn ? "Твой ход" : "Ход противника";
+        turnText.text = MenuController.GetLocalizedString(turn ? "YourTurn" : "EnemyTurn");
         SoundPlayer.Play.Invoke(moneySound);
         moneyAnim.SetTrigger(turn ? "MyLot" : "EnemyLot");
         yield return new WaitForSeconds(3f);
