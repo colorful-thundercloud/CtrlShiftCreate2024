@@ -4,12 +4,10 @@ using UnityEngine;
 public class AuthenticationManager : MonoBehaviour {
     [SerializeField] MenuController controller;
     [SerializeField] GameObject playerData;
-    [SerializeField] TMP_Text loadingText;
     [SerializeField] Animator cards;
     [SerializeField] Transform lobbyMenu;
     public async void Login() => await loginAnonymously();
     private async Task loginAnonymously() {
-        Loading.OnStart.Invoke("Подключение");
         try
         {
             await Authentication.Login();
@@ -20,7 +18,7 @@ public class AuthenticationManager : MonoBehaviour {
         }
         catch
         {
-            loadingText.text = "Нет подключения";
+            Loading.OnStart.Invoke("Нет подключения");
         }
         await Task.Delay(500);
         Loading.OnStart.Invoke("");

@@ -18,6 +18,7 @@ public abstract class Action
     public virtual void Undirected(CardController card)
     {
         if (card.GetStat("steps") != null) card.GetStat("steps").Value--;
+        GameManager.UpdateTurns.Invoke(new TurnData(false, card.cardID, TurnData.CardAction.undirected, 0, card.GetBasicCard.Title));
     }
     /// <summary>
     /// Направленная на другую карту способность, активируется вторым кликом по карте-цели

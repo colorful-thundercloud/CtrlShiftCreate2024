@@ -125,8 +125,6 @@ public class CardController: MonoBehaviour
             {
                 Selected = this;
                 GetBasicCard.OnSelect(this);
-                if (!basicCard.GetAction().directed)
-                    GameManager.UpdateTurns.Invoke(new TurnData(false, cardID, TurnData.CardAction.undirected, 0, basicCard.Title));
             }
         }
         else if (GameManager.myTurn) runningFunc = StartCoroutine(Mover.SmoothSizeChange(DragCardSize, transform, 0.1f));
