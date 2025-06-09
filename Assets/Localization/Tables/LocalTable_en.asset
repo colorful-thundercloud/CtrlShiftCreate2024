@@ -23,11 +23,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7447642009600
-    m_Localized: Sounds volume
+    m_Localized: Music volume
     m_Metadata:
       m_Items: []
   - m_Id: 7482924494848
-    m_Localized: Music volume
+    m_Localized: Sounds volume
     m_Metadata:
       m_Items: []
   - m_Id: 9838122659840

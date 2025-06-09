@@ -19,8 +19,8 @@ public class MenuController : MonoBehaviour
     private void Start()
     {
         cam = Camera.main;
-        if (PlayerPrefs.HasKey("Locale"))
-            ChangeLocale(PlayerPrefs.GetInt("Locale"));
+        int key = PlayerPrefs.HasKey("Locale") ? PlayerPrefs.GetInt("Locale") : 0;
+        ChangeLocale(key);
         StartCoroutine(LocaleDropdown());
     }
     public void Exit()
